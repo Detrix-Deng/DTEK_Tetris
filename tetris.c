@@ -33,7 +33,7 @@ void spawn_sprite(int rand){     // Update curr_sprite with next_sprite
 }
 
 void interrupt_handler(unsigned int cause){
-    switch (cause){
+    switch (cause){ //interrupt from timer
         case 16:
             render();
             break;
