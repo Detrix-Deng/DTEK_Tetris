@@ -1,5 +1,7 @@
 //Contains only shapes
 
+#include <stddef.h>
+
 struct sprite {
     char sprite_id;
     char rotation;
@@ -7,6 +9,6 @@ struct sprite {
     int y;
 };
 
-char spriteshapes = {
+char sprite_shape[][] = {
     
 };
