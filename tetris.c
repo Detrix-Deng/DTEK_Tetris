@@ -24,6 +24,13 @@ void spawn_shape(int rand){
 
 }
 
-void loop(){
+void interrupt_handler(unsigned int cause){
+    switch (cause){
+        case 18:
+            break;
+    }
+}
 
+void loop(){
+    
 }
