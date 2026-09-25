@@ -14,7 +14,7 @@ int score;
 char hold;      // Stores the type_id of the hold sprite
 char grid[][];
 struct sprite curr_sprite;
-struct sprite next_sprite;  // list containing the 3 upcoming sprite.
+struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
