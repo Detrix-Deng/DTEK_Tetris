@@ -7,3 +7,8 @@ struct sprite {
     int y;
 };
 
+int* get_shape_bottom(){
+    // Logic to find 
+    int *arr;
+    return arr;
+}
