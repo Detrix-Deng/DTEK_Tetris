@@ -10,13 +10,9 @@
 
 //s
 
-<<<<<<< HEAD
-// Global variables
-=======
 const int WIDTH = 320;
 const int HEIGHT = 240;
 
->>>>>>> c5dd6dba789eb6079b217e88f2ef0e6e5b4a0ea7
 int score;
 char hold;      // Stores the type_id of the hold sprite
 char grid[HEIGHT][WIDTH];
