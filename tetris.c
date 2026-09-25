@@ -10,13 +10,9 @@
 
 //s
 
-<<<<<<< HEAD
-// Global variables
-=======
 const int WIDTH = 320;
 const int HEIGHT = 240;
 
->>>>>>> c5dd6dba789eb6079b217e88f2ef0e6e5b4a0ea7
 int score;
 char hold;      // Stores the type_id of the hold sprite
 char grid[HEIGHT][WIDTH];
@@ -68,14 +64,14 @@ int line_clear(){   // After collision detect == True
     return 0; // Temporary! 
 }
 
-void mov_down(){    // x in curr_shape -= 1
+void mov_down(){    // y in curr_shape -= 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
 
 }
 
-void mov_hor(unsigned int input){   // y in curr_shape +- 1, depending on input
+void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
     // Check whether input is from P1 or P2
     // Check whether input correspond to left or right
 
