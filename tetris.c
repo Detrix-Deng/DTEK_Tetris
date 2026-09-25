@@ -10,27 +10,37 @@
 //s
 
 int score;
+char hold;      // Stores the type_id of the hold sprite
 char grid[][];
+struct sprite curr_sprite;
+struct sprite next_sprite;  // list containing the 3 upcoming sprite.
 
-void render(){
+void render(){      // Renders the gamescreen
+// Is called by the interrupt handler, to update and render the gamescreen.
+}
+
+bool collision_detect(){        // Check if the space below the sprite is occupied.
+    // If occupied, return True, else, return False
 
 }
 
-void collision_detect(){
-
-}
-
-void spawn_shape(int rand){
+void spawn_sprite(int rand){     // Update curr_sprite with next_sprite
 
 }
 
 void interrupt_handler(unsigned int cause){
     switch (cause){
-        case 18:
+        case 16:
+            render();
+            break;
+        
+        default:
             break;
     }
 }
 
-void loop(){
+void score_calc();  // Calculates 
+
+void loop(){    // game loop
     
 }
