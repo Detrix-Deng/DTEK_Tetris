@@ -10,9 +10,12 @@
 
 //s
 
+const int WIDTH = 320;
+const int HEIGHT = 240;
+
 int score;
 char hold;      // Stores the type_id of the hold sprite
-char grid[][];
+char grid[HEIGHT][WIDTH];
 struct sprite curr_sprite;
 struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
