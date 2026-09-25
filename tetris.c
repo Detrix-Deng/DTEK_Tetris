@@ -4,17 +4,24 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "shapes.c"
+#include "vga.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
 
 //s
 
+<<<<<<< HEAD
 // Global variables
+=======
+const int WIDTH = 320;
+const int HEIGHT = 240;
+
+>>>>>>> c5dd6dba789eb6079b217e88f2ef0e6e5b4a0ea7
 int score;
 char hold;      // Stores the type_id of the hold sprite
-char grid[][];
+char grid[HEIGHT][WIDTH];
 struct sprite curr_sprite;
-struct sprite next_sprite;  // list containing the 3 upcoming sprite.
+struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
@@ -38,7 +45,7 @@ void spawn_sprite(int rand){     // Update curr_sprite with next_sprite
 }
 
 void interrupt_handler(unsigned int cause){
-    switch (cause){
+    switch (cause){ //interrupt from timer
         case 16:
             render();
             break;
