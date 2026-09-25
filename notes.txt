@@ -1,0 +1,37 @@
+main ska kalla på startup funktioner som enable intrerrupts
+tetris.C ska innehålla det mesta (funktioner, game loop , etc.)
+shapes.C ska innehålla funktioner som hanterar tetriminos
+VGA kommer kalla på tetris.C och shapes.C för display.
+
+headers:
+#include <stdint.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdbool.h>
+
+funktioner i tetris.C:
+check_collision
+random_next_shape
+score_calc
+hold
+
+funktioner i shapes.C:
+defining the shape "objects"
+struct sprite = {
+		char type_id,
+		char rotation,
+		int x,
+		int y,
+		
+		}
+shape_list[] = {shape_id, rotation, x, y, 
+a way to rotate the shape
+
+initiate a clock that interrupts 300 times / sec. The idea is to have an interrupt handler that updates the screen for every 10 timeoutcount, which should make the game run with 30 fps. labinit will be in main.
+void labinit()    // Clock times out (TO) every 10/3 ms
+{
+  *(time_addr + 2) = (100000 - 1) & 0x0000FFFF;    // Set lower half
+  *(time_addr + 3) = (100000 - 1) >> 16;    // Set upper half
+  *(time_addr + 1) = 7;
+  enable_interrupt();
+}
