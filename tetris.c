@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "shapes.c"
+#include "vga.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
 
