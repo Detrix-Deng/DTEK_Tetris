@@ -7,3 +7,6 @@ struct sprite {
     int y;
 };
 
+char spriteshapes = {
+    
+};
