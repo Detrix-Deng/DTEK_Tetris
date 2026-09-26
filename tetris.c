@@ -26,7 +26,10 @@ void render(){      // Renders the gamescreen
 
 int get_rand(){
     // take the snapL of timer, and then do some calculation to generate a random int.
-
+    volatile int *time_addr = (volatile int *)0x04000020;
+    time_addr += 2; //snapL
+    int rand = *time_addr;
+    return rand;
 }
 
 bool collision_detect(){    // Check if the space below the sprite is occupied.
