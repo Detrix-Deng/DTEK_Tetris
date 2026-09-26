@@ -27,7 +27,7 @@ void render(){      // Renders the gamescreen
 int get_rand(){
     // take the snapL of timer, and then do some calculation to generate a random int.
     volatile int *time_addr = (volatile int *)0x04000020;
-    time_addr += 2; //snapL
+    time_addr += 4; //snapL
     int rand = *time_addr;
     return rand;
 }
