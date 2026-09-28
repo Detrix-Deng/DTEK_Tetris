@@ -96,22 +96,17 @@ void hold_func(int player){
 
 void loop(){    // game loop
     // poll inputs
-    int rot_r1 = *gpio & 0x01;
-    int rot_l1 = (*gpio >> 1) & 0x01;
-    int mv_r1 = (*gpio >> 2) & 0x01;
-    int mv_l1 = (*gpio >> 3) & 0x01;
-    int down1 = (*gpio >> 4) & 0x01;
-    int hold1 = (*gpio >> 5) & 0x01;
-    int rot_r2 = (*gpio >> 6) & 0x01;
-    int rot_l2 = (*gpio >> 7) & 0x01;
-    int mv_r2 = (*gpio >> 8) & 0x01;
-    int mv_l2 = (*gpio >> 9) & 0x01;
-    int down2 = (*gpio >> 10) & 0x01;
-    int hold2 = (*gpio >> 11) & 0x01;
-    if (rot_r1){
-
-    }
-    if(rot_l1){
+    int rot1 = *gpio & 0x01;
+    int mv_r1 = (*gpio >> 1) & 0x01;
+    int mv_l1 = (*gpio >> 2) & 0x01;
+    int down1 = (*gpio >> 3) & 0x01;
+    int hold1 = (*gpio >> 4) & 0x01;
+    int rot2 = (*gpio >> 5) & 0x01;
+    int mv_r2 = (*gpio >> 6) & 0x01;
+    int mv_l2 = (*gpio >> 7) & 0x01;
+    int down2 = (*gpio >> 8) & 0x01;
+    int hold2 = (*gpio >> 9) & 0x01;
+    if (rot1){
 
     }
     if(mv_r1){
