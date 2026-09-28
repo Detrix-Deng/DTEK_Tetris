@@ -73,9 +73,40 @@ int line_clear(){   // After collision detect == True
     return 0; // Temporary! 
 }
 
-void rotate(int player, int direction)
+void rotate(int player)
 {
     // rotate curr_sprite[player] right or left based on direction
+    unsigned char new_shape[4] = {0};
+    // Rotate and save shape as an array of bits
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 3; j >= 0; j--)
+            new_shape[i] = new_shape[i] | ((curr_sprite[player].sprite_shape.matrix[j][i]) << (3 - j));
+    }
+    // Shift left
+    int min_dist = 3;
+    for(int i = 0; i < 4; i++)
+    {
+        int dist = 0;
+        if(new_shape[i] == 0)
+            continue;
+        for(int j = 3; j >= 0; j--)
+        {
+            if((new_shape[i] >> j) & 0x01)
+                break;
+            dist++;
+        }
+        if(dist < min_dist)
+            min_dist = dist;
+    }
+    // Translate and save new_shape to curr_sprite
+    for(int i = 0; i < 4; i++)
+        new_shape[i] = new_shape[i] << min_dist;
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 3; j >= 0; j--)
+            curr_sprite[player].sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
+    }
 }
 
 void mov_down(int player){    // y in curr_shape -= 1
@@ -87,6 +118,10 @@ void mov_down(int player){    // y in curr_shape -= 1
     }else{
         curr_sprite[player].y += -1;
     }
+}
+
+void hard_down(int player){
+    // move sprite all the way down
 }
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
@@ -121,6 +156,7 @@ void loop(){    // game loop
         mov_hor(1, -1);
     }
     if(down1){
+        
     }
     if(hold1){
 
