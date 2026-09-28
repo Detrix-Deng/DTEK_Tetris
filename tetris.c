@@ -58,7 +58,8 @@ void interrupt_handler(unsigned int cause){
 }
 
 void score_calc(int layers){  // Calculates/update game score
-
+    int mult = layers * 1000;
+    score += mult; //add switch cases later
 }
 
 int line_clear(){   // After collision detect == True
