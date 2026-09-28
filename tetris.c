@@ -45,8 +45,8 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
     return collision;
 }
 
-void spawn_sprite(int rand, int player){     // Update curr_sprite with next_sprite
-    int rand_int = rand % 6;
+void spawn_sprite(int player){     // Update curr_sprite with next_sprite
+    int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
     curr_sprite[player].sprite_shape = shape;
     curr_sprite[player].x = 0; // CHANGE!! (player * field) + offset;
