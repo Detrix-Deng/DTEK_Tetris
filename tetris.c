@@ -20,8 +20,8 @@ char VGA[WIDTH * HEIGHT];  //vga buffer
 int score;
 char hold;      // Stores the type_id of the hold sprite
 char grid[GRID_HEIGHT][GRID_WIDTH];
-struct sprite curr_sprite;
-struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
+struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
+struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
@@ -45,8 +45,12 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
     return collision;
 }
 
-void spawn_sprite(int rand){     // Update curr_sprite with next_sprite
-
+void spawn_sprite(int rand, int player){     // Update curr_sprite with next_sprite
+    int rand_int = rand % 6;
+    struct sprite_shape shape = sprite_shapes[rand_int];
+    curr_sprite[player].sprite_shape = shape;
+    curr_sprite[player].x = 0; // CHANGE!! (player * field) + offset;
+    curr_sprite[player].y = 0; // CHANGE!! offset;
 }
 
 void interrupt_handler(unsigned int cause){
