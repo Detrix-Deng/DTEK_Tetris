@@ -54,6 +54,8 @@ void spawn_sprite(int rand, int player){     // Update curr_sprite with next_spr
 }
 
 void interrupt_handler(unsigned int cause){
+    volatile int *time_addr = (volatile int *)0x04000020;
+    *time_addr = 2; // Clear TO flag
     render();
 }
 
