@@ -17,9 +17,9 @@ const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
 int VGA[WIDTH * HEIGHT];  //vga buffer
 
-int score;
-char hold;      // Stores the type_id of the hold sprite
-char grid[GRID_HEIGHT][GRID_WIDTH];
+int score[2];
+char hold[2];      // Stores the type_id of the hold sprite
+char grid[2][GRID_HEIGHT][GRID_WIDTH];
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 
