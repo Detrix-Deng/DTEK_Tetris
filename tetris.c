@@ -59,8 +59,9 @@ void interrupt_handler(unsigned int cause){
     render();
 }
 
-void score_calc(int layers){  // Calculates/update game score
-
+void score_calc(int players){  // Calculates/update game score
+    int mult = players * 1000;
+    score[players] += mult; //add switch cases later
 }
 
 int line_clear(){   // After collision detect == True
@@ -108,11 +109,15 @@ void rotate(int player)
     }
 }
 
-void mov_down(){    // y in curr_shape -= 1
+void mov_down(int player){    // y in curr_shape -= 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
+    if(collision_detect){
 
+    }else{
+        curr_sprite[player].y += -1;
+    }
 }
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
@@ -147,10 +152,9 @@ void loop(){    // game loop
         mov_hor(1, -1);
     }
     if(down1){
-        mov_down();
     }
     if(hold1){
 
     }
-
+    mov_down(1);
 }
