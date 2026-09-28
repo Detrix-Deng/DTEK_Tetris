@@ -72,6 +72,11 @@ int line_clear(){   // After collision detect == True
     return 0; // Temporary! 
 }
 
+void rotate(int player, int direction)
+{
+    // rotate curr_sprite[player] right or left based on direction
+}
+
 void mov_down(){    // y in curr_shape -= 1
     // This is polled every game cycle
     // Call line_clear if collision_check
@@ -83,6 +88,11 @@ void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
     // Check whether input is from P1 or P2
     // Check whether input correspond to left or right
 
+}
+
+void hold_func(int player){
+    hold[player] = curr_sprite[player].sprite_shape.sprite_id;
+    spawn_sprite(player);
 }
 
 void loop(){    // game loop
