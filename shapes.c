@@ -46,7 +46,7 @@ struct sprite_shape sprite_shapes[] = {
 };
 
 struct sprite{
-    char sprite_shape;
+    struct sprite_shape sprite_shape;
     char rotation;
     int x;
     int y;
