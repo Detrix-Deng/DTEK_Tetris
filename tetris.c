@@ -7,15 +7,25 @@
 #include "vga.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
+volatile int *gpio = (volatile int *) 0x040000e0;
 
-//s
+volatile int *mv_right = gpio;     //pin 0
+volatile int *mv_left = gpio + 1;  //pin 1
+volatile int *r_right = gpio + 2;
+volatile int *r_left = gpio + 3;
+volatile int *down = gpio + 4;  //pin 2
+volatile int *hold = gpio + 5;  //pin 3
+
+//
 
 const int WIDTH = 320;
 const int HEIGHT = 240;
+const int GRID_WIDTH = 8;
+const int GRID_HEIGHT = 20;
 
 int score;
 char hold;      // Stores the type_id of the hold sprite
-char grid[HEIGHT][WIDTH];
+char grid[GRID_HEIGHT][GRID_WIDTH];
 struct sprite curr_sprite;
 struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
@@ -82,4 +92,29 @@ void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
 
 void loop(){    // game loop
     // poll inputs
+    int right = *r_right;
+    int left = *r_left;
+    int move_right = *mv_right;
+    int move_left = *mv_left;
+    int shift_down = *down;
+    int hold_shape = *hold;
+    if (right){
+
+    }
+    if(left){
+
+    }
+    if(move_right){
+        mov_hor(1);
+    }
+    if(move_left){
+        mov_hor(1);
+    }
+    if(shift_down){
+        mov_down();
+    }
+    if(hold){
+
+    }
+
 }
