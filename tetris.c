@@ -17,9 +17,9 @@ const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
 char VGA[WIDTH * HEIGHT];  //vga buffer
 
-int score;
-char hold;      // Stores the type_id of the hold sprite
-char grid[GRID_HEIGHT][GRID_WIDTH];
+int score[2];
+char hold[2];      // Stores the type_id of the hold sprite
+char grid[2][GRID_HEIGHT][GRID_WIDTH];
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 
@@ -45,8 +45,8 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
     return collision;
 }
 
-void spawn_sprite(int rand, int player){     // Update curr_sprite with next_sprite
-    int rand_int = rand % 6;
+void spawn_sprite(int player){     // Update curr_sprite with next_sprite
+    int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
     curr_sprite[player].sprite_shape = shape;
     curr_sprite[player].x = 0; // CHANGE!! (player * field) + offset;
@@ -54,6 +54,8 @@ void spawn_sprite(int rand, int player){     // Update curr_sprite with next_spr
 }
 
 void interrupt_handler(unsigned int cause){
+    volatile int *time_addr = (volatile int *)0x04000020;
+    *time_addr = 2; // Clear TO flag
     render();
 }
 
@@ -71,6 +73,11 @@ int line_clear(){   // After collision detect == True
     return 0; // Temporary! 
 }
 
+void rotate(int player, int direction)
+{
+    // rotate curr_sprite[player] right or left based on direction
+}
+
 void mov_down(){    // y in curr_shape -= 1
     // This is polled every game cycle
     // Call line_clear if collision_check
@@ -78,36 +85,41 @@ void mov_down(){    // y in curr_shape -= 1
 
 }
 
-void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
-    // Check whether input is from P1 or P2
-    // Check whether input correspond to left or right
+void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
+    curr_sprite[player].x += direction;
+    // Add limit checks to confirm sprite in border
+}
 
+void hold_func(int player){
+    hold[player] = curr_sprite[player].sprite_shape.sprite_id;
+    spawn_sprite(player);
 }
 
 void loop(){    // game loop
     // poll inputs
-    int right = *gpio & 0x00000001;
-    int left = *gpio & 0x0000002 ;
-    int move_right = *gpio & 0x00000004;
-    int move_left = *gpio & 0x00000008;
-    int shift_down = *gpio & 0x00000010;
-    int hold_shape = *gpio & 0x00000020;
-    if (right){
+    int rot1 = *gpio & 0x01;
+    int mv_r1 = (*gpio >> 1) & 0x01;
+    int mv_l1 = (*gpio >> 2) & 0x01;
+    int down1 = (*gpio >> 3) & 0x01;
+    int hold1 = (*gpio >> 4) & 0x01;
+    int rot2 = (*gpio >> 5) & 0x01;
+    int mv_r2 = (*gpio >> 6) & 0x01;
+    int mv_l2 = (*gpio >> 7) & 0x01;
+    int down2 = (*gpio >> 8) & 0x01;
+    int hold2 = (*gpio >> 9) & 0x01;
+    if (rot1){
 
     }
-    if(left){
-
+    if(mv_r1){
+        mov_hor(1, 1);
     }
-    if(move_right){
-        mov_hor(1);
+    if(mv_l1){
+        mov_hor(1, -1);
     }
-    if(move_left){
-        mov_hor(1);
-    }
-    if(shift_down){
+    if(down1){
         mov_down();
     }
-    if(hold){
+    if(hold1){
 
     }
 
