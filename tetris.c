@@ -87,28 +87,34 @@ void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
 
 void loop(){    // game loop
     // poll inputs
-    int right = *gpio & 0x00000001;
-    int left = *gpio & 0x0000002 ;
-    int move_right = *gpio & 0x00000004;
-    int move_left = *gpio & 0x00000008;
-    int shift_down = *gpio & 0x00000010;
-    int hold_shape = *gpio & 0x00000020;
-    if (right){
+    int rot_r1 = *gpio & 0x01;
+    int rot_l1 = (*gpio >> 1) & 0x01;
+    int mv_r1 = (*gpio >> 2) & 0x01;
+    int mv_l1 = (*gpio >> 3) & 0x01;
+    int down1 = (*gpio >> 4) & 0x01;
+    int hold1 = (*gpio >> 5) & 0x01;
+    int rot_r2 = (*gpio >> 6) & 0x01;
+    int rot_l2 = (*gpio >> 7) & 0x01;
+    int mv_r2 = (*gpio >> 8) & 0x01;
+    int mv_l2 = (*gpio >> 9) & 0x01;
+    int down2 = (*gpio >> 10) & 0x01;
+    int hold2 = (*gpio >> 11) & 0x01;
+    if (rot_r1){
 
     }
-    if(left){
+    if(rot_l1){
 
     }
-    if(move_right){
+    if(mv_r1){
         mov_hor(1);
     }
-    if(move_left){
+    if(mv_l1){
         mov_hor(1);
     }
-    if(shift_down){
+    if(down1){
         mov_down();
     }
-    if(hold){
+    if(hold1){
 
     }
 
