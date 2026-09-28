@@ -9,19 +9,13 @@
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
 
-volatile int *mv_right = gpio;     //pin 0
-volatile int *mv_left = gpio + 1;  //pin 1
-volatile int *r_right = gpio + 2;
-volatile int *r_left = gpio + 3;
-volatile int *down = gpio + 4;  //pin 2
-volatile int *hold = gpio + 5;  //pin 3
-
 //
 
 const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
+int VGA[WIDTH * HEIGHT];  //vga buffer
 
 int score;
 char hold;      // Stores the type_id of the hold sprite
@@ -31,6 +25,8 @@ struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
+    int vga_buffer = VGA;
+    
 
 }
 
@@ -58,14 +54,7 @@ void spawn_sprite(int rand, int player){     // Update curr_sprite with next_spr
 }
 
 void interrupt_handler(unsigned int cause){
-    switch (cause){ //interrupt from timer
-        case 16:
-            render();
-            break;
-        
-        default:
-            break;
-    }
+    render();
 }
 
 void score_calc(int layers){  // Calculates/update game score
@@ -96,12 +85,12 @@ void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
 
 void loop(){    // game loop
     // poll inputs
-    int right = *r_right;
-    int left = *r_left;
-    int move_right = *mv_right;
-    int move_left = *mv_left;
-    int shift_down = *down;
-    int hold_shape = *hold;
+    int right = *gpio & 0x00000001;
+    int left = *gpio & 0x0000002 ;
+    int move_right = *gpio & 0x00000004;
+    int move_left = *gpio & 0x00000008;
+    int shift_down = *gpio & 0x00000010;
+    int hold_shape = *gpio & 0x00000020;
     if (right){
 
     }
