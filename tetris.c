@@ -25,6 +25,8 @@ struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
+    int vga_buffer = VGA;
+    
 
 }
 
