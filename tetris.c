@@ -84,10 +84,9 @@ void mov_down(){    // y in curr_shape -= 1
 
 }
 
-void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
-    // Check whether input is from P1 or P2
-    // Check whether input correspond to left or right
-
+void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
+    curr_sprite[player].x += direction;
+    // Add limit checks to confirm sprite in border
 }
 
 void hold_func(int player){
@@ -116,10 +115,10 @@ void loop(){    // game loop
 
     }
     if(mv_r1){
-        mov_hor(1);
+        mov_hor(1, 1);
     }
     if(mv_l1){
-        mov_hor(1);
+        mov_hor(1, -1);
     }
     if(down1){
         mov_down();
