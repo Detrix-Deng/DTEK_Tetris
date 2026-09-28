@@ -15,6 +15,7 @@ const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
+int VGA[WIDTH * HEIGHT];  //vga buffer
 
 int score;
 char hold;      // Stores the type_id of the hold sprite
@@ -47,14 +48,7 @@ void spawn_sprite(int rand){     // Update curr_sprite with next_sprite
 }
 
 void interrupt_handler(unsigned int cause){
-    switch (cause){ //interrupt from timer
-        case 16:
-            render();
-            break;
-        
-        default:
-            break;
-    }
+    render();
 }
 
 void score_calc(int layers){  // Calculates/update game score
@@ -86,11 +80,11 @@ void mov_hor(unsigned int input){   // x in curr_shape +- 1, depending on input
 void loop(){    // game loop
     // poll inputs
     int right = *gpio & 0x00000001;
-    int left = *gpio & 0x00000001 ;
-    int move_right = *gpio & 0x00000001;
-    int move_left = *gpio & 0x00000001;
-    int shift_down = *gpio & 0x00000001;
-    int hold_shape = *gpio & 0x00000001;
+    int left = *gpio & 0x0000002 ;
+    int move_right = *gpio & 0x00000004;
+    int move_left = *gpio & 0x00000008;
+    int shift_down = *gpio & 0x00000010;
+    int hold_shape = *gpio & 0x00000020;
     if (right){
 
     }
