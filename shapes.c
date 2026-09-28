@@ -2,19 +2,12 @@
 
 #include <stddef.h>
 
-struct sprite {
+struct sprite_shape {
     char sprite_id;
-    char rotation;
-    int x;
-    int y;
+    char matrix[4][4];
 };
 
-int* get_shape_bottom(){
-    // Logic to find 
-    int *arr;
-    return arr;
-}
-char sprite_shape[] = {
+struct sprite_shape sprite_shapes[] = {
     {0, {//L
             {1,0,0,0,},
             {1,0,0,0,},
@@ -43,11 +36,24 @@ char sprite_shape[] = {
             {0,0,0,0},
         }
     },
-    {4, {//I{
-        {1,0,0,0},
-        {1,0,0,0},
-        {1,0,0,0},
-        {1,0,0,0},
+    {4, {//I
+            {1,0,0,0},
+            {1,0,0,0},
+            {1,0,0,0},
+            {1,0,0,0},
         }
     }
 };
+
+struct sprite{
+    char sprite_shape;
+    char rotation;
+    int x;
+    int y;
+};
+
+int* get_shape_bottom(){
+    // Logic to find 
+    int *arr;
+    return arr;
+}
