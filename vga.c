@@ -4,3 +4,7 @@
 #include <stddef.h>
 
 volatile char *VGA = (volatile char *)0x08000000;
+
+void output(char array[]){
+    
+}

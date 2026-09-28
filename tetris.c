@@ -15,7 +15,7 @@ const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
-int VGA[WIDTH * HEIGHT];  //vga buffer
+char VGA[WIDTH * HEIGHT];  //vga buffer
 
 int score;
 char hold;      // Stores the type_id of the hold sprite
@@ -25,8 +25,8 @@ struct sprite next_sprite[3];  // list containing the 3 upcoming sprite.
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
-    int vga_buffer = VGA;
-    
+    char vga_buffer = VGA;
+
 
 }
 
