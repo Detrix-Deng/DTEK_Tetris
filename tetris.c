@@ -23,6 +23,8 @@ char hold[2];      // Stores the type_id of the hold sprite
 char grid[2][GRID_HEIGHT][GRID_WIDTH];
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
+int to_count = 0;   // Counter for TO flags
+int difficulty = 30;    // Determines how fast mov_down is called
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
@@ -52,12 +54,6 @@ void spawn_sprite(int player){     // Update curr_sprite with next_sprite
     curr_sprite[player].sprite_shape = shape;
     curr_sprite[player].x = 0; // CHANGE!! (player * field) + offset;
     curr_sprite[player].y = 0; // CHANGE!! offset;
-}
-
-void interrupt_handler(unsigned int cause){
-    volatile int *time_addr = (volatile int *)0x04000020;
-    *time_addr = 2; // Clear TO flag
-    render();
 }
 
 void score_calc(int players){  // Calculates/update game score
@@ -133,6 +129,20 @@ void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on
 void hold_func(int player){
     hold[player] = curr_sprite[player].sprite_shape.sprite_id;
     spawn_sprite(player);
+}
+
+void interrupt_handler(unsigned int cause){
+    volatile int *time_addr = (volatile int *)0x04000020;
+    *time_addr = 2; // Clear TO flag
+    render();
+    to_count++;
+    if(to_count >= difficulty)
+    {
+        to_count = 0;
+        if(multiplayer)
+            mov_down(2);
+        mov_down(1);
+    }
 }
 
 void loop(){    // game loop
