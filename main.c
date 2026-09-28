@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include "tetris.c"
 
+bool multiplayer = false;
+
 // labinit from lab 3 with different period values
 void labinit() // Clock times out (TO) every 10/3 ms
 {

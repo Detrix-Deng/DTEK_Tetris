@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include "shapes.c"
 #include "vga.c"
+#include "main.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
@@ -146,8 +147,10 @@ void loop(){    // game loop
     int mv_l2 = (*gpio >> 7) & 0x01;
     int down2 = (*gpio >> 8) & 0x01;
     int hold2 = (*gpio >> 9) & 0x01;
-    if (rot1){
 
+    // Player 1
+    if (rot1){
+        rotate(1);
     }
     if(mv_r1){
         mov_hor(1, 1);
@@ -156,10 +159,29 @@ void loop(){    // game loop
         mov_hor(1, -1);
     }
     if(down1){
-        
+        hard_down(1);
     }
     if(hold1){
-
+        hold_func(1);
     }
-    mov_down(1);
+
+    // Player 2
+    if(multiplayer)
+    {
+        if (rot2){
+            rotate(2);
+        }
+        if(mv_r2){
+            mov_hor(2, 1);
+        }
+        if(mv_l2){
+            mov_hor(2, -1);
+        }
+        if(down2){
+            hard_down(2);
+        }
+        if(hold2){
+            hold_func(2);
+        }
+    }
 }
