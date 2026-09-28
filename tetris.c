@@ -120,6 +120,10 @@ void mov_down(int player){    // y in curr_shape -= 1
     }
 }
 
+void hard_down(int player){
+    // move sprite all the way down
+}
+
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
     curr_sprite[player].x += direction;
     // Add limit checks to confirm sprite in border
@@ -152,6 +156,7 @@ void loop(){    // game loop
         mov_hor(1, -1);
     }
     if(down1){
+        
     }
     if(hold1){
 
