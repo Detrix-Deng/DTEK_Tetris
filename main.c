@@ -23,5 +23,7 @@ void main(){
     labinit();
 
     // Call main game loop in tetris.c
-    loop();
+    while(1){
+        loop();
+    }
 }
