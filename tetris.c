@@ -62,6 +62,13 @@ void spawn_sprite(int player){     // Update curr_sprite with next_sprite
     }
 }
 
+
+void get_next_sprite(int player){
+    //curr_sprite[player] = next_sprite[player][0];
+    //move next_sprite[player][i]
+    //call spawn_sprite()
+}
+
 void score_calc(int players){  // Calculates/update game score
     int mult = players * 1000;
     score[players] += mult; //add switch cases later
