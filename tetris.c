@@ -147,16 +147,16 @@ void interrupt_handler(unsigned int cause){
 
 void loop(){    // game loop
     // poll inputs
-    int rot1 = *gpio & 0x01;
-    int mv_r1 = (*gpio >> 1) & 0x01;
-    int mv_l1 = (*gpio >> 2) & 0x01;
-    int down1 = (*gpio >> 3) & 0x01;
-    int hold1 = (*gpio >> 4) & 0x01;
-    int rot2 = (*gpio >> 5) & 0x01;
-    int mv_r2 = (*gpio >> 6) & 0x01;
-    int mv_l2 = (*gpio >> 7) & 0x01;
-    int down2 = (*gpio >> 8) & 0x01;
-    int hold2 = (*gpio >> 9) & 0x01;
+    int rot1 = *gpio & 0x0001;
+    int mv_r1 = *gpio & 0x0002;
+    int mv_l1 = *gpio & 0x0004;
+    int down1 = *gpio & 0x0008;
+    int hold1 = *gpio & 0x0010;
+    int rot2 = *gpio & 0x0020;
+    int mv_r2 = *gpio & 0x0040;
+    int mv_l2 = *gpio & 0x0080;
+    int down2 = *gpio & 0x0100;
+    int hold2 = *gpio & 0x0200;
 
     // Player 1
     if (rot1){
