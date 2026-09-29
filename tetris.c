@@ -51,9 +51,15 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
 void spawn_sprite(int player){     // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
-    curr_sprite[player].sprite_shape = shape;
-    curr_sprite[player].x = 0; // CHANGE!! (player * field) + offset;
-    curr_sprite[player].y = 0; // CHANGE!! offset;
+    for(int = 0; i < 3; i++)
+    {
+        if(next_sprite[player][i] < 0 || i == 2)
+        {
+            next_sprite[player][i].sprite_shape = shape;
+            next_sprite[player][i].x = 0;   // CHANGE!! (player * field) + offset;
+            next_sprite[player][i].y = 0; // CHANGE!! offset;
+        }
+    }
 }
 
 void score_calc(int players){  // Calculates/update game score
