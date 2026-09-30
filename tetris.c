@@ -127,6 +127,7 @@ void rotate(int player)
         for(int j = 3; j >= 0; j--)
             curr_sprite[player].sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
     }
+    border_detect(player);
 }
 
 void mov_down(int player){    // y in curr_shape -= 1
@@ -146,7 +147,7 @@ void hard_down(int player){
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
     curr_sprite[player].x += direction;
-    // Add limit checks to confirm sprite in border
+    border_detect(player);
 }
 
 void hold_func(int player){
