@@ -146,8 +146,7 @@ int line_clear(int player){   // After collision detect == True
     return layer_cleared;
 }
 
-void rotate(int player)
-{
+void rotate(int player){
     // rotate curr_sprite[player] right or left based on direction
     unsigned char new_shape[4] = {0};
     // Rotate and save shape as an array of bits
@@ -183,10 +182,17 @@ void mov_down(int player){    // y in curr_shape += 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
-    if(collision_detect){
-        
-    }else{
-        curr_sprite[player].y += -1;
+    if(collision_detect(player)){
+        place_sprite(player);
+        int lines = line_clear(player);
+        if(lines){
+            score_calc(player, lines);
+        }
+        get_next_sprite(player);
+        spawn_sprite(player, 2);
+    }
+    else{
+        curr_sprite[player].y++;
     }
 }
 
