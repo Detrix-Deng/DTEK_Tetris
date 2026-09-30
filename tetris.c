@@ -14,7 +14,7 @@ volatile int *gpio = (volatile int *) 0x040000e0;
 
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
-int OFFSET_Y;
+int OFFSET_Y = 109;
 const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 10;
@@ -29,15 +29,14 @@ struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
 int difficulty = 30;    // Determines how fast mov_down is called
 
-void set_offset(bool boolean){
-    if(!boolean){
-        OFFSET_X1 = 154;
-        OFFSET_Y = 109;
-    } else if(boolean){
+void set_offset(bool multiplayer){
+    // Sets pixel offset of the playing field depending on multiplayer
+    if(multiplayer){
         OFFSET_X1 = 74;
         OFFSET_X2 = 234;
-        OFFSET_Y = 109;
-    }
+    } 
+    else
+        OFFSET_X1 = 154;
 }
 
 void render(){      // Renders the gamescreen
@@ -79,8 +78,8 @@ void spawn_sprite(int player, int index){     // Update curr_sprite with next_sp
     int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
     next_sprite[player][index].sprite_shape = shape;
-    next_sprite[player][index].x = 0;   // CHANGE!! (player * field) + offset;
-    next_sprite[player][index].y = 0; // CHANGE!! offset;
+    next_sprite[player][index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
+    next_sprite[player][index].y = 4 - 1; // CHANGE!! offset;
 }
 
 void get_next_sprite(int player){
