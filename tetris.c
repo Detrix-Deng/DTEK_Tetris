@@ -79,8 +79,8 @@ void spawn_sprite(int player, int index){     // Update curr_sprite with next_sp
     int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
     next_sprite[player][index].sprite_shape = shape;
-    next_sprite[player][index].x = 0;   // CHANGE!! (player * field) + offset;
-    next_sprite[player][index].y = 0; // CHANGE!! offset;
+    next_sprite[player][index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
+    next_sprite[player][index].y = 4 - 1; // CHANGE!! offset;
 }
 
 void get_next_sprite(int player){
