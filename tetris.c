@@ -54,10 +54,20 @@ unsigned int get_rand(){
     return rand;
 }
 
-bool collision_detect(){    // Check if the space below the sprite is occupied.
+bool collision_detect(int player){    // Check if the space below the sprite is occupied.
     // If occupied, return True, else, return False
     bool collision = false;
-
+    for(int i = 0; i < 4; i++){
+        int height_offset = curr_sprite[player].y;
+        int j = 3
+        while(j >= 0 && !(curr_sprite[player].sprite_shape[j][i]))
+            j--;
+        height_offset = height_offset - j;
+        if(j < 0)
+            break;
+        else if(grid[player][height_offset + 1][curr_sprite[player].x])
+            collision = true;
+    }
     return collision;
 }
 
