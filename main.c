@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "tetris.c"
+#include "vga.c"
 
 bool multiplayer = false;
 bool start = false;
