@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include "shapes.c"
 #include "vga.c"
-#include "main.c"
+// #include "main.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
@@ -46,6 +46,14 @@ void render(){      // Renders the gamescreen
 
 }
 
+void place_sprite(int player){
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            grid[player][curr_sprite[player].y - j][curr_sprite[player].x + i] |= curr_sprite[player].sprite_shape.matrix[3 - j][i];
+        }
+    }
+}
+
 unsigned int get_rand(){
     // take the snapL of timer, and then do some calculation to generate a random int.
     volatile int *time_addr = (volatile int *)0x04000020;
@@ -59,8 +67,8 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
     bool collision = false;
     for(int i = 0; i < 4; i++){
         int height_offset = curr_sprite[player].y;
-        int j = 3
-        while(j >= 0 && !(curr_sprite[player].sprite_shape[j][i]))
+        int j = 3;
+        while(j >= 0 && !(curr_sprite[player].sprite_shape.matrix[j][i]))
             j--;
         height_offset = height_offset - j;
         if(j < 0)
@@ -75,7 +83,7 @@ void border_detect(int player){
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < 4; j++){
-            if(curr_sprite[player].sprite_shape[i][j]){
+            if(curr_sprite[player].sprite_shape.matrix[i][j]){
                 if((curr_sprite[player].x + j - oob) >= GRID_WIDTH)
                     oob += 8 - curr_sprite[player].x + j - oob;
             }
@@ -99,8 +107,8 @@ void get_next_sprite(int player){
     spawn_sprite(player, 2);
 }
 
-void score_calc(int players){  // Calculates/update game score
-    int mult = players * 1000;
+void score_calc(int players, int line){  // Calculates/update game score
+    int mult = line * 1000;
     score[players] += mult; //add switch cases later
 }
 
@@ -114,8 +122,8 @@ int line_clear(int player){   // After collision detect == True
     // Check relevant layer
     for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i++){
         int j = 0;
-        while((curr_sprite[player].sprite_shape[i][j]) && j < GRID_WIDTH)
-            j++
+        while((curr_sprite[player].sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
+            j++;
         if(j == GRID_WIDTH){
             layer_cleared++;
             if(layer_level < 0)
@@ -124,19 +132,21 @@ int line_clear(int player){   // After collision detect == True
     }
     // Clear and move layer down
     if(layer_cleared){
-        char arr[GRID_WIDTH] = {0};
         for(int i = layer_level; i < (GRID_HEIGHT - layer_level - layer_cleared - 1); i++){
-            grid[player][i] = grid[player][i + 1];
+            for(int j = 0; j < GRID_WIDTH; j++){
+                grid[player][i][j] = grid[player][i + 1][j];
+            }
         }
         for(int i = 0; i < layer_cleared; i++){
-            grid[player][GRID_HEIGHT - i - 1] = arr;
+            for(int j = 0; j < GRID_WIDTH; j++){
+                grid[player][GRID_HEIGHT - i - 1][j] = 0;
+            }
         }
     }
     return layer_cleared;
 }
 
-void rotate(int player)
-{
+void rotate(int player){
     // rotate curr_sprite[player] right or left based on direction
     unsigned char new_shape[4] = {0};
     // Rotate and save shape as an array of bits
@@ -168,14 +178,21 @@ void rotate(int player)
     border_detect(player);
 }
 
-void mov_down(int player){    // y in curr_shape -= 1
+void mov_down(int player){    // y in curr_shape += 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
-    if(collision_detect){
-
-    }else{
-        curr_sprite[player].y += -1;
+    if(collision_detect(player)){
+        place_sprite(player);
+        int lines = line_clear(player);
+        if(lines){
+            score_calc(player, lines);
+        }
+        get_next_sprite(player);
+        spawn_sprite(player, 2);
+    }
+    else{
+        curr_sprite[player].y++;
     }
 }
 
