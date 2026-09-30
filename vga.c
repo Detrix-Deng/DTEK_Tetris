@@ -2,7 +2,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "tetris.c"
+
+const int WIDTH = 320;
+const int HEIGHT = 240;
 
 volatile char *VGA = (volatile char *)0x08000000;
 
