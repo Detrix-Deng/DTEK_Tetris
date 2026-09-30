@@ -21,13 +21,14 @@ const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 20;
 char VGA[WIDTH][HEIGHT];  //vga buffer
 
-int score[2];
-char hold[2];      // Stores the type_id of the hold sprite
-char grid[2][GRID_HEIGHT][GRID_WIDTH];
+int score[2] = {0};
+char hold[2] = {-1, -1};      // Stores the type_id of the hold sprite
+char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
 int difficulty = 30;    // Determines how fast mov_down is called
+bool hold_available[2];
 
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
@@ -105,6 +106,7 @@ void get_next_sprite(int player){
     next_sprite[player][0] = next_sprite[player][1];
     next_sprite[player][1] = next_sprite[player][2];
     spawn_sprite(player, 2);
+    hold_available[player] = true;
 }
 
 void score_calc(int players, int line){  // Calculates/update game score
@@ -213,8 +215,17 @@ void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on
 }
 
 void hold_func(int player){
-    hold[player] = curr_sprite[player].sprite_shape.sprite_id;
-    get_next_sprite(player);
+    if(hold[player] < 0){
+        hold[player] = curr_sprite[player].sprite_shape.sprite_id;
+        get_next_sprite(player);
+    }
+    else{
+        int temp = hold[player];
+        hold[player] = curr_sprite[player].sprite_shape.sprite_id;
+        curr_sprite[player].sprite_shape = sprite_shapes[temp];
+        curr_sprite[player].y = 4 - 1;
+        curr_sprite[player].x = (GRID_WIDTH / 2) - 1;
+    }
 }
 
 void interrupt_handler(unsigned int cause){
@@ -256,7 +267,8 @@ void loop(){    // game loop
     if(down1){
         hard_down(1);
     }
-    if(hold1){
+    if(hold1 && hold_available[0]){
+        hold_available[0] = false;
         hold_func(1);
     }
 
@@ -275,7 +287,8 @@ void loop(){    // game loop
         if(down2){
             hard_down(2);
         }
-        if(hold2){
+        if(hold2 && hold_available[1]){
+            hold_available[1] = false;
             hold_func(2);
         }
     }
