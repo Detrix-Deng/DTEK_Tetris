@@ -17,7 +17,7 @@ int OFFSET_X2; //Offset for player 2
 int OFFSET_Y;
 const int WIDTH = 320;
 const int HEIGHT = 240;
-const int GRID_WIDTH = 8;
+const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 20;
 char VGA[WIDTH][HEIGHT];  //vga buffer
 
@@ -176,7 +176,10 @@ void hard_down(int player){
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
     curr_sprite[player].x += direction;
-    border_detect(player);
+    if(curr_sprite[player].x < 0)
+        curr_sprite[player].x == 0;
+    else if(curr_sprite[player].x >= GRID_WIDTH)
+        border_detect(player);
 }
 
 void hold_func(int player){
