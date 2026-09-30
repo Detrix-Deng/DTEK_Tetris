@@ -99,8 +99,8 @@ void get_next_sprite(int player){
     spawn_sprite(player, 2);
 }
 
-void score_calc(int players){  // Calculates/update game score
-    int mult = players * 1000;
+void score_calc(int players, int line){  // Calculates/update game score
+    int mult = line * 1000;
     score[players] += mult; //add switch cases later
 }
 
