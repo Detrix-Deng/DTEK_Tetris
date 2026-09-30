@@ -95,8 +95,7 @@ void border_detect(int player){
 
 void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
-    struct sprite_shape shape = sprite_shapes[rand_int];
-    next_sprite[player][index].sprite_shape = shape;
+    next_sprite[player][index].sprite_shape = sprite_shapes[rand_int];
     next_sprite[player][index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
     next_sprite[player][index].y = 4 - 1; // CHANGE!! offset;
 }
