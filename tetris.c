@@ -52,12 +52,9 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
 
 void border_detect(int player){
     int oob = 0;    //oob = out_of_bounds
-    for(int i = 0; i < 2; i++)
-    {
-        for(int j = 0; j < 4; j++)
-        {
-            if(curr_sprite[player].sprite_shape[i][j])
-            {
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 4; j++){
+            if(curr_sprite[player].sprite_shape[i][j]){
                 if((curr_sprite[player].x + j - oob) >= GRID_WIDTH)
                     oob += 8 - curr_sprite[player].x + j - oob;
             }
@@ -122,20 +119,17 @@ void rotate(int player)
     // rotate curr_sprite[player] right or left based on direction
     unsigned char new_shape[4] = {0};
     // Rotate and save shape as an array of bits
-    for(int i = 0; i < 4; i++)
-    {
+    for(int i = 0; i < 4; i++){
         for(int j = 3; j >= 0; j--)
             new_shape[i] = new_shape[i] | ((curr_sprite[player].sprite_shape.matrix[j][i]) << (3 - j));
     }
     // Shift left
     int min_dist = 3;
-    for(int i = 0; i < 4; i++)
-    {
+    for(int i = 0; i < 4; i++){
         int dist = 0;
         if(new_shape[i] == 0)
             continue;
-        for(int j = 3; j >= 0; j--)
-        {
+        for(int j = 3; j >= 0; j--){
             if((new_shape[i] >> j) & 0x01)
                 break;
             dist++;
@@ -146,8 +140,7 @@ void rotate(int player)
     // Translate and save new_shape to curr_sprite
     for(int i = 0; i < 4; i++)
         new_shape[i] = new_shape[i] << min_dist;
-    for(int i = 0; i < 4; i++)
-    {
+    for(int i = 0; i < 4; i++){
         for(int j = 3; j >= 0; j--)
             curr_sprite[player].sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
     }
@@ -184,8 +177,7 @@ void interrupt_handler(unsigned int cause){
     *time_addr = 2; // Clear TO flag
     render();
     to_count++;
-    if(to_count >= difficulty)
-    {
+    if(to_count >= difficulty){
         to_count = 0;
         if(multiplayer)
             mov_down(2);
