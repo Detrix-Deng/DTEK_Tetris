@@ -135,7 +135,7 @@ void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on
 
 void hold_func(int player){
     hold[player] = curr_sprite[player].sprite_shape.sprite_id;
-    spawn_sprite(player);
+    get_next_sprite(player);
 }
 
 void interrupt_handler(unsigned int cause){
