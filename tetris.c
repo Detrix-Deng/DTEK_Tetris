@@ -198,6 +198,10 @@ void mov_down(int player){    // y in curr_shape += 1
 
 void hard_down(int player){
     // move sprite all the way down
+    do{
+        move_down(player);  // Risk for double terimino hard down if interrupt exactly when
+                            // do-while loop is done
+    } while(curr_sprite[player].y > 3);
 }
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
