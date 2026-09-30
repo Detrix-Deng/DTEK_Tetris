@@ -27,8 +27,9 @@ char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
-int difficulty = 30;    // Determines how fast mov_down is called
+int difficulty = 0;    // Determines how fast mov_down is called
 bool hold_available[2];
+bool multiplayer = false;
 
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
@@ -232,7 +233,7 @@ void interrupt_handler(unsigned int cause){
     *time_addr = 2; // Clear TO flag
     render();
     to_count++;
-    if(to_count >= difficulty){
+    if(to_count >= 45 - difficulty){
         to_count = 0;
         if(multiplayer)
             mov_down(2);

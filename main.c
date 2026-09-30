@@ -7,7 +7,6 @@
 #include "tetris.c"
 #include "vga.c"
 
-bool multiplayer = false;
 bool start = false;
 
 // labinit from lab 3 with different period values
