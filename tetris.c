@@ -56,11 +56,11 @@ void spawn_sprite(int player, int index){     // Update curr_sprite with next_sp
     next_sprite[player][index].y = 0; // CHANGE!! offset;
 }
 
-
 void get_next_sprite(int player){
-    //curr_sprite[player] = next_sprite[player][0];
-    //move next_sprite[player][i]
-    //call spawn_sprite()
+    curr_sprite[player] = next_sprite[player][0];
+    next_sprite[player][0] = next_sprite[player][1];
+    next_sprite[player][1] = next_sprite[player][2];
+    spawn_sprite(player, 2);
 }
 
 void score_calc(int players){  // Calculates/update game score
