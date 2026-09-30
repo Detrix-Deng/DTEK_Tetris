@@ -48,6 +48,22 @@ bool collision_detect(){    // Check if the space below the sprite is occupied.
     return collision;
 }
 
+void border_detect(int player){
+    int oob = 0;    //oob = out_of_bounds
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            if(curr_sprite[player].sprite_shape[i][j])
+            {
+                if((curr_sprite[player].x + j - oob) >= GRID_WIDTH)
+                    oob += 8 - curr_sprite[player].x + j - oob;
+            }
+        }
+    }
+    curr_sprite[player].x = curr_sprite[player].x - oob;
+}
+
 void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
     struct sprite_shape shape = sprite_shapes[rand_int];
