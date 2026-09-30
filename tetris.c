@@ -16,7 +16,7 @@ const int OFFSET_X = 50;
 const int OFFSET_Y = 50;
 const int WIDTH = 320;
 const int HEIGHT = 240;
-const int GRID_WIDTH = 8;
+const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 20;
 char VGA[WIDTH][HEIGHT];  //vga buffer
 
