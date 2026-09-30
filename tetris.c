@@ -12,8 +12,9 @@ volatile int *gpio = (volatile int *) 0x040000e0;
 
 //
 
-const int OFFSET_X = 50;
-const int OFFSET_Y = 50;
+int OFFSET_X1; //Offset for player 1
+int OFFSET_X2; //Offset for player 2
+int OFFSET_Y;
 const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 8;
@@ -27,6 +28,17 @@ struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each p
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
 int difficulty = 30;    // Determines how fast mov_down is called
+
+void set_offset(bool boolean){
+    if(!boolean){
+        OFFSET_X1 = 154;
+        OFFSET_Y = 109;
+    } else if(boolean){
+        OFFSET_X1 = 74;
+        OFFSET_X2 = 234;
+        OFFSET_Y = 109;
+    }
+}
 
 void render(){      // Renders the gamescreen
 // Is called by the interrupt handler, to update and render the gamescreen.
