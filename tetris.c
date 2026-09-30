@@ -46,6 +46,14 @@ void render(){      // Renders the gamescreen
 
 }
 
+void place_sprite(int player){
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            grid[player][curr_sprite[player].y - j][curr_sprite[player].x + i] |= curr_sprite[player].sprite_shape.matrix[3 - j][i];
+        }
+    }
+}
+
 unsigned int get_rand(){
     // take the snapL of timer, and then do some calculation to generate a random int.
     volatile int *time_addr = (volatile int *)0x04000020;
@@ -171,12 +179,12 @@ void rotate(int player)
     border_detect(player);
 }
 
-void mov_down(int player){    // y in curr_shape -= 1
+void mov_down(int player){    // y in curr_shape += 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
     if(collision_detect){
-
+        
     }else{
         curr_sprite[player].y += -1;
     }
