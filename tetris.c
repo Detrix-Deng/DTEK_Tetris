@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include "shapes.c"
 #include "vga.c"
-#include "main.c"
+// #include "main.c"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
@@ -59,8 +59,8 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
     bool collision = false;
     for(int i = 0; i < 4; i++){
         int height_offset = curr_sprite[player].y;
-        int j = 3
-        while(j >= 0 && !(curr_sprite[player].sprite_shape[j][i]))
+        int j = 3;
+        while(j >= 0 && !(curr_sprite[player].sprite_shape.matrix[j][i]))
             j--;
         height_offset = height_offset - j;
         if(j < 0)
@@ -75,7 +75,7 @@ void border_detect(int player){
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < 4; j++){
-            if(curr_sprite[player].sprite_shape[i][j]){
+            if(curr_sprite[player].sprite_shape.matrix[i][j]){
                 if((curr_sprite[player].x + j - oob) >= GRID_WIDTH)
                     oob += 8 - curr_sprite[player].x + j - oob;
             }
@@ -114,8 +114,8 @@ int line_clear(int player){   // After collision detect == True
     // Check relevant layer
     for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i++){
         int j = 0;
-        while((curr_sprite[player].sprite_shape[i][j]) && j < GRID_WIDTH)
-            j++
+        while((curr_sprite[player].sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
+            j++;
         if(j == GRID_WIDTH){
             layer_cleared++;
             if(layer_level < 0)
@@ -124,12 +124,15 @@ int line_clear(int player){   // After collision detect == True
     }
     // Clear and move layer down
     if(layer_cleared){
-        char arr[GRID_WIDTH] = {0};
         for(int i = layer_level; i < (GRID_HEIGHT - layer_level - layer_cleared - 1); i++){
-            grid[player][i] = grid[player][i + 1];
+            for(int j = 0; j < GRID_WIDTH; j++){
+                grid[player][i][j] = grid[player][i + 1][j];
+            }
         }
         for(int i = 0; i < layer_cleared; i++){
-            grid[player][GRID_HEIGHT - i - 1] = arr;
+            for(int j = 0; j < GRID_WIDTH; j++){
+                grid[player][GRID_HEIGHT - i - 1][j] = 0;
+            }
         }
     }
     return layer_cleared;
