@@ -86,13 +86,35 @@ void score_calc(int players){  // Calculates/update game score
     score[players] += mult; //add switch cases later
 }
 
-int line_clear(){   // After collision detect == True
+int line_clear(int player){   // After collision detect == True
     // Check if any relevant layer is full.
     // If layer is full, layer_cleared++
     // move everything in grid above the lowest cleared
     // layer by layer_cleared amount
     int layer_cleared = 0;
-    return 0; // Temporary! 
+    int layer_level = -1;
+    // Check relevant layer
+    for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i++){
+        int j = 0;
+        while((curr_sprite[player].sprite_shape[i][j]) && j < GRID_WIDTH)
+            j++
+        if(j == GRID_WIDTH){
+            layer_cleared++;
+            if(layer_level < 0)
+                layer_level = i;
+        }
+    }
+    // Clear and move layer down
+    if(layer_cleared){
+        char arr[GRID_WIDTH] = {0};
+        for(int i = layer_level; i < (GRID_HEIGHT - layer_level - layer_cleared - 1); i++){
+            grid[player][i] = grid[player][i + 1];
+        }
+        for(int i = 0; i < layer_cleared; i++){
+            grid[player][GRID_HEIGHT - i - 1] = arr;
+        }
+    }
+    return layer_cleared;
 }
 
 void rotate(int player)
