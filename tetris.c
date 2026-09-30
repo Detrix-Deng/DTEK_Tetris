@@ -18,7 +18,7 @@ const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 8;
 const int GRID_HEIGHT = 20;
-char VGA[WIDTH * HEIGHT];  //vga buffer
+char VGA[WIDTH][HEIGHT];  //vga buffer
 
 int score[2];
 char hold[2];      // Stores the type_id of the hold sprite

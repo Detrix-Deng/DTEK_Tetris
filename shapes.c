@@ -51,3 +51,7 @@ struct sprite{
     int x;
     int y;
 };
+
+unsigned char alphanum[] = {
+    {}
+}
