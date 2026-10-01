@@ -10,6 +10,8 @@ volatile char *VGA_addr = (volatile char *)0x08000000;
 
 void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, int y){
     char matrix = sprite.matrix;
+    int x = x;
+    int y = y;
 }
 
 //Feed in matrix, text, offset positions
@@ -35,7 +37,11 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
             // Font columns
             for (int col = 0; col < 5; col++){
                 if (alphanum[font_int][row] & (1 << (4 - col))){
-                    array[y + row][x + col] = 255;
+                    for(int dy = 0; dy < scalar; dy++){
+                        for(int dx = 0; dx < scalar; dx++){
+                            array[y + row + dy][x + col + dx] = 255;
+                        }
+                    }
                 }
             }
         }
