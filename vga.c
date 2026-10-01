@@ -24,10 +24,10 @@ void clear_display(char array[HEIGHT][WIDTH]){
     }
 }
 
-void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x, int y, int id){
-    int x = x;
-    int y = y;
-    int player = id;
+void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int id){
+    int x = x_offset;
+    int y = y_offset;
+    int player = id; //unused but kept for consistency with other functions
 
     //loop for terinions
     for(int row = 0; row < GRID_HEIGHT; row++){
@@ -46,16 +46,16 @@ void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int
         array[y - 1 + vert][x + GRID_WIDTH + 1] = 255;
     } 
     for(int hor = 0; hor < GRID_WIDTH + 2; hor++){
-        array[y - 1][x - 1 + hor];
-        array[y + GRID_HEIGHT + 1][x - 1 + hor];
+        array[y - 1][x - 1 + hor] = 255;
+        array[y + GRID_HEIGHT + 1][x - 1 + hor] = 255;
     }
 }
 
 //Draw sprite onto VGA buffer
-void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, int y, bool is_curr, int id){
+void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x_offset, int y_offset, bool is_curr, int id){
     char **matrix = sprite.matrix;
-    int x = x;
-    int y = y - 3; //offset for sprites
+    int x = x_offset;
+    int y = y_offset - 3; //offset for sprites
 
     if(is_curr){    //if is a curr_sprite, remove last sprite pos and update last pos with new sprite.
         int player = id;
@@ -81,10 +81,9 @@ void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, in
 }
 
 //Feed in matrix, text, offset positions
-void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
-    int x = x;
-    int y = y;
-    int scalar = scalar;
+void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset, int scalar){
+    int x = x_offset;
+    int y = y_offset;
     int i = 0;
       //calculate buffer array to copy font table into
     while(text[i] != '\0'){             //gets the text from char array
