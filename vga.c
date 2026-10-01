@@ -6,26 +6,26 @@
 #define WIDTH = 320;
 #define HEIGHT = 240;
 
-volatile char *VGA = (volatile char *)0x08000000;
+volatile char *VGA_addr = (volatile char *)0x08000000;
 
-char put_text(char array[HEIGHT][WIDTH], char *text, int x, int y){
-    int spacing = 5;
+//Feed in matrix, text, offset positions
+void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
     int i = 0;
-    int length = sizeof(text)/sizeof(char)
-    char buffer[length][7];
-    while(text[i] != '\0'){
+    int length = strlen(text); //calculate buffer array to copy font table into
+    while(text[i] != '\0'){     //gets the text from char array
         char c = text[i];
-        if (c <= 57 && c >= 48)
-            buffer[i] = alphanum[c - 48]
-        else if (c <= 90 && c >= 65)
+        if (c <= 57 && c >= 48) //if numbers
+
+        else if (c <= 90 && c >= 65)    //if letters
         {
-            buffer[i] = alphanum[c - 55]
+
         }
     }
 
-    
+    //nested loops to copy alphanum_buffer into matrix array
 
-    return array;
+    for()
+
 }
 
 void output(char array[HEIGHT][WIDTH]){
@@ -34,7 +34,7 @@ void output(char array[HEIGHT][WIDTH]){
     {
         for (int x = 0; x < HEIGHT; x++)
         {
-            VGA[y * 320 + x] = array[y][x];
+            VGA_addr[y * 320 + x] = array[y][x];
         }
     }
 

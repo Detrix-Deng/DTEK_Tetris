@@ -23,6 +23,7 @@ void labinit() // Clock times out (TO) every 10/3 ms
 void mmanu(){
     char text = "TETRIS";
     //TODO: Implement call to draw text on screen
+    put_text(VGA, text, 160, 120, 2);
 
     volatile int *gpio = (volatile int *) 0x040000e0;
     if (*gpio == 1){
