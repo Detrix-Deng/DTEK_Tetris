@@ -41,7 +41,7 @@ struct player_info{
 };
 
 struct player_info player_list[2];
-unsigned int global_to_count = 0;
+unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
 
 void set_offset(bool multiplayer){
@@ -52,7 +52,7 @@ void set_offset(bool multiplayer){
     } 
     else
         OFFSET_X1 = 154;
-        OFFSET_X2 = 0; //zero offset two so it isnt junk value
+        OFFSET_X2 = 0; //zero offset so it isnt junk value
 }
 
 void place_sprite(int player){
@@ -112,7 +112,7 @@ void spawn_sprite(int player, int index){     // Update curr_sprite with next_sp
     player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
 }
 
-void get_next_sprite(int player){
+void get_next_sprite(int player){               // Update curr_sprite with next_sprite
     player_list[player].curr_sprite = player_list[player].next_sprite[0];
     player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
     player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
@@ -120,7 +120,7 @@ void get_next_sprite(int player){
     player_list[player].hold_available = true;
 }
 
-void score_calc(int player, int line){  // Calculates/update game score
+void score_calc(int player, int line){  // Calculates/update game score based on number of lines cleared and difficulty level
     switch(line){
         case 1:
             player_list[player].score += 100 * player_list[player].difficulty;
