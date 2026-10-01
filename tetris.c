@@ -39,6 +39,7 @@ void set_offset(bool multiplayer){
     } 
     else
         OFFSET_X1 = 154;
+        OFFSET_X2 = 0; //zero offset two so it isnt junk value
 }
 
 void render(){      // Renders the gamescreen
