@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#define WIDTH = 320;
-#define HEIGHT = 240;
+#define WIDTH 320
+#define HEIGHT 240
 
 volatile char *VGA_addr = (volatile char *)0x08000000;
 

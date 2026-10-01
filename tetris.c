@@ -15,10 +15,8 @@ volatile int *gpio = (volatile int *) 0x040000e0;
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
 int OFFSET_Y = 109;
-#define WIDTH = 320;
-#define HEIGHT = 240;
-#define GRID_WIDTH = 10;
-#define GRID_HEIGHT = 20;
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 20
 char VGA[HEIGHT][WIDTH];  //vga buffer
 
 int score[2] = {0};
@@ -27,9 +25,14 @@ char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};    //OBS REVERSE WIDTH AND HEIGHT W
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
-int difficulty = 0;    // Determines how fast mov_down is called
-bool hold_available[2];
-bool multiplayer = false;
+int difficulty = 0;    // Determines how fast mov_down is called (level)
+bool hold_available[2]; // Bool for if hold action can be used
+bool multiplayer = false;   // Bool for whether session is 1P or 2P
+bool lost[2] = {false};     // Bool for if player has lost
+int lines[2] = {0};     // Number of lines each player has cleared
+int mytime[2] = {0x0000, 0x0000};    // Player specific timer
+char textstring[2][6] = {"00:00", "00:00"};
+
 
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
