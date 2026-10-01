@@ -42,13 +42,6 @@ void set_offset(bool multiplayer){
         OFFSET_X2 = 0; //zero offset two so it isnt junk value
 }
 
-void render(){      // Renders the gamescreen
-// Is called by the interrupt handler, to update and render the gamescreen.
-    char vga_buffer = VGA;
-
-
-}
-
 void place_sprite(int player){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
@@ -236,7 +229,7 @@ void hold_func(int player){
 void interrupt_handler(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
-    render();
+    render(VGA);
     to_count++;
     if(to_count >= 45 - difficulty){
         to_count = 0;
