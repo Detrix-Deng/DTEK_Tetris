@@ -23,7 +23,7 @@ void labinit() // Clock times out (TO) every 10/3 ms
 void mmanu(){
     char text = "TETRIS";
     //TODO: Implement call to draw text on screen
-    put_text(VGA, text, 160, 120, 2);
+    put_text(VGA, text, 50, 20, 5);
 
     volatile int *gpio = (volatile int *) 0x040000e0;
     if (*gpio == 1){
@@ -33,6 +33,7 @@ void mmanu(){
         multiplayer = true;
         start = true;
     }
+    render(VGA);
 }
 
 void main(){
@@ -41,7 +42,8 @@ void main(){
     while(!start){
         mmanu();
     }
-
+    clear_display(VGA);
+    labinit();
     set_offset(multiplayer);
 
     player_init(multiplayer);
