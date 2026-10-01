@@ -15,10 +15,8 @@ volatile int *gpio = (volatile int *) 0x040000e0;
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
 int OFFSET_Y = 109;
-#define WIDTH = 320;
-#define HEIGHT = 240;
-#define GRID_WIDTH = 10;
-#define GRID_HEIGHT = 20;
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 20
 char VGA[HEIGHT][WIDTH];  //vga buffer
 
 int score[2] = {0};
