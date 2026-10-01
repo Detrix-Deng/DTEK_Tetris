@@ -10,7 +10,7 @@
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
 
-//
+// 
 
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
@@ -18,6 +18,27 @@ int OFFSET_Y = 109;
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
 char VGA[HEIGHT][WIDTH];  //vga buffer
+
+struct player_info{
+    // UI element
+    int score;                              // Score
+    int lines;                              // Lines cleared
+    int to_count;                           // TO passed since last game cycle
+    int difficulty;                         // How fast a game cycle is (Level)
+    int mytime;                             // Total time passed
+    char textsring[6];                      // Time as a string, ex. 00:16
+
+    // Sprite and grid info
+    struct sprite curr_sprite;              // Info of current sprite
+    struct sprite next_sprite;              // Info of next sprite
+    char grid[GRID_HEIGHT][GRID_WIDTH];     // Info of player's grid
+    
+    // Hold info
+    char hold;                              // Info of hold slot
+    bool hold_available;                    // Bool whether hold action is available
+
+    bool lost;                              // Bool for if player has lost
+};
 
 int score[2] = {0};
 char hold[2] = {-1, -1};      // Stores the type_id of the hold sprite
