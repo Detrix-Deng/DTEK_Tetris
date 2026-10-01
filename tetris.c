@@ -41,19 +41,7 @@ struct player_info{
 };
 
 struct player_info player_list[2];
-int score[2] = {0};
-char hold[2] = {-1, -1};      // Stores the type_id of the hold sprite
-char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};    //OBS REVERSE WIDTH AND HEIGHT WHEN COPYING TO VGA PREBUFFER
-struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
-struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
-int to_count = 0;   // Counter for TO flags
-int difficulty = 0;    // Determines how fast mov_down is called (level)
-bool hold_available[2]; // Bool for if hold action can be used
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
-bool lost[2] = {false};     // Bool for if player has lost
-int lines[2] = {0};     // Number of lines each player has cleared
-int mytime[2] = {0x0000, 0x0000};    // Player specific timer
-char textstring[2][6] = {"00:00", "00:00"};
 
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
@@ -69,7 +57,7 @@ void set_offset(bool multiplayer){
 void place_sprite(int player){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            grid[player][curr_sprite[player].y - j][curr_sprite[player].x + i] |= curr_sprite[player].sprite_shape.matrix[3 - j][i];
+            player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
         }
     }
 }
@@ -86,14 +74,14 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
     // If occupied, return True, else, return False
     bool collision = false;
     for(int i = 0; i < 4; i++){
-        int height_offset = curr_sprite[player].y;
+        int height_offset = player_list[player].curr_sprite.y;
         int j = 3;
-        while(j >= 0 && !(curr_sprite[player].sprite_shape.matrix[j][i]))
+        while(j >= 0 && !(player_list[player].curr_sprite.sprite_shape.matrix[j][i]))
             j--;
         height_offset = height_offset - j;
         if(j < 0)
             break;
-        else if(grid[player][height_offset + 1][curr_sprite[player].x])
+        else if(player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x])
             collision = true;
     }
     return collision;
@@ -103,33 +91,33 @@ void border_detect(int player){
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < 4; j++){
-            if(curr_sprite[player].sprite_shape.matrix[i][j]){
-                if((curr_sprite[player].x + j - oob) >= GRID_WIDTH)
-                    oob += 8 - curr_sprite[player].x + j - oob;
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if((player_list[player].curr_sprite.x + j - oob) >= GRID_WIDTH)
+                    oob += 8 - player_list[player].curr_sprite.x + j - oob;
             }
         }
     }
-    curr_sprite[player].x = curr_sprite[player].x - oob;
+    player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
 }
 
 void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
-    next_sprite[player][index].sprite_shape = sprite_shapes[rand_int];
-    next_sprite[player][index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
-    next_sprite[player][index].y = 4 - 1; // CHANGE!! offset;
+    player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
+    player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
+    player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
 }
 
 void get_next_sprite(int player){
-    curr_sprite[player] = next_sprite[player][0];
-    next_sprite[player][0] = next_sprite[player][1];
-    next_sprite[player][1] = next_sprite[player][2];
+    player_list[player].curr_sprite = player_list[player].next_sprite[0];
+    player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
+    player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
     spawn_sprite(player, 2);
-    hold_available[player] = true;
+    player_list[player].hold_available = true;
 }
 
-void score_calc(int players, int line){  // Calculates/update game score
+void score_calc(int player, int line){  // Calculates/update game score
     int mult = line * 1000;
-    score[players] += mult; //add switch cases later
+    player_list[player].score += mult; //add switch cases later
 }
 
 int line_clear(int player){   // After collision detect == True
@@ -140,9 +128,9 @@ int line_clear(int player){   // After collision detect == True
     int layer_cleared = 0;
     char clear_level[GRID_HEIGHT] = {0};
     // Check relevant layer
-    for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i--){
+    for(int i = player_list[player].curr_sprite.y; i < (player_list[player].curr_sprite.y + 4); i--){
         int j = 0;
-        while((curr_sprite[player].sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
+        while((player_list[player].curr_sprite.sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
             j++;
         if(j == GRID_WIDTH){
             layer_cleared++;
@@ -157,13 +145,13 @@ int line_clear(int player){   // After collision detect == True
                 distance++;
             if(distance){
                 for(int j = 0; j < GRID_WIDTH; j++){
-                    grid[player][i][j] = grid[player][i + distance][j];
+                    player_list[player].grid[i][j] = player_list[player].grid[i + distance][j];
                 }
             }
         }
         for(int i = 0; i < layer_cleared; i++){
             for(int j = 0; j < GRID_WIDTH; j++){
-                grid[player][GRID_HEIGHT - i - 1][j] = 0;
+                player_list[player].grid[GRID_HEIGHT - i - 1][j] = 0;
             }
         }
     }
@@ -176,7 +164,7 @@ void rotate(int player){
     // Rotate and save shape as an array of bits
     for(int i = 0; i < 4; i++){
         for(int j = 3; j >= 0; j--)
-            new_shape[i] = new_shape[i] | ((curr_sprite[player].sprite_shape.matrix[j][i]) << (3 - j));
+            new_shape[i] = new_shape[i] | ((player_list[player].curr_sprite.sprite_shape.matrix[j][i]) << (3 - j));
     }
     // Shift left
     int min_dist = 3;
@@ -197,7 +185,7 @@ void rotate(int player){
         new_shape[i] = new_shape[i] << min_dist;
     for(int i = 0; i < 4; i++){
         for(int j = 3; j >= 0; j--)
-            curr_sprite[player].sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
+            player_list[player].curr_sprite.sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
     }
     border_detect(player);
 }
@@ -216,7 +204,7 @@ void mov_down(int player){    // y in curr_shape += 1
         spawn_sprite(player, 2);
     }
     else{
-        curr_sprite[player].y++;
+        player_list[player].curr_sprite.y++;
     }
 }
 
@@ -225,28 +213,28 @@ void hard_down(int player){
     do{
         move_down(player);  // Risk for double terimino hard down if interrupt exactly when
                             // do-while loop is done
-    } while(curr_sprite[player].y > 3);
+    } while(player_list[player].curr_sprite.y > 3);
 }
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
-    curr_sprite[player].x += direction;
-    if(curr_sprite[player].x < 0)
-        curr_sprite[player].x == 0;
-    else if(curr_sprite[player].x >= GRID_WIDTH)
+    player_list[player].curr_sprite.x += direction;
+    if(player_list[player].curr_sprite.x < 0)
+        player_list[player].curr_sprite.x == 0;
+    else if(player_list[player].curr_sprite.x >= GRID_WIDTH)
         border_detect(player);
 }
 
 void hold_func(int player){
-    if(hold[player] < 0){
-        hold[player] = curr_sprite[player].sprite_shape.sprite_id;
+    if(player_list[player].hold < 0){
+        player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
         get_next_sprite(player);
     }
     else{
-        int temp = hold[player];
-        hold[player] = curr_sprite[player].sprite_shape.sprite_id;
-        curr_sprite[player].sprite_shape = sprite_shapes[temp];
-        curr_sprite[player].y = 4 - 1;
-        curr_sprite[player].x = (GRID_WIDTH / 2) - 1;
+        int temp = player_list[player].hold;
+        player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
+        player_list[player].curr_sprite.sprite_shape = sprite_shapes[temp];
+        player_list[player].curr_sprite.y = 4 - 1;
+        player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
     }
 }
 
@@ -254,12 +242,18 @@ void interrupt_handler(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
     render(VGA);
-    to_count++;
-    if(to_count >= 45 - difficulty){
-        to_count = 0;
-        if(multiplayer)
-            mov_down(2);
-        mov_down(1);
+    
+    if(multiplayer){
+        player_list[1].to_count++;
+        if(player_list[1].to_count >= 45 - player_list[1].difficulty){
+            player_list[1].to_count = 0;
+            mov_down(1);
+        }
+    }
+    player_list[0].to_count++;
+    if(player_list[0].to_count >= 45 - player_list[0].difficulty){
+        player_list[0].to_count = 0;
+        mov_down(0);
     }
 }
 
@@ -270,7 +264,7 @@ void player_init(bool multiplayer){
         player_list[i].to_count = 0;
         player_list[i].difficulty = 0;
         player_list[i].mytime = 0x0000;
-        time2string(player_list[i].textstring, mytime);
+        time2string(player_list[i].textstring, player_list[i].mytime);
 
         for(int j = 0; j < 3; j++)
             spawn_sprite(i, j);
@@ -298,40 +292,40 @@ void loop(){    // game loop
 
     // Player 1
     if (rot1){
-        rotate(1);
+        rotate(0);
     }
     if(mv_r1){
-        mov_hor(1, 1);
+        mov_hor(0, 1);
     }
     if(mv_l1){
-        mov_hor(1, -1);
+        mov_hor(0, -1);
     }
     if(down1){
-        hard_down(1);
+        hard_down(0);
     }
-    if(hold1 && hold_available[0]){
-        hold_available[0] = false;
-        hold_func(1);
+    if(hold1 && player_list[0].hold_available){
+        player_list[0].hold_available = false;
+        hold_func(0);
     }
 
     // Player 2
     if(multiplayer)
     {
         if (rot2){
-            rotate(2);
+            rotate(1);
         }
         if(mv_r2){
-            mov_hor(2, 1);
+            mov_hor(1, 1);
         }
         if(mv_l2){
-            mov_hor(2, -1);
+            mov_hor(1, -1);
         }
         if(down2){
-            hard_down(2);
+            hard_down(1);
         }
-        if(hold2 && hold_available[1]){
-            hold_available[1] = false;
-            hold_func(2);
+        if(hold2 && player_list[1].hold_available){
+            player_list[1].hold_available = false;
+            hold_func(1);
         }
     }
 }
