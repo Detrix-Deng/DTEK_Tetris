@@ -19,11 +19,11 @@ const int WIDTH = 320;
 const int HEIGHT = 240;
 const int GRID_WIDTH = 10;
 const int GRID_HEIGHT = 20;
-char VGA[WIDTH][HEIGHT];  //vga buffer
+char VGA[HEIGHT][WIDTH];  //vga buffer
 
 int score[2] = {0};
 char hold[2] = {-1, -1};      // Stores the type_id of the hold sprite
-char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};
+char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};    //OBS REVERSE WIDTH AND HEIGHT WHEN COPYING TO VGA PREBUFFER
 struct sprite curr_sprite[2];   // array with 2 struct of curr_sprite for each player
 struct sprite next_sprite[2][3];  // 2 lists containing the 3 upcoming sprite.
 int to_count = 0;   // Counter for TO flags
