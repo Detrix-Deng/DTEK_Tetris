@@ -82,8 +82,12 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
         height_offset = height_offset - j;
         if(j < 0)
             break;
-        else if(player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x])
+        else if(player_list[player].curr_sprite.y + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x]){
             collision = true;
+            if(player_list[player].curr_sprite.y == 3){
+                player_list[player].lost = true;
+            }
+        }
     }
     return collision;
 }
