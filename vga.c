@@ -8,10 +8,45 @@
 
 volatile char *VGA_addr = (volatile char *)0x08000000;
 
-void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, int y){
-    char matrix = sprite.matrix;
+int old_offset[2][2] = { //x,y
+    {0,0},
+    {0,0}
+};
+
+//Draw sprite onto VGA buffer
+void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, int y, bool is_curr, int id){
+    char **matrix = sprite.matrix;
     int x = x;
-    int y = y;
+    int y = y - 3; //offset for sprites
+
+    if(is_curr){    //if is a curr_sprite, remove last sprite pos and update last pos with new sprite.
+        int player = id;
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 4; col++){
+                if(matrix[row][col]){
+                    array[row + old_offset[player][0]][col + old_offset[player][1] - 3] = 0;
+                }
+            }
+        }
+        old_offset[player][0] = x;
+        old_offset[player][0] = y + 3;
+    } else {    //else remove sprite at some location
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 4; col++){
+                if(matrix[row][col]){
+                    array[row + x][col + y] = 0;
+                }
+            }
+        }
+    }
+
+    for(int row = 0; row < 4; row++){
+        for(int col = 0; col < 4; col++){
+            if(matrix[row][col]){
+                array[row + x][col + y] = 255;
+            }
+        }
+    }
 }
 
 //Feed in matrix, text, offset positions
