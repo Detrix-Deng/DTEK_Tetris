@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include "shapes.c"
 #include "vga.c"
-// #include "main.c"
+#include "timetemplate.S"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
@@ -41,6 +41,7 @@ struct player_info{
 };
 
 struct player_info player_list[2];
+unsigned int global_to_count = 0;
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
 
 void set_offset(bool multiplayer){
@@ -155,6 +156,7 @@ int line_clear(int player){   // After collision detect == True
             }
         }
     }
+    player_list[player].lines += layer_cleared;
     return layer_cleared;
 }
 
@@ -243,6 +245,16 @@ void interrupt_handler(unsigned int cause){
     *time_addr = 2; // Clear TO flag
     render(VGA);
     
+    global_to_count++;
+    if(global_to_count >= 30){
+        if(multiplayer && !player_list[1].lost){
+            tick(player_list[1].mytime);
+        }
+        if(!player_list[0].lost){
+            tick(player_list[0].mytime);
+        }
+    }
+
     if(multiplayer){
         player_list[1].to_count++;
         if(player_list[1].to_count >= 45 - player_list[1].difficulty){
