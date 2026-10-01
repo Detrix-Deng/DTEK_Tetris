@@ -8,18 +8,15 @@ const int HEIGHT = 240;
 
 volatile char *VGA = (volatile char *)0x08000000;
 
-char stringbuilder(char *text){
-    int i = 0;
-    while(text[i] != '\0'){
-        i++;
-    }
-    char string[100];
-    return string;
-}
 
-void output(char array[]){
-    char array_to_send[WIDTH * HEIGHT];
-    for(int i = 0; i<WIDTH; i++){
-        
+void output(char array[HEIGHT][WIDTH]){
+
+    for (int y = 0; y < WIDTH; y++)
+    {
+        for (int x = 0; x < HEIGHT; x++)
+        {
+            VGA[y * 320 + x] = array[y][x];
+        }
     }
+
 }

@@ -19,8 +19,11 @@ void labinit() // Clock times out (TO) every 10/3 ms
     enable_interrupt();
 }
 
+//Create a menu for multiplayer or single player selection
 void mmanu(){
     char text = "TETRIS";
+    //TODO: Implement call to draw text on screen
+
     volatile int *gpio = (volatile int *) 0x040000e0;
     if (*gpio == 1){
         multiplayer = false;
