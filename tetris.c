@@ -121,8 +121,26 @@ void get_next_sprite(int player){
 }
 
 void score_calc(int player, int line){  // Calculates/update game score
-    int mult = line * 1000;
-    player_list[player].score += mult; //add switch cases later
+    switch(line){
+        case 1:
+            player_list[player].score += 100 * player_list[player].difficulty;
+            break;
+        
+        case 2:
+            player_list[player].score += 300 * player_list[player].difficulty;
+            break;
+
+        case 3:
+            player_list[player].score += 500 * player_list[player].difficulty;
+            break;
+
+        case 4:
+            player_list[player].score += 800 * player_list[player].difficulty;
+            break;
+
+        default:
+            break;
+    }
 }
 
 int line_clear(int player){   // After collision detect == True
@@ -202,6 +220,7 @@ void mov_down(int player){    // y in curr_shape += 1
     // If line_clear > 0, call score_calc
     if(collision_detect(player)){
         place_sprite(player);
+        player_list[player].score += 1;
         int lines = line_clear(player);
         if(lines){
             score_calc(player, lines);
@@ -220,6 +239,7 @@ void hard_down(int player){
         move_down(player);  // Risk for double terimino hard down if interrupt exactly when
                             // do-while loop is done
     } while(player_list[player].curr_sprite.y > 3);
+    player_list[player].score += 1;
 }
 
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
