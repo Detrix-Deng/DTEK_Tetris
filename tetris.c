@@ -120,23 +120,27 @@ int line_clear(int player){   // After collision detect == True
     // move everything in grid above the lowest cleared
     // layer by layer_cleared amount
     int layer_cleared = 0;
-    int layer_level = -1;
+    char clear_level[GRID_HEIGHT] = {0};
     // Check relevant layer
-    for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i++){
+    for(int i = curr_sprite[player].y; i < (curr_sprite[player].y + 4); i--){
         int j = 0;
         while((curr_sprite[player].sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
             j++;
         if(j == GRID_WIDTH){
             layer_cleared++;
-            if(layer_level < 0)
-                layer_level = i;
+            clear_level[i] = 1;
         }
     }
     // Clear and move layer down
+    int distance = 0;
     if(layer_cleared){
-        for(int i = layer_level; i < (GRID_HEIGHT - layer_level - layer_cleared - 1); i++){
-            for(int j = 0; j < GRID_WIDTH; j++){
-                grid[player][i][j] = grid[player][i + 1][j];
+        for(int i = GRID_HEIGHT - 1; i >= layer_cleared; i--){
+            if(clear_level[i])
+                distance++;
+            if(distance){
+                for(int j = 0; j < GRID_WIDTH; j++){
+                    grid[player][i][j] = grid[player][i + distance][j];
+                }
             }
         }
         for(int i = 0; i < layer_cleared; i++){
