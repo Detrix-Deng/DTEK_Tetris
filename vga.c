@@ -105,13 +105,13 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
                 if (alphanum[font_int][row] & (1 << (4 - col))){
                     for(int dy = 0; dy < scalar; dy++){
                         for(int dx = 0; dx < scalar; dx++){
-                            array[y + row + dy][x + col + dx] = 255;
+                            array[y + row + dy][x + i * 6 * scalar + col + dx] = 255;
                         }
                     }
                 } else {
                     for(int dy = 0; dy < scalar; dy++){
                         for(int dx = 0; dx < scalar; dx++){
-                            array[y + row + dy][x + col + dx] = 0;
+                            array[y + row + dy][x + i * 6 * scalar + col + dx] = 0;
                         }
                     }
                 }
