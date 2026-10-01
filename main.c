@@ -37,13 +37,16 @@ void mmanu(){
 
 void main(){
     //setup board things, enable interrupt, etc
-    labinit();
 
     while(!start){
         mmanu();
     }
 
     set_offset(multiplayer);
+
+    player_init(multiplayer);
+
+    labinit();
     // Call main game loop in tetris.c
     while(1){
         loop();
