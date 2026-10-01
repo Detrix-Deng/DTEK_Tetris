@@ -96,6 +96,8 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
             font_int = 'c' - 55;
         } else if (c = 32){
             font_int = 36;
+        } else if (c = 58){
+            font_int = 37;
         }
 
         // Font rows
