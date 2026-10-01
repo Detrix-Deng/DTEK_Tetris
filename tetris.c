@@ -15,10 +15,10 @@ volatile int *gpio = (volatile int *) 0x040000e0;
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
 int OFFSET_Y = 109;
-const int WIDTH = 320;
-const int HEIGHT = 240;
-const int GRID_WIDTH = 10;
-const int GRID_HEIGHT = 20;
+#define WIDTH = 320;
+#define HEIGHT = 240;
+#define GRID_WIDTH = 10;
+#define GRID_HEIGHT = 20;
 char VGA[HEIGHT][WIDTH];  //vga buffer
 
 int score[2] = {0};
@@ -44,13 +44,7 @@ void set_offset(bool multiplayer){
     } 
     else
         OFFSET_X1 = 154;
-}
-
-void render(){      // Renders the gamescreen
-// Is called by the interrupt handler, to update and render the gamescreen.
-    char vga_buffer = VGA;
-
-
+        OFFSET_X2 = 0; //zero offset two so it isnt junk value
 }
 
 void place_sprite(int player){
@@ -240,7 +234,7 @@ void hold_func(int player){
 void interrupt_handler(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
-    render();
+    render(VGA);
     to_count++;
     if(to_count >= 45 - difficulty){
         to_count = 0;
