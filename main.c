@@ -45,6 +45,10 @@ void main(){
     clear_display(VGA);
     labinit();
     set_offset(multiplayer);
+
+    player_init(multiplayer);
+
+    labinit();
     // Call main game loop in tetris.c
     while(1){
         loop();

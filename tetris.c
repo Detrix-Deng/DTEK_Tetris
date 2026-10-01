@@ -26,13 +26,13 @@ struct player_info{
     int to_count;                           // TO passed since last game cycle
     int difficulty;                         // How fast a game cycle is (Level)
     int mytime;                             // Total time passed
-    char textsring[6];                      // Time as a string, ex. 00:16
+    char textstring[6];                     // Time as a string, ex. 00:16
 
     // Sprite and grid info
     struct sprite curr_sprite;              // Info of current sprite
-    struct sprite next_sprite;              // Info of next sprite
+    struct sprite next_sprite[3];           // Info of next sprite
     char grid[GRID_HEIGHT][GRID_WIDTH];     // Info of player's grid
-    
+
     // Hold info
     char hold;                              // Info of hold slot
     bool hold_available;                    // Bool whether hold action is available
@@ -40,6 +40,7 @@ struct player_info{
     bool lost;                              // Bool for if player has lost
 };
 
+struct player_info player_list[2];
 int score[2] = {0};
 char hold[2] = {-1, -1};      // Stores the type_id of the hold sprite
 char grid[2][GRID_HEIGHT][GRID_WIDTH] = {0};    //OBS REVERSE WIDTH AND HEIGHT WHEN COPYING TO VGA PREBUFFER
@@ -53,7 +54,6 @@ bool lost[2] = {false};     // Bool for if player has lost
 int lines[2] = {0};     // Number of lines each player has cleared
 int mytime[2] = {0x0000, 0x0000};    // Player specific timer
 char textstring[2][6] = {"00:00", "00:00"};
-
 
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
@@ -260,6 +260,26 @@ void interrupt_handler(unsigned int cause){
         if(multiplayer)
             mov_down(2);
         mov_down(1);
+    }
+}
+
+void player_init(bool multiplayer){
+    for(int i = 0; i <= multiplayer; i++){
+        player_list[i].score = 0;
+        player_list[i].lines = 0;
+        player_list[i].to_count = 0;
+        player_list[i].difficulty = 0;
+        player_list[i].mytime = 0x0000;
+        time2string(player_list[i].textstring, mytime);
+
+        for(int j = 0; j < 3; j++)
+            spawn_sprite(i, j);
+        get_next_sprite(i);
+
+        player_list[i].hold = -1;
+        // hold_available is automatically true from get_next_sprite
+
+        player_list[i].lost = false;
     }
 }
 
