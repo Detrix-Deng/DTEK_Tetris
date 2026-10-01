@@ -389,5 +389,14 @@ unsigned char alphanum[][7] = { //accessed via alphanum[number/letter][row (7 ro
     0x0,
     0x0,
     0x0,
+   },
+   {// COlon :
+    0x0,
+    0x0C,
+    0x0C,
+    0x0,
+    0x0C,
+    0x0C,
+    0x0,
    }
 };
