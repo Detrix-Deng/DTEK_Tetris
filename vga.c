@@ -5,6 +5,8 @@
 
 #define WIDTH 320
 #define HEIGHT 240
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 20
 
 volatile char *VGA_addr = (volatile char *)0x08000000;
 
@@ -12,6 +14,42 @@ int old_offset[2][2] = { //x,y
     {0,0},
     {0,0}
 };
+
+void clear_display(char array[HEIGHT][WIDTH]){
+    for(int row = 0; row < HEIGHT; row++){
+        for(int col = 0; col < WIDTH; col++){
+            array[row][col] = 0;
+            render(array);
+        }
+    }
+}
+
+void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x, int y, int id){
+    int x = x;
+    int y = y;
+    int player = id;
+
+    //loop for terinions
+    for(int row = 0; row < GRID_HEIGHT; row++){
+        for(int col = 0; col < GRID_WIDTH; col++){
+            if(grid[row][col]){
+                array[y + row][x + col] = 255;
+            } else {
+                array[y + row][x + col] = 0;
+            }
+        }
+    }
+
+    //loop for border
+    for(int vert = 0; vert < GRID_HEIGHT + 2; vert++){
+        array[y - 1 + vert][x - 1] = 255;
+        array[y - 1 + vert][x + GRID_WIDTH + 1] = 255;
+    } 
+    for(int hor = 0; hor < GRID_WIDTH + 2; hor++){
+        array[y - 1][x - 1 + hor];
+        array[y + GRID_HEIGHT + 1][x - 1 + hor];
+    }
+}
 
 //Draw sprite onto VGA buffer
 void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, int y, bool is_curr, int id){
@@ -24,26 +62,19 @@ void put_sprite(char array[HEIGHT][WIDTH], struct sprite_shape sprite, int x, in
         for(int row = 0; row < 4; row++){
             for(int col = 0; col < 4; col++){
                 if(matrix[row][col]){
-                    array[row + old_offset[player][0]][col + old_offset[player][1] - 3] = 0;
+                    array[row + old_offset[player][1] - 3][col + old_offset[player][0]] = 0;
                 }
             }
         }
         old_offset[player][0] = x;
         old_offset[player][0] = y + 3;
-    } else {    //else remove sprite at some location
-        for(int row = 0; row < 4; row++){
-            for(int col = 0; col < 4; col++){
-                if(matrix[row][col]){
-                    array[row + x][col + y] = 0;
-                }
-            }
-        }
     }
-
     for(int row = 0; row < 4; row++){
         for(int col = 0; col < 4; col++){
             if(matrix[row][col]){
-                array[row + x][col + y] = 255;
+                array[row + y][col + x] = 255;
+            } else {
+                array[row + y][col + x] = 0;
             }
         }
     }
@@ -55,7 +86,7 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
     int y = y;
     int scalar = scalar;
     int i = 0;
-    int length = strlen(text);          //calculate buffer array to copy font table into
+      //calculate buffer array to copy font table into
     while(text[i] != '\0'){             //gets the text from char array
         char c = text[i];
         int font_int;
@@ -75,6 +106,12 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x, int y, int scalar){
                     for(int dy = 0; dy < scalar; dy++){
                         for(int dx = 0; dx < scalar; dx++){
                             array[y + row + dy][x + col + dx] = 255;
+                        }
+                    }
+                } else {
+                    for(int dy = 0; dy < scalar; dy++){
+                        for(int dx = 0; dx < scalar; dx++){
+                            array[y + row + dy][x + col + dx] = 0;
                         }
                     }
                 }
