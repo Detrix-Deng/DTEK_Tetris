@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <stdlib.h> // for rand
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
@@ -106,13 +107,26 @@ void print_sprite(char matrix[4][4]){
 }
 
 void print_grid(char grid[GRID_HEIGHT][GRID_WIDTH]){
+    printf("   ");
+    for(int i = 0; i < GRID_WIDTH; i++)
+        printf("%2d", i);
+    printf("\n");
     for(int i = 0; i < GRID_HEIGHT; i++){
+        printf("%2d ", i);
         for(int j = 0; j < GRID_WIDTH; j++){
-            printf("%d", (int) grid[i][j]);
+            printf("%2d", (int) grid[i][j]);
         }
         printf("\n");
     }
     printf("\n");
+}
+
+void place_sprite(int player){
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
+        }
+    }
 }
 
 void border_detect(int player){
@@ -173,25 +187,66 @@ void rotate(int player, bool inspect){
     border_detect(player);
 }
 
-// void player_init(bool multiplayer){
-//     for(int i = 0; i <= multiplayer; i++){
-//         player_list[i].score = 0;
-//         player_list[i].lines = 0;
-//         player_list[i].to_count = 0;
-//         player_list[i].difficulty = 0;
-//         player_list[i].mytime = 0x0000;
-//         time2string(player_list[i].textstring, player_list[i].mytime);
+void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
+    int rand_int = rand() % 6;
+    player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
+    player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 2;   // CHANGE!! (player * field) + offset;
+    player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
+}
 
-//         for(int j = 0; j < 3; j++)
-//             spawn_sprite(i, j);
-//         get_next_sprite(i);
+void get_next_sprite(int player){               // Update curr_sprite with next_sprite
+    player_list[player].curr_sprite = player_list[player].next_sprite[0];
+    player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
+    player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
+    spawn_sprite(player, 2);
+    player_list[player].hold_available = true;
+}
 
-//         player_list[i].hold = -1;
-//         // hold_available is automatically true from get_next_sprite
+void player_init(bool multiplayer){
+    for(int i = 0; i <= multiplayer; i++){
+        player_list[i].score = 0;
+        player_list[i].lines = 0;
+        player_list[i].to_count = 0;
+        player_list[i].difficulty = 0;
+        player_list[i].mytime = 0x0000;
+        // time2string(player_list[i].textstring, player_list[i].mytime);
 
-//         player_list[i].lost = false;
-//     }
-// }
+        for(int j = 0; j < 3; j++)
+            spawn_sprite(i, j);
+        get_next_sprite(i);
+        // player_list[i].curr_sprite.sprite_shape = sprite_shapes[test_id];
+        for(int row = 0; row < GRID_HEIGHT; row++){
+            for(int col = 0; col < GRID_WIDTH; col++){
+                player_list[i].grid[row][col] = 0;
+            }
+        }
+
+        player_list[i].hold = -1;
+        // hold_available is automatically true from get_next_sprite
+
+        player_list[i].lost = false;
+    }
+}
+
+void get_player_info(int player){
+    printf("Player score: %d\n", player_list[player].score);
+    printf("Player lines: %d\n", player_list[player].lines);
+    printf("Player to_count: %d\n", player_list[player].to_count);
+    printf("Player difficulty: %d\n", player_list[player].difficulty);
+    printf("Player mytime: %d\n", player_list[player].mytime);
+    printf("Player hold: %d\n", player_list[player].hold);
+    printf("Player sprite_id: %d\n", player_list[0].curr_sprite.sprite_shape.sprite_id);
+    printf("Player sprite:\n");
+    print_sprite(player_list[player].curr_sprite.sprite_shape.matrix);
+    printf("Player x: %d\n", player_list[player].curr_sprite.x);
+    printf("Player y: %d\n", player_list[player].curr_sprite.y);
+    printf("Player lost: ");
+    if(player_list[player].lost)
+        printf("True\n");
+    else
+        printf("False\n");
+    print_grid(player_list[0].grid);
+}
 
 bool check_sprite(char matrix[4][4], int sprite_id){
     for(int i = 0; i < 4; i++){
@@ -225,12 +280,8 @@ void test_sprite(int test_id, bool inspect){
 }
 
 void main(){
-    for(int row = 0; row < GRID_HEIGHT; row++){
-            for(int col = 0; col < GRID_WIDTH; col++){
-                player_list[0].grid[row][col] = 0;
-            }
-        }
-    print_grid(player_list[0].grid);
+    player_init(false);
+    get_player_info(0);
     // for(int i = 0; i <= 6; i++)
     //     test_sprite(i, false);
 }
