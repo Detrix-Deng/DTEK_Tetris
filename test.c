@@ -126,23 +126,41 @@ void rotate(int player){
     int min_dist = 3;
     for(int i = 0; i < 4; i++){
         int dist = 0;
-        if(new_shape[i] == 0)
-            continue;
-        for(int j = 3; j >= 0; j--){
-            if((new_shape[i] >> j) & 0x01)
+        // if(new_shape[i] == 0)
+        //     continue;
+        // for(int j = 3; j >= 0; j--){
+        //     if((new_shape[i] >> j) & 0x01)
+        //         break;
+        //     dist++;
+        // }
+        // if(dist < min_dist)
+        //     min_dist = dist;
+        for(int j = 0; j < 4; j++){
+            if(test_matrix[i][j]){
                 break;
+            }
             dist++;
         }
         if(dist < min_dist)
             min_dist = dist;
     }
+    printf("%d\n", min_dist);
     // Translate and save new_shape to curr_sprite
-    for(int i = 0; i < 4; i++)
-        new_shape[i] = new_shape[i] << min_dist;
+    // for(int i = 0; i < 4; i++)
+    //     new_shape[i] = new_shape[i] << min_dist;
+    // for(int i = 0; i < 4; i++){
+    //     for(int j = 3; j >= 0; j--)
+    //         player_list[player].curr_sprite.sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
+    // }
     for(int i = 0; i < 4; i++){
-        for(int j = 3; j >= 0; j--)
-            player_list[player].curr_sprite.sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
+        for(int j = 0; j < min_dist; j++){
+            player_list[player].curr_sprite.sprite_shape.matrix[i][j] = test_matrix[i][j + min_dist];
+        }
+        for(int j = min_dist; j < 4; j++){
+            player_list[player].curr_sprite.sprite_shape.matrix[i][j] = 0;
+        }
     }
+    print_sprite(player_list[player].curr_sprite.sprite_shape.matrix);
     border_detect(player);
 }
 
