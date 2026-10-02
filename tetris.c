@@ -154,39 +154,49 @@ void score_calc(int player, int line){  // Calculates/update game score based on
     }
 }
 
-int line_clear(int player){   // Test failed
+int line_clear(int player){   // Test passed
     // After collision detect == True
     // Check if any relevant layer is full.
     // If layer is full, layer_cleared++
     // move everything in grid above the lowest cleared
     // layer by layer_cleared amount
     int layer_cleared = 0;
-    char clear_level[GRID_HEIGHT] = {0};
+    char level_empty[GRID_HEIGHT] = {0};
     // Check relevant layer
-    for(int i = player_list[player].curr_sprite.y; i < (player_list[player].curr_sprite.y + 4); i--){
+    for(int i = player_list[player].curr_sprite.y; i > (player_list[player].curr_sprite.y - 4); i--){
         int j = 0;
-        while((player_list[player].curr_sprite.sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
+        while((player_list[player].grid[i][j]) && j < GRID_WIDTH)
             j++;
         if(j == GRID_WIDTH){
             layer_cleared++;
-            clear_level[i] = 1;
+            level_empty[i] = 1;
         }
     }
     // Clear and move layer down
-    int distance = 0;
+    int temp_y = GRID_HEIGHT - 1;
     if(layer_cleared){
-        for(int i = GRID_HEIGHT - 1; i >= layer_cleared; i--){
-            if(clear_level[i])
-                distance++;
-            if(distance){
-                for(int j = 0; j < GRID_WIDTH; j++){
-                    player_list[player].grid[i][j] = player_list[player].grid[i + distance][j];
+        for(int i = GRID_HEIGHT - 2; i >= 0; i--){
+            temp_y = i + 1;
+            if(level_empty[i]){
+                continue;
+            }
+            else{
+                while((temp_y < GRID_HEIGHT - 1) && level_empty[temp_y]){
+                    temp_y++;
                 }
+                if(!level_empty[temp_y])
+                    temp_y--;
+                for(int j = 0; j < GRID_WIDTH; j++){
+                    player_list[player].grid[temp_y][j] = player_list[player].grid[i][j];
+                }
+                level_empty[temp_y] = 0;
+                level_empty[i] = 1;
             }
         }
+        // From layer 0 to layer layer_cleared, fill with 0;
         for(int i = 0; i < layer_cleared; i++){
             for(int j = 0; j < GRID_WIDTH; j++){
-                player_list[player].grid[GRID_HEIGHT - i - 1][j] = 0;
+                player_list[player].grid[i][j] = 0;
             }
         }
     }
