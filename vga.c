@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "vga_text.c"
+#include "shapes.c"
 
 #define WIDTH 320
 #define HEIGHT 240
