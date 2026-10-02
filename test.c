@@ -191,7 +191,7 @@ void rotate(int player, bool inspect){
 void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
     int rand_int = rand() % 6;
     player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
-    player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 2;   // CHANGE!! (player * field) + offset;
+    player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
     player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
 }
 
@@ -294,6 +294,8 @@ void main(){
     srand(time(NULL));
     player_init(false);
     get_player_info(0);
+    place_sprite(0);
+    print_grid(player_list[0].grid);
     // for(int i = 0; i <= 6; i++)
     //     test_sprite(i, false);
 }
