@@ -21,7 +21,7 @@ void labinit() // Clock times out (TO) every 10/3 ms
 
 //Create a menu for multiplayer or single player selection
 void mmanu(){
-    char text = "TETRIS";
+    char *text = "TETRIS";
     //TODO: Implement call to draw text on screen
     put_text(VGA, text, 50, 20, 5);
 
