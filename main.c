@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include "tetris.c"
 
+bool test = true; // Bool for whether to run test code or not
 bool start = false;
 
 // labinit from lab 3 with different period values
@@ -37,7 +38,7 @@ void mmanu(){
 
 void main(){
     //setup board things, enable interrupt, etc
-
+    if(!test){
     while(!start){
         mmanu();
     }
@@ -51,5 +52,13 @@ void main(){
     // Call main game loop in tetris.c
     while(1){
         loop();
+    }
+    } else {
+
+    //setup board things, enable interrupt, etc
+    put_text(VGA, "TETRIS", 0, 0, 5);
+    put_sprite(VGA, sprite_shapes[0], 50, 50, false, 0);
+    put_grid(VGA, player_list[0].grid, 100, 100, 0);
+    render(VGA);
     }
 }
