@@ -2,8 +2,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "vga_text.c"
-#include "shapes.c"
+#include "vga_text.h"
+#include "shapes.h"
 #ifndef VGA_H
 #define VGA_H
 

@@ -4,9 +4,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "tetris.c"
-#include "vga.c"
-#include "shapes.c"
+#include "tetris.h"
+#include "vga.h"
+#include "shapes.h"
+
 
 bool start = false;
 bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
