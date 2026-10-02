@@ -83,7 +83,7 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
       //calculate buffer array to copy font table into
     while(text[i] != '\0'){             //gets the text from char array
         char c = text[i];
-        int font_int;
+        int font_int = 0; //font_int is the index for the alphanum array
         if (c <= 57 && c >= 48){        //if numbers
             font_int = c - 48;
         } else if (c <= 90 && c >= 65){ //if letters        
