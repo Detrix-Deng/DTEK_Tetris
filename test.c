@@ -85,16 +85,65 @@ struct player_info{
 
 struct player_info player_list[1];
 
-void time2string(char*,int);
+extern void time2string(char*,int);
 
 void print_sprite(char matrix[4][4]){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            printf("%c", matrix[i][j]);
+            printf("%d", (int) matrix[i][j]);
         }
         printf("\n");
     }
     printf("\n");
+}
+
+void border_detect(int player){
+    int oob = 0;    //oob = out_of_bounds
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 4; j++){
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if((player_list[player].curr_sprite.x + j - oob) >= GRID_WIDTH)
+                    oob += 8 - player_list[player].curr_sprite.x + j - oob;
+            }
+        }
+    }
+    player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
+}
+
+void rotate(int player){
+    // rotate curr_sprite[player] right or left based on direction
+    unsigned char new_shape[4] = {0};
+    char test_matrix[4][4];
+    // Rotate and save shape as an array of bits
+    for(int i = 0; i < 4; i++){
+        for(int j = 3; j >= 0; j--){
+            new_shape[i] = new_shape[i] | ((player_list[player].curr_sprite.sprite_shape.matrix[j][i]) << (3 - j));
+            test_matrix[i][3-j] = player_list[player].curr_sprite.sprite_shape.matrix[j][i];
+        }
+    }
+    print_sprite(test_matrix);
+    // Shift left
+    int min_dist = 3;
+    for(int i = 0; i < 4; i++){
+        int dist = 0;
+        if(new_shape[i] == 0)
+            continue;
+        for(int j = 3; j >= 0; j--){
+            if((new_shape[i] >> j) & 0x01)
+                break;
+            dist++;
+        }
+        if(dist < min_dist)
+            min_dist = dist;
+    }
+    // Translate and save new_shape to curr_sprite
+    for(int i = 0; i < 4; i++)
+        new_shape[i] = new_shape[i] << min_dist;
+    for(int i = 0; i < 4; i++){
+        for(int j = 3; j >= 0; j--)
+            player_list[player].curr_sprite.sprite_shape.matrix[i][3 - j] = (new_shape[i] >> j) & 0x01;
+    }
+    border_detect(player);
 }
 
 // void player_init(bool multiplayer){
@@ -118,5 +167,10 @@ void print_sprite(char matrix[4][4]){
 // }
 
 void main(){
-    print_sprite(sprite_shapes[0].matrix);
+    // for(int i = 0; i < 6; i++)
+    //     print_sprite(sprite_shapes[i].matrix);
+    player_list[0].curr_sprite.sprite_shape = sprite_shapes[1];
+    print_sprite(player_list[0].curr_sprite.sprite_shape.matrix);
+    rotate(0);
+    print_sprite(player_list[0].curr_sprite.sprite_shape.matrix);
 }
