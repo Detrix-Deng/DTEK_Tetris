@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include "tetris.c"
 #include "vga.c"
+#include "boot.S"
 
 bool start = false;
 
