@@ -294,6 +294,11 @@ void main(){
     srand(time(NULL));
     player_init(false);
     get_player_info(0);
+    player_list[0].curr_sprite.x = 0;
+    player_list[0].curr_sprite.y = 19;
+    place_sprite(0);
+    get_next_sprite(0);
+    get_player_info(0);
     place_sprite(0);
     print_grid(player_list[0].grid);
     // for(int i = 0; i <= 6; i++)

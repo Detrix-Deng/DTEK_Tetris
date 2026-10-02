@@ -55,7 +55,7 @@ void set_offset(bool multiplayer){
         OFFSET_X2 = 0; //zero offset so it isnt junk value
 }
 
-void place_sprite(int player){
+void place_sprite(int player){      // Test failed
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
@@ -105,14 +105,16 @@ void border_detect(int player){
     player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
 }
 
-void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
+void spawn_sprite(int player, int index){     // Test passed
+    // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
     player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
     player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
     player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
 }
 
-void get_next_sprite(int player){               // Update curr_sprite with next_sprite
+void get_next_sprite(int player){       // Test passed
+    // Update curr_sprite with next_sprite
     player_list[player].curr_sprite = player_list[player].next_sprite[0];
     player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
     player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
