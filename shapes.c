@@ -1,5 +1,7 @@
 //Contains only shapes
 
+#include "shapes.h"
+
 unsigned char alphanum[][7] = { //accessed via alphanum[number/letter][row (7 rows)]
    { //0
     0x0E,
