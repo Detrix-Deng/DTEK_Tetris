@@ -169,6 +169,45 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
     return collision;
 }
 
+int line_clear(int player){   // After collision detect == True
+    // Check if any relevant layer is full.
+    // If layer is full, layer_cleared++
+    // move everything in grid above the lowest cleared
+    // layer by layer_cleared amount
+    int layer_cleared = 0;
+    char clear_level[GRID_HEIGHT] = {0};
+    // Check relevant layer
+    for(int i = player_list[player].curr_sprite.y; i < (player_list[player].curr_sprite.y + 4); i--){
+        int j = 0;
+        while((player_list[player].curr_sprite.sprite_shape.matrix[i][j]) && j < GRID_WIDTH)
+            j++;
+        if(j == GRID_WIDTH){
+            layer_cleared++;
+            clear_level[i] = 1;
+        }
+    }
+    // Clear and move layer down
+    int distance = 0;
+    if(layer_cleared){
+        for(int i = GRID_HEIGHT - 1; i >= layer_cleared; i--){
+            if(clear_level[i])
+                distance++;
+            if(distance){
+                for(int j = 0; j < GRID_WIDTH; j++){
+                    player_list[player].grid[i][j] = player_list[player].grid[i + distance][j];
+                }
+            }
+        }
+        for(int i = 0; i < layer_cleared; i++){
+            for(int j = 0; j < GRID_WIDTH; j++){
+                player_list[player].grid[GRID_HEIGHT - i - 1][j] = 0;
+            }
+        }
+    }
+    player_list[player].lines += layer_cleared;
+    return layer_cleared;
+}
+
 void rotate(int player, bool inspect){
     // rotate player's sprite clockwise
     char new_matrix[4][4];
@@ -326,14 +365,14 @@ void test_sprite(int test_id, bool inspect){
 void main(){
     srand(time(NULL));
     player_init(false);
-    for(int i = 0; i < 6; i++){
-        edit_curr_sprite(0, i, 4, 3);
-        int y = 3;
-        while(!collision_detect(0))
-            edit_curr_sprite(0, i, 4, y++);
-        place_sprite(0);
-        print_grid(player_list[0].grid);
+    for(int i = 0; i < 10; i++){
+        edit_curr_sprite(0, 4, i, 19);
+        if(collision_detect(0))
+            place_sprite(0);
     }
+    print_grid(player_list[0].grid);
+    line_clear(0);
+    print_grid(player_list[0].grid);
     // for(int i = 0; i <= 6; i++)
     //     test_sprite(i, false);
 }

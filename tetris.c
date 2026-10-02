@@ -154,7 +154,8 @@ void score_calc(int player, int line){  // Calculates/update game score based on
     }
 }
 
-int line_clear(int player){   // After collision detect == True
+int line_clear(int player){   // Test failed
+    // After collision detect == True
     // Check if any relevant layer is full.
     // If layer is full, layer_cleared++
     // move everything in grid above the lowest cleared
