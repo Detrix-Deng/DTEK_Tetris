@@ -2,10 +2,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "vga_text.h"
+#include "vga.h"
 #include "shapes.h"
-#ifndef VGA_H
-#define VGA_H
+
 
 #define WIDTH 320
 #define HEIGHT 240
@@ -135,5 +134,3 @@ void clear_display(char array[HEIGHT][WIDTH]){
         }
     }
 }
-
-#endif
