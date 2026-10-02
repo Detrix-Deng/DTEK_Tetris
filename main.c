@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "tetris.c"
+#include "boot.S"
 
 bool test = true; // Bool for whether to run test code or not
 bool start = false;
