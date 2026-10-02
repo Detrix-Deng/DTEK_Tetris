@@ -123,7 +123,12 @@ void print_grid(char grid[GRID_HEIGHT][GRID_WIDTH]){
 }
 
 void place_sprite(int player){
-    for(int i = 0; i < 4; i++){
+    int layers_exclude = player_list[0].curr_sprite.y;
+    if((GRID_HEIGHT - layers_exclude) <= 0)
+        layers_exclude = layers_exclude - GRID_HEIGHT;
+    else
+        layers_exclude = 0;
+    for(int i = 0; i < 4 - layers_exclude; i++){
         for(int j = 0; j < 4; j++){
             player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
         }
@@ -141,6 +146,27 @@ void border_detect(int player){
         }
     }
     player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
+}
+
+bool collision_detect(int player){    // Check if the space below the sprite is occupied.
+    // If occupied, return True, else, return False
+    bool collision = false;
+    for(int i = 0; i < 4; i++){
+        int height_offset = player_list[player].curr_sprite.y;
+        int j = 3;
+        while(j >= 0 && !(player_list[player].curr_sprite.sprite_shape.matrix[j][i]))
+            j--;
+        height_offset = height_offset - j;
+        if(j < 0)
+            break;
+        else if(player_list[player].curr_sprite.y + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x]){
+            collision = true;
+            if(player_list[player].curr_sprite.y == 3){
+                player_list[player].lost = true;
+            }
+        }
+    }
+    return collision;
 }
 
 void rotate(int player, bool inspect){
@@ -190,6 +216,7 @@ void rotate(int player, bool inspect){
 
 void spawn_sprite(int player, int index){     // Update curr_sprite with next_sprite
     int rand_int = rand() % 6;
+
     player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
     player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;   // CHANGE!! (player * field) + offset;
     player_list[player].next_sprite[index].y = 4 - 1; // CHANGE!! offset;
@@ -259,6 +286,12 @@ void get_player_info(int player){
     print_grid(player_list[0].grid);
 }
 
+void edit_curr_sprite(int player, int sprite_id, int x, int y){
+    player_list[player].curr_sprite.sprite_shape = sprite_shapes[sprite_id];
+    player_list[player].curr_sprite.x = x;
+    player_list[player].curr_sprite.y = y;
+}
+
 bool check_sprite(char matrix[4][4], int sprite_id){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
@@ -293,13 +326,13 @@ void test_sprite(int test_id, bool inspect){
 void main(){
     srand(time(NULL));
     player_init(false);
-    get_player_info(0);
-    player_list[0].curr_sprite.x = 0;
-    player_list[0].curr_sprite.y = 19;
-    place_sprite(0);
-    get_next_sprite(0);
+    edit_curr_sprite(0, 4, 0, 19);
     get_player_info(0);
     place_sprite(0);
+    edit_curr_sprite(0, 2, 0, 17);
+    get_player_info(0);
+    if(collision_detect(0))
+        place_sprite(0);
     print_grid(player_list[0].grid);
     // for(int i = 0; i <= 6; i++)
     //     test_sprite(i, false);
