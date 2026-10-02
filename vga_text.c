@@ -1,4 +1,7 @@
-#include "dtekv-lib.c"
+#include "dtekv-lib.h"
+
+#ifndef VGA_TEXT_H
+#define VGA_TEXT_H
 
 #define WIDTH 320
 #define HEIGHT 240
@@ -15,3 +18,5 @@ void console_out(char array[HEIGHT][WIDTH]){ //dump contents of buffer into cons
         print("\n");
     }
 }
+
+#endif
