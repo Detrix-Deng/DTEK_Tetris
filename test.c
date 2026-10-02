@@ -156,10 +156,10 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
         int j = 3;
         while(j >= 0 && !(player_list[player].curr_sprite.sprite_shape.matrix[j][i]))
             j--;
-        height_offset = height_offset - j;
+        height_offset = height_offset - 3 + j;
         if(j < 0)
             break;
-        else if(player_list[player].curr_sprite.y + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x]){
+        else if(height_offset + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x + i]){
             collision = true;
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
@@ -326,14 +326,14 @@ void test_sprite(int test_id, bool inspect){
 void main(){
     srand(time(NULL));
     player_init(false);
-    edit_curr_sprite(0, 4, 0, 19);
-    get_player_info(0);
-    place_sprite(0);
-    edit_curr_sprite(0, 2, 0, 17);
-    get_player_info(0);
-    if(collision_detect(0))
+    for(int i = 0; i < 6; i++){
+        edit_curr_sprite(0, i, 4, 3);
+        int y = 3;
+        while(!collision_detect(0))
+            edit_curr_sprite(0, i, 4, y++);
         place_sprite(0);
-    print_grid(player_list[0].grid);
+        print_grid(player_list[0].grid);
+    }
     // for(int i = 0; i <= 6; i++)
     //     test_sprite(i, false);
 }

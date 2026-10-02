@@ -55,8 +55,13 @@ void set_offset(bool multiplayer){
         OFFSET_X2 = 0; //zero offset so it isnt junk value
 }
 
-void place_sprite(int player){      // Test failed
-    for(int i = 0; i < 4; i++){
+void place_sprite(int player){      // Test passed
+    int layers_exclude = player_list[0].curr_sprite.y;
+    if((GRID_HEIGHT - layers_exclude) <= 0)
+        layers_exclude = layers_exclude - GRID_HEIGHT;
+    else
+        layers_exclude = 0;
+    for(int i = 0; i < 4 - layers_exclude; i++){
         for(int j = 0; j < 4; j++){
             player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
         }
@@ -71,7 +76,8 @@ unsigned int get_rand(){
     return rand;
 }
 
-bool collision_detect(int player){    // Check if the space below the sprite is occupied.
+bool collision_detect(int player){    // Test passed
+    // Check if the space below the sprite is occupied.
     // If occupied, return True, else, return False
     bool collision = false;
     for(int i = 0; i < 4; i++){
@@ -79,10 +85,10 @@ bool collision_detect(int player){    // Check if the space below the sprite is 
         int j = 3;
         while(j >= 0 && !(player_list[player].curr_sprite.sprite_shape.matrix[j][i]))
             j--;
-        height_offset = height_offset - j;
+        height_offset = height_offset - 3 + j;
         if(j < 0)
             break;
-        else if(player_list[player].curr_sprite.y + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x]){
+        else if(height_offset + 1 == GRID_HEIGHT || player_list[player].grid[height_offset + 1][player_list[player].curr_sprite.x + i]){
             collision = true;
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
