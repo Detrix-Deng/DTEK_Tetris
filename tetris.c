@@ -5,7 +5,6 @@
 #include <stddef.h>
 #include "shapes.c"
 #include "vga.c"
-#include "timetemplate.S"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
@@ -18,6 +17,9 @@ int OFFSET_Y = 109;
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
 char VGA[HEIGHT][WIDTH];  //vga buffer
+
+extern void time2string(char*,int);
+extern void tick(int*);
 
 struct player_info{
     // UI element
@@ -283,10 +285,10 @@ void interrupt_handler(unsigned int cause){
     global_to_count++;
     if(global_to_count >= 30){
         if(multiplayer && !player_list[1].lost){
-            tick(player_list[1].mytime);
+            tick(&player_list[1].mytime);
         }
         if(!player_list[0].lost){
-            tick(player_list[0].mytime);
+            tick(&player_list[0].mytime);
         }
     }
 
