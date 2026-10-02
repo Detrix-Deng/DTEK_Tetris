@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h> // for rand
+#include <time.h> // for srand
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
@@ -234,10 +235,20 @@ void get_player_info(int player){
     printf("Player to_count: %d\n", player_list[player].to_count);
     printf("Player difficulty: %d\n", player_list[player].difficulty);
     printf("Player mytime: %d\n", player_list[player].mytime);
+    printf("Player hold_available: ");
+    if(player_list[player].hold_available)
+        printf("True\n");
+    else
+        printf("False\n");
     printf("Player hold: %d\n", player_list[player].hold);
-    printf("Player sprite_id: %d\n", player_list[0].curr_sprite.sprite_shape.sprite_id);
-    printf("Player sprite:\n");
+    printf("Player curr_sprite id: %d\n", player_list[player].curr_sprite.sprite_shape.sprite_id);
+    printf("Player curr_sprite:\n");
     print_sprite(player_list[player].curr_sprite.sprite_shape.matrix);
+    for(int i = 0; i < 3; i++){
+        printf("Player next_sprite[%d] id: %d\n", i, player_list[player].next_sprite[i].sprite_shape.sprite_id);
+        printf("Player next_sprite[%d]:\n", i);
+        print_sprite(player_list[player].next_sprite[i].sprite_shape.matrix);
+    }
     printf("Player x: %d\n", player_list[player].curr_sprite.x);
     printf("Player y: %d\n", player_list[player].curr_sprite.y);
     printf("Player lost: ");
@@ -280,6 +291,7 @@ void test_sprite(int test_id, bool inspect){
 }
 
 void main(){
+    srand(time(NULL));
     player_init(false);
     get_player_info(0);
     // for(int i = 0; i <= 6; i++)
