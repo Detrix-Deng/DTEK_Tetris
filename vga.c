@@ -45,7 +45,7 @@ void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int
 }
 
 //Draw sprite onto VGA buffer
-void put_sprite(char array[HEIGHT][WIDTH], char **sprite, int x_offset, int y_offset, bool is_curr, int id){
+void put_sprite(char array[HEIGHT][WIDTH], char *sprite, int x_offset, int y_offset, bool is_curr, int id){
     char **matrix = sprite;
     int x = x_offset;
     int y = y_offset - 3; //offset for sprites
@@ -60,7 +60,7 @@ void put_sprite(char array[HEIGHT][WIDTH], char **sprite, int x_offset, int y_of
             }
         }
         old_offset[player][0] = x;
-        old_offset[player][0] = y + 3;
+        old_offset[player][1] = y + 3;
     }
     for(int row = 0; row < 4; row++){
         for(int col = 0; col < 4; col++){
