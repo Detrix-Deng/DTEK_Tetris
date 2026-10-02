@@ -16,15 +16,6 @@ int old_offset[2][2] = { //x,y
     {0,0}
 };
 
-void clear_display(char array[HEIGHT][WIDTH]){
-    for(int row = 0; row < HEIGHT; row++){
-        for(int col = 0; col < WIDTH; col++){
-            array[row][col] = 0;
-            render(array);
-        }
-    }
-}
-
 void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int id){
     int x = x_offset;
     int y = y_offset;
@@ -131,4 +122,13 @@ void render(char array[HEIGHT][WIDTH]){
         }
     }
 
+}
+
+void clear_display(char array[HEIGHT][WIDTH]){
+    for(int row = 0; row < HEIGHT; row++){
+        for(int col = 0; col < WIDTH; col++){
+            array[row][col] = 0;
+            render(array);
+        }
+    }
 }
