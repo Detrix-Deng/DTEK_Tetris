@@ -10,6 +10,7 @@
 #include "shapes.c"
 
 bool start = false;
+bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
 
 // labinit from lab 3 with different period values
 void labinit() // Clock times out (TO) every 10/3 ms
@@ -40,7 +41,7 @@ void mmanu(){
 
 void main(){
     //setup board things, enable interrupt, etc
-
+    if(!test){
     while(!start){
         mmanu();
     }
@@ -55,4 +56,13 @@ void main(){
     while(1){
         loop();
     }
+    } else {
+
+    //setup board things, enable interrupt, etc
+    put_text(VGA, "TETRIS", 0, 0, 5);
+    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0);
+    put_grid(VGA, player_list[0].grid, 100, 100, 0);
+    render(VGA);
+    }
+
 }

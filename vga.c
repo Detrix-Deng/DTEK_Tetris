@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include "vga_text.c"
 #include "shapes.c"
+#ifndef VGA_H
+#define VGA_H
 
 #define WIDTH 320
 #define HEIGHT 240
@@ -45,7 +47,7 @@ void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int
 }
 
 //Draw sprite onto VGA buffer
-void put_sprite(char array[HEIGHT][WIDTH], char **sprite, int x_offset, int y_offset, bool is_curr, int id){
+void put_sprite(char array[HEIGHT][WIDTH], char *sprite, int x_offset, int y_offset, bool is_curr, int id){
     char **matrix = sprite;
     int x = x_offset;
     int y = y_offset - 3; //offset for sprites
@@ -60,7 +62,7 @@ void put_sprite(char array[HEIGHT][WIDTH], char **sprite, int x_offset, int y_of
             }
         }
         old_offset[player][0] = x;
-        old_offset[player][0] = y + 3;
+        old_offset[player][1] = y + 3;
     }
     for(int row = 0; row < 4; row++){
         for(int col = 0; col < 4; col++){
@@ -83,12 +85,12 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
         char c = text[i];
         int font_int;
         if (c <= 57 && c >= 48){        //if numbers
-            font_int = 'c' - 48;
-        } else if ('c' <= 90 && c >= 65){ //if letters        
-            font_int = 'c' - 55;
-        } else if ('c' == 32){
+            font_int = c - 48;
+        } else if (c <= 90 && c >= 65){ //if letters        
+            font_int = c - 55;
+        } else if (c == 32){
             font_int = 36;
-        } else if ('c' == 58){
+        } else if (c == 58){
             font_int = 37;
         }
 
@@ -133,3 +135,5 @@ void clear_display(char array[HEIGHT][WIDTH]){
         }
     }
 }
+
+#endif
