@@ -43,7 +43,7 @@ void main(){
         mmanu();
     }
     clear_display(VGA);
-    labinit();
+
     set_offset(multiplayer);
 
     player_init(multiplayer);
