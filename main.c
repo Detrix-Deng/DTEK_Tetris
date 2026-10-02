@@ -7,6 +7,7 @@
 #include "tetris.c"
 #include "vga.c"
 #include "boot.S"
+#include "shapes.c"
 
 bool start = false;
 
