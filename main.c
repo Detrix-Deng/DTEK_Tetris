@@ -8,6 +8,8 @@
 #include "vga.c"
 #include "shapes.c"
 
+extern void enable_interrupt();
+
 bool start = false;
 bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
 
