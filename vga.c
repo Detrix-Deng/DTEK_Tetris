@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
+#include "vga_text.c"
 
 #define WIDTH 320
 #define HEIGHT 240
@@ -122,7 +123,7 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
 }
 
 void render(char array[HEIGHT][WIDTH]){
-
+    console_out(array);
     for (int y = 0; y < WIDTH; y++){
         for (int x = 0; x < HEIGHT; x++){
             VGA_addr[y * 320 + x] = array[y][x];
