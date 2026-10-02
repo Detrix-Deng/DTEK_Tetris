@@ -16,15 +16,6 @@ int old_offset[2][2] = { //x,y
     {0,0}
 };
 
-void clear_display(char array[HEIGHT][WIDTH]){
-    for(int row = 0; row < HEIGHT; row++){
-        for(int col = 0; col < WIDTH; col++){
-            array[row][col] = 0;
-            render(array);
-        }
-    }
-}
-
 void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int id){
     int x = x_offset;
     int y = y_offset;
@@ -92,11 +83,11 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
         int font_int;
         if (c <= 57 && c >= 48){        //if numbers
             font_int = 'c' - 48;
-        } else if (c <= 90 && c >= 65){ //if letters        
+        } else if ('c' <= 90 && c >= 65){ //if letters        
             font_int = 'c' - 55;
-        } else if (c = 32){
+        } else if ('c' == 32){
             font_int = 36;
-        } else if (c = 58){
+        } else if ('c' == 58){
             font_int = 37;
         }
 
@@ -131,4 +122,13 @@ void render(char array[HEIGHT][WIDTH]){
         }
     }
 
+}
+
+void clear_display(char array[HEIGHT][WIDTH]){
+    for(int row = 0; row < HEIGHT; row++){
+        for(int col = 0; col < WIDTH; col++){
+            array[row][col] = 0;
+            render(array);
+        }
+    }
 }
