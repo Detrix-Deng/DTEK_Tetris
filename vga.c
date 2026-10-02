@@ -5,12 +5,6 @@
 #include "vga.h"
 #include "shapes.h"
 
-
-#define WIDTH 320
-#define HEIGHT 240
-#define GRID_WIDTH 10
-#define GRID_HEIGHT 20
-
 volatile char *VGA_addr = (volatile char *)0x08000000;
 
 int old_offset[2][2] = { //x,y
