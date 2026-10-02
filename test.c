@@ -105,6 +105,16 @@ void print_sprite(char matrix[4][4]){
     printf("\n");
 }
 
+void print_grid(char grid[GRID_HEIGHT][GRID_WIDTH]){
+    for(int i = 0; i < GRID_HEIGHT; i++){
+        for(int j = 0; j < GRID_WIDTH; j++){
+            printf("%d", (int) grid[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
 void border_detect(int player){
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 2; i++){
@@ -215,8 +225,12 @@ void test_sprite(int test_id, bool inspect){
 }
 
 void main(){
-    // for(int i = 0; i < 6; i++)
-    //     print_sprite(sprite_shapes[i].matrix);
-    for(int i = 6; i <= 6; i++)
-        test_sprite(i, true);
+    for(int row = 0; row < GRID_HEIGHT; row++){
+            for(int col = 0; col < GRID_WIDTH; col++){
+                player_list[0].grid[row][col] = 0;
+            }
+        }
+    print_grid(player_list[0].grid);
+    // for(int i = 0; i <= 6; i++)
+    //     test_sprite(i, false);
 }

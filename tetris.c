@@ -307,6 +307,11 @@ void player_init(bool multiplayer){
         for(int j = 0; j < 3; j++)
             spawn_sprite(i, j);
         get_next_sprite(i);
+        for(int row = 0; row < GRID_HEIGHT; row++){
+            for(int col = 0; col < GRID_WIDTH; col++){
+                player_list[i].grid[row][col] = 0;
+            }
+        }
 
         player_list[i].hold = -1;
         // hold_available is automatically true from get_next_sprite
