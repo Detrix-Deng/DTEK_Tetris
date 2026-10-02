@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "tetris.c"
+#include "vga.c"
+#include "boot.S"
 #include "shapes.c"
 
-bool test = true; // Bool for whether to run test code or not
 bool start = false;
 
 // labinit from lab 3 with different period values
@@ -22,7 +23,7 @@ void labinit() // Clock times out (TO) every 10/3 ms
 
 //Create a menu for multiplayer or single player selection
 void mmanu(){
-    char *text = "TETRIS";
+    char text = "TETRIS";
     //TODO: Implement call to draw text on screen
     put_text(VGA, text, 50, 20, 5);
 
@@ -39,7 +40,7 @@ void mmanu(){
 
 void main(){
     //setup board things, enable interrupt, etc
-    if(!test){
+
     while(!start){
         mmanu();
     }
