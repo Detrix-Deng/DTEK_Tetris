@@ -53,7 +53,15 @@ struct sprite_shape sprite_shapes[] = {
             {0,0,0,0},
             {0,0,0,0}
         }
+    },
+    {6, {//Test shape
+            {1,1,1,1},
+            {1,1,0,0},
+            {0,1,1,0},
+            {0,0,0,0}
+        }
     }
+
 };
 
 struct sprite{
@@ -110,7 +118,7 @@ void border_detect(int player){
     player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
 }
 
-void rotate(int player){
+void rotate(int player, bool inspect){
     // rotate curr_sprite[player] right or left based on direction
     unsigned char new_shape[4] = {0};
     char test_matrix[4][4];
@@ -121,8 +129,10 @@ void rotate(int player){
             test_matrix[i][3-j] = player_list[player].curr_sprite.sprite_shape.matrix[j][i];
         }
     }
-    printf("Sprite after rotation:\n");
-    print_sprite(test_matrix);
+    if(inspect){
+        printf("Sprite after rotation:\n");
+        print_sprite(test_matrix);
+    }
     // Shift left
     int min_dist = 3;
     for(int i = 0; i < 4; i++){
@@ -145,7 +155,9 @@ void rotate(int player){
         if(dist < min_dist)
             min_dist = dist;
     }
-    printf("Min dist = %d\n", min_dist);
+    if(inspect){
+        printf("Min dist = %d\n", min_dist);
+    }
     // Translate and save new_shape to curr_sprite
     // for(int i = 0; i < 4; i++)
     //     new_shape[i] = new_shape[i] << min_dist;
@@ -161,9 +173,11 @@ void rotate(int player){
             player_list[player].curr_sprite.sprite_shape.matrix[i][j] = 0;
         }
     }
-    printf("Sprite after shift:\n");
-    print_sprite(player_list[player].curr_sprite.sprite_shape.matrix);
-    // border_detect(player);
+    if(inspect){
+        printf("Sprite after shift:\n");
+        print_sprite(player_list[player].curr_sprite.sprite_shape.matrix);
+    }
+    border_detect(player);
 }
 
 // void player_init(bool multiplayer){
@@ -200,22 +214,26 @@ bool check_sprite(char matrix[4][4], int sprite_id){
     return true;
 }
 
-void test_sprite(int test_id){
+void test_sprite(int test_id, bool inspect){
     player_list[0].curr_sprite.sprite_shape = sprite_shapes[test_id];
-    printf("Test sprite:\n");
-    print_sprite(player_list[0].curr_sprite.sprite_shape.matrix);
-    rotate(0);
-    rotate(0);
-    rotate(0);
-    rotate(0);
+    if(inspect){
+        printf("Test sprite:\n");
+        print_sprite(player_list[0].curr_sprite.sprite_shape.matrix);
+    }
+    rotate(0, inspect);
+    rotate(0, inspect);
+    rotate(0, inspect);
+    rotate(0, inspect);
+    printf("Test sprite %d: ", test_id);
     if(check_sprite(player_list[0].curr_sprite.sprite_shape.matrix, test_id))
-        printf("True");
+        printf("True\n");
     else
-        printf("False");
+        printf("False\n");
 }
 
 void main(){
     // for(int i = 0; i < 6; i++)
     //     print_sprite(sprite_shapes[i].matrix);
-    test_sprite(0);
+    for(int i = 6; i <= 6; i++)
+        test_sprite(i, true);
 }
