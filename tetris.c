@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "shapes.c"
-#include "vga.c"
+#include "shapes.h"
+#include "vga.h"
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;

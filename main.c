@@ -4,9 +4,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "tetris.c"
-#include "vga.c"
-#include "shapes.c"
+#include "tetris.h"
+#include "vga.h"
+#include "shapes.h"
+
 
 extern void enable_interrupt();
 
