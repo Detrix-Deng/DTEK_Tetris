@@ -2,6 +2,7 @@
 #define TETRIS_H
 
 #include <stdbool.h>
+#include "config.h"
 
 // Hardware
 extern volatile int *gpio;
@@ -10,10 +11,6 @@ extern volatile int *gpio;
 extern int OFFSET_X1;
 extern int OFFSET_X2;
 extern int OFFSET_Y;
-
-// Grid
-#define GRID_WIDTH 10
-#define GRID_HEIGHT 20
 
 // Struct
 

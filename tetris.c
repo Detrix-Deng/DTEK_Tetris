@@ -10,8 +10,6 @@
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
 
-// 
-
 int OFFSET_X1; //Offset for player 1
 int OFFSET_X2; //Offset for player 2
 int OFFSET_Y = 109;
