@@ -50,9 +50,10 @@ void set_offset(bool multiplayer){
         OFFSET_X1 = 74;
         OFFSET_X2 = 234;
     } 
-    else
+    else{
         OFFSET_X1 = 154;
         OFFSET_X2 = 0; //zero offset so it isnt junk value
+    }
 }
 
 void place_sprite(int player){      // Test passed
@@ -246,7 +247,7 @@ void mov_down(int player){    // y in curr_shape += 1
 void hard_down(int player){
     // move sprite all the way down
     do{
-        move_down(player);  // Risk for double terimino hard down if interrupt exactly when
+        mov_down(player);  // Risk for double terimino hard down if interrupt exactly when
                             // do-while loop is done
     } while(player_list[player].curr_sprite.y > 3);
     player_list[player].score += 1;
@@ -255,7 +256,7 @@ void hard_down(int player){
 void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
     player_list[player].curr_sprite.x += direction;
     if(player_list[player].curr_sprite.x < 0)
-        player_list[player].curr_sprite.x == 0;
+        player_list[player].curr_sprite.x = 0;
     else if(player_list[player].curr_sprite.x >= GRID_WIDTH)
         border_detect(player);
 }
