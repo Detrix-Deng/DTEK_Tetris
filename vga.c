@@ -83,12 +83,12 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
         char c = text[i];
         int font_int;
         if (c <= 57 && c >= 48){        //if numbers
-            font_int = 'c' - 48;
-        } else if ('c' <= 90 && c >= 65){ //if letters        
-            font_int = 'c' - 55;
-        } else if ('c' == 32){
+            font_int = c - 48;
+        } else if (c <= 90 && c >= 65){ //if letters        
+            font_int = c - 55;
+        } else if (c == 32){
             font_int = 36;
-        } else if ('c' == 58){
+        } else if (c == 58){
             font_int = 37;
         }
 
