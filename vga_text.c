@@ -1,7 +1,7 @@
 #include <dtekv-lib.c>
 
-#define WIDTH 320;
-#define HEIGHT 240;
+#define WIDTH 320
+#define HEIGHT 240
 
 void console_out(char array[HEIGHT][WIDTH]){ //dump contents of buffer into console
     for(int col = 0; col < HEIGHT; col++){
