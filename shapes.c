@@ -1,8 +1,5 @@
 //Contains only shapes
 
-#include <stddef.h>
-#ifndef SHAPES_H
-#define SHAPES_H
 
 struct sprite_shape {
     char sprite_id;
@@ -402,5 +399,3 @@ unsigned char alphanum[][7] = { //accessed via alphanum[number/letter][row (7 ro
     0x0,
    }
 };
-
-#endif
