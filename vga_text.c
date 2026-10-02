@@ -12,6 +12,6 @@ void console_out(char array[HEIGHT][WIDTH]){ //dump contents of buffer into cons
                 print("0");
             }
         }
-        print('\n');
+        print("\n");
     }
 }
