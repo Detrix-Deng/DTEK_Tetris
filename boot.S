@@ -132,14 +132,14 @@ enable_interrupt:
 	la t0, _isr_handler
 	csrw mtvec, t0
 	
-	li t0, 0x00010000	# Enable interrupts to mie
+	li t0, 0x00010000	//# Enable interrupts to mie
 	csrs mie, t0
 	
-	li t0, 0x08	# Enable Interrupts globally
+	li t0, 0x08	//# Enable Interrupts globally
 	csrs mstatus, t0
 	
-	#csrr a0, mstatus
-    	#jal print_dec
+	//#csrr a0, mstatus
+    	//#jal print_dec
 	
 	jr ra
 	
