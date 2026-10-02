@@ -1,4 +1,4 @@
-#include "dtekv-lib.c"
+#include "dtekv-lib.h"
 
 #define WIDTH 320
 #define HEIGHT 240
