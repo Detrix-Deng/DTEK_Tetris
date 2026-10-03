@@ -224,7 +224,7 @@ unsigned char alphanum[][7] = { //accessed via alphanum[number/letter][row (7 ro
     0x11,
     0x11,
     0x11,
-    0x01,
+    0x0e,
    },
    {//P
     0x1e,
@@ -257,9 +257,9 @@ unsigned char alphanum[][7] = { //accessed via alphanum[number/letter][row (7 ro
     0x0e,
     0x11,
     0x10,
-    0x08,
-    0x04,
-    0x12,
+    0x0e,
+    0x01,
+    0x11,
     0x0e,
    },
    {//T

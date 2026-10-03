@@ -54,3 +54,5 @@ dkms.conf
 *.dwo
 
 render_test.c
+render.c
+tasks.json

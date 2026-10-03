@@ -5,8 +5,6 @@
 #include "vga.h"
 #include "shapes.h"
 
-volatile char *VGA_addr = (volatile char *)0x08000000;
-
 int old_offset[2][2] = { //x,y
     {0,0},
     {0,0}
@@ -21,21 +19,21 @@ void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int
     for(int row = 0; row < GRID_HEIGHT; row++){
         for(int col = 0; col < GRID_WIDTH; col++){
             if(grid[row][col]){
-                array[y + row][x + col] = 255;
+                array[y + row][x + col] = '1';
             } else {
-                array[y + row][x + col] = 0;
+                array[y + row][x + col] = '0';
             }
         }
     }
 
     //loop for border
     for(int vert = 0; vert < GRID_HEIGHT + 2; vert++){
-        array[y - 1 + vert][x - 1] = 255;
-        array[y - 1 + vert][x + GRID_WIDTH + 1] = 255;
+        array[y - 1 + vert][x - 1] = '1';
+        array[y - 1 + vert][x + GRID_WIDTH + 1] = '1';
     } 
     for(int hor = 0; hor < GRID_WIDTH + 2; hor++){
-        array[y - 1][x - 1 + hor] = 255;
-        array[y + GRID_HEIGHT + 1][x - 1 + hor] = 255;
+        array[y - 1][x - 1 + hor] = '1';
+        array[y + GRID_HEIGHT + 1][x - 1 + hor] = '1';
     }
 }
 
@@ -44,6 +42,8 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
     char (*matrix)[4] = sprite;
     int x = x_offset;
     int y = y_offset - 3; //offset for sprites
+
+    printf("is making sprite\n");
 
     if(is_curr){    //if is a curr_sprite, remove last sprite pos and update last pos with new sprite.
         int player = id;
@@ -57,12 +57,13 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
         old_offset[player][0] = x;
         old_offset[player][1] = y + 3;
     }
+
     for(int row = 0; row < 4; row++){
         for(int col = 0; col < 4; col++){
             if(matrix[row][col]){
-                array[row + y][col + x] = 255;
+                array[row + y][col + x] = '1';
             } else {
-                array[row + y][col + x] = 0;
+                array[row + y][col + x] = '0';
             }
         }
     }
@@ -94,20 +95,22 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
                 if (alphanum[font_int][row] & (1 << (4 - col))){
                     for(int dy = 0; dy < scalar; dy++){
                         for(int dx = 0; dx < scalar; dx++){
-                            array[y + row + dy][x + i * 6 * scalar + col + dx] = 255;
+                            array[y + row * scalar + dy][x + i * 6 * scalar + col * scalar + dx] = '1';
                         }
                     }
                 } else {
                     for(int dy = 0; dy < scalar; dy++){
                         for(int dx = 0; dx < scalar; dx++){
-                            array[y + row + dy][x + i * 6 * scalar + col + dx] = 0;
+                            array[y + row * scalar + dy][x + i * 6 * scalar + col * scalar + dx] = '0';
                         }
                     }
                 }
             }
         }
+        i++;
     }
 }
+
 
 void render(char array[HEIGHT][WIDTH]){
     volatile char *VGA_addr = (volatile char *)0x08000000;
@@ -123,7 +126,7 @@ void render(char array[HEIGHT][WIDTH]){
 void clear_display(char array[HEIGHT][WIDTH]){
     for(int row = 0; row < HEIGHT; row++){
         for(int col = 0; col < WIDTH; col++){
-            array[row][col] = 0;
+            array[row][col] = '0';
             render(array);
         }
     }
