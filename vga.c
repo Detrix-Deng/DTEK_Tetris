@@ -43,8 +43,6 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
     int x = x_offset;
     int y = y_offset - 3; //offset for sprites
 
-    printf("is making sprite\n");
-
     if(is_curr){    //if is a curr_sprite, remove last sprite pos and update last pos with new sprite.
         int player = id;
         for(int row = 0; row < 4; row++){
