@@ -154,13 +154,13 @@ bool collision_detect(int player){    // Test passed
     return collision;
 }
 
-void border_detect(int player){
+void border_detect(int player){     // Test passed
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < 4; j++){
             if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
                 if((player_list[player].curr_sprite.x + j - oob) >= GRID_WIDTH)
-                    oob += 8 - player_list[player].curr_sprite.x + j - oob;
+                    oob += 8 - player_list[player].curr_sprite.x + j - oob + 1;
             }
         }
     }
