@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stddef.h>
+#include "dtekv-lib.h"
 #include "tetris.h"
 #include "vga.h"
 #include "shapes.h"

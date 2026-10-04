@@ -1,8 +1,8 @@
 //for tetris related, maybe VGA?
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stddef.h>
+#include "dtekv-lib.h"
 #include "tetris.h"
 #include "shapes.h"
 #include "vga.h"
