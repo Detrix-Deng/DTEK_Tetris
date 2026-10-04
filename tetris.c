@@ -161,7 +161,7 @@ void border_detect(int player){     // Test passed
         for(int j = 0; j < 4; j++){
             if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
                 if((player_list[player].curr_sprite.x + j - oob) >= GRID_WIDTH)
-                    oob += 8 - player_list[player].curr_sprite.x + j - oob + 1;
+                    oob += (GRID_WIDTH - 1) - (player_list[player].curr_sprite.x + j - oob);
             }
         }
     }
