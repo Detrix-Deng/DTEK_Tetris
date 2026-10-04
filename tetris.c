@@ -1,8 +1,8 @@
 //for tetris related, maybe VGA?
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stddef.h>
+#include "dtekv-lib.h"
 #include "tetris.h"
 #include "shapes.h"
 #include "vga.h"
@@ -341,7 +341,7 @@ void hold_func(int player){
     }
 }
 
-void interrupt_handler(unsigned int cause){
+void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
     render(VGA);
