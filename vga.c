@@ -114,7 +114,11 @@ void render(char array[HEIGHT][WIDTH]){
     volatile char *VGA_addr = (volatile char *)0x08000000;
     for (int y = 0; y < WIDTH; y++){
         for (int x = 0; x < HEIGHT; x++){
-            VGA_addr[y * 320 + x] = array[y][x] * 255;
+            if(array[y][x] == '1')
+                VGA_addr[y * 320 + x] = 255;
+            else{
+                VGA_addr[y * 320 + x] = 0;
+            }
         }
     }
 
