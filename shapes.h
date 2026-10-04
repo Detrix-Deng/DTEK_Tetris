@@ -3,6 +3,6 @@
 
 //Contains only shapes
 
-unsigned char alphanum[][7];
+extern unsigned char alphanum[][7];
 
 #endif
