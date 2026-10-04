@@ -122,6 +122,7 @@ void place_sprite(int player){      // Test passed
             player_list[player].grid[player_list[player].curr_sprite.y - j][player_list[player].curr_sprite.x + i] |= player_list[player].curr_sprite.sprite_shape.matrix[3 - j][i];
         }
     }
+    player_list[player].hold_available = true;
 }
 
 unsigned int get_rand(){
@@ -181,7 +182,6 @@ void get_next_sprite(int player){       // Test passed
     player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
     player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
     spawn_sprite(player, 2);
-    player_list[player].hold_available = true;
 }
 
 void score_calc(int player, int line){  // Calculates/update game score based on number of lines cleared and difficulty level
@@ -327,17 +327,20 @@ void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on
         border_detect(player);
 }
 
-void hold_func(int player){
-    if(player_list[player].hold < 0){
-        player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
-        get_next_sprite(player);
-    }
-    else{
-        int temp = player_list[player].hold;
-        player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
-        player_list[player].curr_sprite.sprite_shape = sprite_shapes[temp];
-        player_list[player].curr_sprite.y = 4 - 1;
-        player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
+void hold_func(int player){     // Test passed
+    if(player_list[player].hold_available){
+        player_list[0].hold_available = false;
+        if(player_list[player].hold < 0){
+            player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
+            get_next_sprite(player);
+        }
+        else{
+            int temp = player_list[player].hold;
+            player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
+            player_list[player].curr_sprite.sprite_shape = sprite_shapes[temp];
+            player_list[player].curr_sprite.y = 4 - 1;
+            player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
+        }
     }
 }
 
@@ -389,7 +392,7 @@ void player_init(bool multiplayer){
         }
 
         player_list[i].hold = -1;
-        // hold_available is automatically true from get_next_sprite
+        player_list[i].hold_available = true;
 
         player_list[i].lost = false;
     }
@@ -422,7 +425,6 @@ void loop(){    // game loop
         hard_down(0);
     }
     if(hold1 && player_list[0].hold_available){
-        player_list[0].hold_available = false;
         hold_func(0);
     }
 
