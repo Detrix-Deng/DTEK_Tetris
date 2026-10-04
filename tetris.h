@@ -51,6 +51,7 @@ extern struct sprite_shape sprite_shapes[];
 extern struct player_info player_list[2];
 extern unsigned int global_to_count;
 extern bool multiplayer;
+extern char VGA[HEIGHT][WIDTH];
 
 // Functions
 
