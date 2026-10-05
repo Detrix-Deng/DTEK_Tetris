@@ -11,7 +11,7 @@
 volatile int *gpio = (volatile int *) 0x040000e0;
 
 int OFFSET_X[2]; //Offset for player 1
-int OFFSET_Y = 109;
+int OFFSET_Y = 89;
 char VGA[HEIGHT][WIDTH];  //vga buffer
 
 extern void time2string(char*,int);
@@ -101,11 +101,11 @@ bool multiplayer = false;   // Bool for whether session is 1P or 2P
 void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
     if(multiplayer){
-        OFFSET_X[0] = 74;
-        OFFSET_X[1] = 234;
+        OFFSET_X[0] = 64;
+        OFFSET_X[1] = 224;
     } 
     else{
-        OFFSET_X[0] = 154;
+        OFFSET_X[0] = 144;
         OFFSET_X[1] = 0; //zero offset so it isnt junk value
     }
 }
