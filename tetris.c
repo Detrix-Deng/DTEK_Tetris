@@ -479,7 +479,7 @@ void player_init(bool multiplayer){
 
         // Next grid
         put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 3, OFFSET_Y - 3, 2 * 4, 3);
-        put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 2 * 3, OFFSET_Y - 3, 3, );
+        put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 2 * 3, OFFSET_Y - 3, 3, 999999);
     }
 }
 
