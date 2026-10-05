@@ -12,7 +12,7 @@
 extern void enable_interrupt();
 
 bool start = false;
-bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
+bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
 
 //By Both
 // labinit from lab 3 with different period values
