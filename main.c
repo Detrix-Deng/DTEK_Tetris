@@ -36,14 +36,15 @@ void mmanu(){
     // Change direction to 0 = input so the gpio can be read
     *direction = 0x00;
     if (*gpio == 1){
-        print("Is pressed");
+        print("1 is pressed");
         multiplayer = false;
         start = true;
     } else if (*gpio == 2){
-        print("Not pressed");
+        print("2 is pressed");
         multiplayer = true;
         start = true;
-    }
+    } else
+        print("Not pressed");
     // Change direction to 1 = output so the gpio can be written to
     *direction = 0x03FF;
     render(VGA);
