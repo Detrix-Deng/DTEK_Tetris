@@ -367,7 +367,13 @@ void hold_func(int player){     // Test passed
             player_list[player].curr_sprite.sprite_shape = sprite_shapes[temp];
             player_list[player].curr_sprite.y = 4 - 1;
             player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
+            // Update player's curr sprite in buffer
+            put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
+                   OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, true, player);
         }
+        // Update player's hold sprite in buffer
+        put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 3 * 4,
+                   OFFSET_Y, false, player);
     }
 }
 
