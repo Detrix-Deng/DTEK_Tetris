@@ -56,3 +56,5 @@ dkms.conf
 render_test.c
 render.c
 tasks.json
+main.bin
+main.elf.txt

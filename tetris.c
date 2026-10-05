@@ -290,6 +290,7 @@ void rotate(int player){    // Test passed
         }
     }
     border_detect(player);
+    put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X1 + player_list[player].curr_sprite.x, OFFSET_Y + player_list[player].curr_sprite.y, true);
 }
 
 void mov_down(int player){    // Test passed
