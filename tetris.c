@@ -354,11 +354,10 @@ void handle_interrupt(unsigned int cause){
     
     global_to_count++;
     if(global_to_count >= 30){
-        if(multiplayer && !player_list[1].lost){
-            tick(&player_list[1].mytime);
-        }
-        if(!player_list[0].lost){
-            tick(&player_list[0].mytime);
+        for(int player = 0; player <= multiplayer; player++){
+            if(!player_list[player].lost){
+                tick(&player_list[player].mytime);
+            }
         }
     }
 
