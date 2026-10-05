@@ -125,7 +125,7 @@ void place_sprite(int player){      // Test passed
     player_list[player].hold_available = true;
     // Update player's grid in buffer
     put_grid(VGA, player_list[player].grid, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-             OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, player);
+             OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, player, 3);
 }
 
 //Contributed by Dave
@@ -183,7 +183,7 @@ void spawn_sprite(int player, int index){     // Test passed
     player_list[player].next_sprite[index].y = 4 - 1;
     // Update player's next sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * GRID_WIDTH + 3,
-               OFFSET_Y - 3 * 3 + 3 * index, true, player);
+               OFFSET_Y - 3 * 3 + 3 * index, true, player, 3);
 }
 
 //Contributed by Dave
@@ -195,7 +195,7 @@ void get_next_sprite(int player){       // Test passed
     spawn_sprite(player, 2);
     // Update player's curr sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
-               OFFSET_Y - 3 * 3, true, player);
+               OFFSET_Y - 3 * 3, true, player, 3);
 }
 
 //Contributed by Dave
@@ -311,7 +311,7 @@ void rotate(int player){    // Test passed
     border_detect(player);
     // Update player's curr sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player);
+               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
 }
 
 //Contributed by Dave
@@ -338,7 +338,7 @@ void mov_down(int player){    // Test passed
         player_list[player].curr_sprite.y++;
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player);
+               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
     }
 }
 
@@ -363,7 +363,7 @@ void mov_hor(int player, int direction){   // Test passed
     else if((player_list[player].curr_sprite.x) >= (GRID_WIDTH - 4))
         border_detect(player);
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player);
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 //Contributed by Dave
@@ -382,11 +382,11 @@ void hold_func(int player){     // Test passed
             player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
             // Update player's curr sprite in buffer
             put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
-                   OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, true, player);
+                   OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, true, player, 3);
         }
         // Update player's hold sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 3 * 4,
-                   OFFSET_Y, false, player);
+                   OFFSET_Y, false, player, 3);
     }
 }
 
