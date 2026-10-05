@@ -125,7 +125,7 @@ void place_sprite(int player){      // Test passed
     player_list[player].hold_available = true;
     // Update player's grid in buffer
     put_grid(VGA, player_list[player].grid, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-             OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, player, 3);
+             OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, 3);
 }
 
 //Contributed by Dave
