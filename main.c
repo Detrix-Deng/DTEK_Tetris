@@ -57,7 +57,7 @@ void main(){
     while(!start){
         mmanu();
     }
-    clear_display(VGA);
+    //clear_display(VGA);
 
     set_offset(multiplayer);
 
