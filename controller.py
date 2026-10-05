@@ -33,18 +33,30 @@ GPIO.setmode(GPIO.BCM)
 for pin in KEY_TO_GPIO.values():
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
-
+    
 def find_keyboard():
-    """Finds the first USB keyboard device."""
-    devices = [
-        InputDevice('/dev/input/' + path)
-        for path in os.listdir('/dev/input')
-        if path.startswith('event')
-    ]
+    for filename in os.listdir('/dev/input'):
+        if not filename.startswith('event'):
+            continue
 
-    for dev in devices:
-        if 'keyboard' in dev.name.lower() or 'kbd' in dev.name.lower():
-            return dev
+        path = os.path.join('/dev/input', filename)
+
+        try:
+            dev = InputDevice(path)
+        except FileNotFoundError:
+            continue
+
+        print(path, "->", dev.name)
+
+        # Check whether device actually supports keyboard keys
+        capabilities = dev.capabilities()
+
+        if ecodes.EV_KEY in capabilities:
+            keys = capabilities[ecodes.EV_KEY]
+
+            if ecodes.KEY_W in keys:
+                print("FOUND KEYBOARD:", path)
+                return dev
 
     return None
 
