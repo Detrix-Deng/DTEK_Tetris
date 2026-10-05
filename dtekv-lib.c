@@ -3,6 +3,7 @@
 #define JTAG_UART ((volatile unsigned int*) 0x04000040)
 #define JTAG_CTRL ((volatile unsigned int*) 0x04000044)
 
+//Memcpy added by Ye
 void *memcpy(void *dest, const void *src, unsigned int n)
 {
     char *d = dest;
