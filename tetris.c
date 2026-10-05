@@ -474,9 +474,9 @@ void player_init(bool multiplayer){
 
         // Draw Hold and Next Grid manually
         // Hold grid
-        put_line(VGA, OFFSET_X[player] - 2 * 4 - 2, OFFSET_Y - 3, 2 * 4 + 2, 2);
-        put_line(VGA, OFFSET_X[player] - 2 * 4 - 2 * 2, OFFSET_Y - 3, 2, 2 * 4 + 2 * 2 + 2);
-        put_line(VGA, OFFSET_X[player] - 2 * 4, OFFSET_Y + 2 * 4, 2 * 4, 3);
+        put_line(VGA, OFFSET_X[player] - 3 - 2 * 4 - 2, OFFSET_Y - 3, 2 * 4 + 2, 2);
+        put_line(VGA, OFFSET_X[player] - 3 - 2 * 4 - 2 * 2, OFFSET_Y - 3, 2, 2 * 4 + 2 * 2 + 2);
+        put_line(VGA, OFFSET_X[player] - 3 - 2 * 4 - 2, OFFSET_Y + 2 * 4 + 1, 2 * 4 + 2, 2);
 
         // Next grid
         put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 3, OFFSET_Y - 3, 2 * 4, 3);
