@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""
+USB Keyboard to GPIO Output Translator
+Reads keystrokes from a USB keyboard and toggles GPIO pins accordingly.
+Tested on Raspberry Pi OS with Python 3.
+"""
+
+import RPi.GPIO as GPIO
+from evdev import InputDevice, categorize, ecodes
+import sys
+import os
+
+# --- CONFIGURATION ---
+# Map keys to GPIO pins
+KEY_TO_GPIO = {
+    ecodes.KEY_W: 3,    #Hold
+    ecodes.KEY_A: 5,    #MV
+    ecodes.KEY_S: 7,    #MV
+    ecodes.KEY_D: 8,    #Down
+    ecodes.KEY_R: 10,   #Rotate
+
+    ecodes.KEY_I: 11,
+    ecodes.KEY_J: 13,
+    ecodes.KEY_K: 15,
+    ecodes.KEY_L: 16,
+    ecodes.KEY_P: 18,
+}
+
+# --- SETUP GPIO ---
+GPIO.setmode(GPIO.BCM)
+for pin in KEY_TO_GPIO.values():
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+
+# --- FIND KEYBOARD DEVICE ---
+def find_keyboard():
+    """Finds the first USB keyboard device."""
+    devices = [InputDevice(path) for path in os.listdir('/dev/input') if path.startswith('event')]
+    for dev in devices:
+        if 'keyboard' in dev.name.lower() or 'kbd' in dev.name.lower():
+            return dev
+    return None
+
+keyboard = find_keyboard()
+if not keyboard:
+    print("No USB keyboard found. Make sure it is connected.")
+    GPIO.cleanup()
+    sys.exit(1)
+
+print(f"Using keyboard: {keyboard.name} at {keyboard.path}")
+print("Press mapped keys to toggle GPIO pins. Ctrl+C to exit.")
+
+# --- MAIN LOOP ---
+try:
+    for event in keyboard.read_loop():
+        if event.type == ecodes.EV_KEY:
+            key_event = categorize(event)
+            if key_event.keycode in ecodes.KEY:
+                # Check if key is mapped
+                if event.code in KEY_TO_GPIO:
+                    pin = KEY_TO_GPIO[event.code]
+                    if event.value == 1:  # Key press
+                        GPIO.output(pin, GPIO.HIGH)
+                        print(f"Key {key_event.keycode} pressed -> GPIO{pin} HIGH")
+                    elif event.value == 0:  # Key release
+                        GPIO.output(pin, GPIO.LOW)
+                        print(f"Key {key_event.keycode} released -> GPIO{pin} LOW")
+except KeyboardInterrupt:
+    print("\nExiting...")
+finally:
+    GPIO.cleanup()
