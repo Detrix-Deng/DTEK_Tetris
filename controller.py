@@ -57,21 +57,21 @@ if not keyboard:
 print(f"Using keyboard: {keyboard.name} at {keyboard.path}")
 print("Press mapped keys to toggle GPIO pins. Ctrl+C to exit.")
 
-# --- MAIN LOOP ---
 try:
     for event in keyboard.read_loop():
         if event.type == ecodes.EV_KEY:
-            key_event = categorize(event)
-            if key_event.keycode in ecodes.KEY:
-                # Check if key is mapped
-                if event.code in KEY_TO_GPIO:
-                    pin = KEY_TO_GPIO[event.code]
-                    if event.value == 1:  # Key press
-                        GPIO.output(pin, GPIO.HIGH)
-                        print(f"Key {key_event.keycode} pressed -> GPIO{pin} HIGH")
-                    elif event.value == 0:  # Key release
-                        GPIO.output(pin, GPIO.LOW)
-                        print(f"Key {key_event.keycode} released -> GPIO{pin} LOW")
+
+            if event.code in KEY_TO_GPIO:
+                pin = KEY_TO_GPIO[event.code]
+
+                if event.value == 1:  # key pressed
+                    GPIO.output(pin, GPIO.HIGH)
+                    print(f"Key {event.code} pressed -> GPIO{pin} HIGH")
+
+                elif event.value == 0:  # key released
+                    GPIO.output(pin, GPIO.LOW)
+                    print(f"Key {event.code} released -> GPIO{pin} LOW")
+
 except KeyboardInterrupt:
     print("\nExiting...")
 finally:
