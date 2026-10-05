@@ -34,13 +34,18 @@ for pin in KEY_TO_GPIO.values():
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
-# --- FIND KEYBOARD DEVICE ---
 def find_keyboard():
     """Finds the first USB keyboard device."""
-    devices = [InputDevice(path) for path in os.listdir('/dev/input') if path.startswith('event')]
+    devices = [
+        InputDevice('/dev/input/' + path)
+        for path in os.listdir('/dev/input')
+        if path.startswith('event')
+    ]
+
     for dev in devices:
         if 'keyboard' in dev.name.lower() or 'kbd' in dev.name.lower():
             return dev
+
     return None
 
 keyboard = find_keyboard()
