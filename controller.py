@@ -33,45 +33,49 @@ GPIO.setmode(GPIO.BCM)
 for pin in KEY_TO_GPIO.values():
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
-
+    
 def find_keyboard():
-    """Finds the first USB keyboard device."""
-    devices = [
-        InputDevice('/dev/input/' + path)
-        for path in os.listdir('/dev/input')
-        if path.startswith('event')
-    ]
+    for filename in os.listdir('/dev/input'):
+        if not filename.startswith('event'):
+            continue
 
-    for dev in devices:
-        if 'keyboard' in dev.name.lower() or 'kbd' in dev.name.lower():
-            return dev
+        path = os.path.join('/dev/input', filename)
+
+        try:
+            dev = InputDevice(path)
+        except FileNotFoundError:
+            continue
+
+        print(path, "->", dev.name)
+
+        # Check whether device actually supports keyboard keys
+        capabilities = dev.capabilities()
+
+        if ecodes.EV_KEY in capabilities:
+            keys = capabilities[ecodes.EV_KEY]
+
+            if ecodes.KEY_W in keys:
+                print("FOUND KEYBOARD:", path)
+                return dev
 
     return None
 
 keyboard = find_keyboard()
-if not keyboard:
-    print("No USB keyboard found. Make sure it is connected.")
-    GPIO.cleanup()
-    sys.exit(1)
-
-print(f"Using keyboard: {keyboard.name} at {keyboard.path}")
-print("Press mapped keys to toggle GPIO pins. Ctrl+C to exit.")
-
-# --- MAIN LOOP ---
 try:
     for event in keyboard.read_loop():
         if event.type == ecodes.EV_KEY:
-            key_event = categorize(event)
-            if key_event.keycode in ecodes.KEY:
-                # Check if key is mapped
-                if event.code in KEY_TO_GPIO:
-                    pin = KEY_TO_GPIO[event.code]
-                    if event.value == 1:  # Key press
-                        GPIO.output(pin, GPIO.HIGH)
-                        print(f"Key {key_event.keycode} pressed -> GPIO{pin} HIGH")
-                    elif event.value == 0:  # Key release
-                        GPIO.output(pin, GPIO.LOW)
-                        print(f"Key {key_event.keycode} released -> GPIO{pin} LOW")
+
+            if event.code in KEY_TO_GPIO:
+                pin = KEY_TO_GPIO[event.code]
+
+                if event.value == 1:  # key pressed
+                    GPIO.output(pin, GPIO.HIGH)
+                    print(f"Key {event.code} pressed -> GPIO{pin} HIGH")
+
+                elif event.value == 0:  # key released
+                    GPIO.output(pin, GPIO.LOW)
+                    print(f"Key {event.code} released -> GPIO{pin} LOW")
+
 except KeyboardInterrupt:
     print("\nExiting...")
 finally:
