@@ -61,20 +61,22 @@ def find_keyboard():
     return None
 
 keyboard = find_keyboard()
-if not keyboard:
-    print("No USB keyboard found. Make sure it is connected.")
-    GPIO.cleanup()
-    sys.exit(1)
-
-print(f"Using keyboard: {keyboard.name} at {keyboard.path}")
-print("Press mapped keys to toggle GPIO pins. Ctrl+C to exit.")
-
 try:
     for event in keyboard.read_loop():
-        print(event)
+        if event.type == ecodes.EV_KEY:
+
+            if event.code in KEY_TO_GPIO:
+                pin = KEY_TO_GPIO[event.code]
+
+                if event.value == 1:  # key pressed
+                    GPIO.output(pin, GPIO.HIGH)
+                    print(f"Key {event.code} pressed -> GPIO{pin} HIGH")
+
+                elif event.value == 0:  # key released
+                    GPIO.output(pin, GPIO.LOW)
+                    print(f"Key {event.code} released -> GPIO{pin} LOW")
 
 except KeyboardInterrupt:
-    pass
-
+    print("\nExiting...")
 finally:
     GPIO.cleanup()
