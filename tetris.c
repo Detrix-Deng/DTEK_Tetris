@@ -319,11 +319,12 @@ void hard_down(int player){
     player_list[player].score += 1;
 }
 
-void mov_hor(int player, int direction){   // x in curr_shape +- 1, depending on direction
+void mov_hor(int player, int direction){   // Test passed
+    // x in curr_shape +- direction, where directions is a parameter
     player_list[player].curr_sprite.x += direction;
     if(player_list[player].curr_sprite.x < 0)
         player_list[player].curr_sprite.x = 0;
-    else if(player_list[player].curr_sprite.x >= GRID_WIDTH)
+    else if((player_list[player].curr_sprite.x) >= (GRID_WIDTH - 4))
         border_detect(player);
 }
 
