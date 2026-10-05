@@ -62,8 +62,8 @@ void main(){
 
     //setup board things, enable interrupt, etc
     put_text(VGA, "TETRIS", 0, 0, 5);
-    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0);
-    put_grid(VGA, player_list[0].grid, 100, 100, 0);
+    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 5);
+    put_grid(VGA, player_list[0].grid, 100, 100, 5);
     render(VGA);
     }
 
