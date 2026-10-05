@@ -34,9 +34,11 @@ void mmanu(){
 
     volatile int *gpio = (volatile int *) 0x040000e0;
     if (*gpio == 1){
+        print("Is pressed");
         multiplayer = false;
         start = true;
     } else if (*gpio == 2){
+        print("Not pressed");
         multiplayer = true;
         start = true;
     }

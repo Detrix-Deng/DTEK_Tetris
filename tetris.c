@@ -470,6 +470,16 @@ void player_init(bool multiplayer){
         put_text(VGA, (char*) player_list[player].score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
         put_text(VGA, (char*) player_list[player].lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
         put_text(VGA, (char*) player_list[player].difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+
+        // Draw Hold and Next Grid manually
+        // Hold grid
+        put_line(VGA, OFFSET_X[player] - 2 * 4 - 2, OFFSET_Y - 3, 2 * 4 + 2, 2);
+        put_line(VGA, OFFSET_X[player] - 2 * 4 - 2 * 2, OFFSET_Y - 3, 2, 2 * 4 + 2 * 2 + 2);
+        put_line(VGA, OFFSET_X[player] - 2 * 4, OFFSET_Y + 2 * 4, 2 * 4, 3);
+
+        // Next grid
+        put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 3, OFFSET_Y - 3, 2 * 4, 3);
+        put_line(VGA, OFFSET_X[player] + 3 * GRID_WIDTH + 2 * 3, OFFSET_Y - 3, 3, );
     }
 }
 
