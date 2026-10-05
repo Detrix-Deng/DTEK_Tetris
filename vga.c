@@ -71,7 +71,7 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
     int player = id;
 
     if(is_curr){    //if is a curr_sprite, remove last sprite via using old_sprite variable
-        printf("old sprite\n");
+
         for(int row = 0; row < 4; row++){
             for(int col = 0; col < 4; col++){
                 if(old_sprite[player][row][col] == 1){
