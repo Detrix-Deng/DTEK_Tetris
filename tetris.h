@@ -8,8 +8,7 @@
 extern volatile int *gpio;
 
 // Offset
-extern int OFFSET_X1;
-extern int OFFSET_X2;
+extern int OFFSET_X[2];
 extern int OFFSET_Y;
 
 // Struct
