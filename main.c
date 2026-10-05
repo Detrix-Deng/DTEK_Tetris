@@ -14,6 +14,7 @@ extern void enable_interrupt();
 bool start = false;
 bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
 
+//By Both
 // labinit from lab 3 with different period values
 void labinit() // Clock times out (TO) every 10/3 ms
 {
@@ -24,6 +25,7 @@ void labinit() // Clock times out (TO) every 10/3 ms
     enable_interrupt();
 }
 
+//By Ye
 //Create a menu for multiplayer or single player selection
 void mmanu(){
     char *text = "TETRIS";
@@ -41,8 +43,9 @@ void mmanu(){
     render(VGA);
 }
 
+//By Both
 void main(){
-    //setup board things, enable interrupt, etc
+    //setup before starting the game, options, etc
     if(!test){
     while(!start){
         mmanu();
@@ -62,8 +65,8 @@ void main(){
 
     //setup board things, enable interrupt, etc
     put_text(VGA, "TETRIS", 0, 0, 5);
-    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0);
-    put_grid(VGA, player_list[0].grid, 100, 100, 0);
+    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 5);
+    put_grid(VGA, player_list[0].grid, 100, 100, 5);
     render(VGA);
     }
 

@@ -22,7 +22,7 @@ struct sprite_shape {
     char matrix[4][4];
 };
 
-struct sprite_shape sprite_shapes[] = {
+struct sprite_shape sprite_shapes[] = { 
     {0, {//L
             {1,0,0,0},
             {1,0,0,0},
@@ -98,7 +98,7 @@ struct player_info player_list[2];
 unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
 
-void set_offset(bool multiplayer){
+void set_offset(bool multiplayer){ //Contributed by both
     // Sets pixel offset of the playing field depending on multiplayer
     if(multiplayer){
         OFFSET_X[0] = 64;
@@ -110,6 +110,7 @@ void set_offset(bool multiplayer){
     }
 }
 
+//Contributed by Dave
 void place_sprite(int player){      // Test passed
     int layers_exclude = player_list[0].curr_sprite.y;
     if((GRID_HEIGHT - layers_exclude) <= 0)
@@ -127,6 +128,7 @@ void place_sprite(int player){      // Test passed
              OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, player);
 }
 
+//Contributed by Dave
 unsigned int get_rand(){
     // take the snapL of timer, and then do some calculation to generate a random int.
     volatile int *time_addr = (volatile int *)0x04000020;
@@ -135,6 +137,7 @@ unsigned int get_rand(){
     return rand;
 }
 
+//Contributed by Dave
 bool collision_detect(int player){    // Test passed
     // Check if the space below the sprite is occupied.
     // If occupied, return True, else, return False
@@ -157,6 +160,7 @@ bool collision_detect(int player){    // Test passed
     return collision;
 }
 
+//Contributed by Dave
 void border_detect(int player){     // Test passed
     int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 3; i++){
@@ -170,6 +174,7 @@ void border_detect(int player){     // Test passed
     player_list[player].curr_sprite.x = player_list[player].curr_sprite.x - oob;
 }
 
+//Contributed by Dave
 void spawn_sprite(int player, int index){     // Test passed
     // Update curr_sprite with next_sprite
     int rand_int = get_rand() % 6;
@@ -181,6 +186,7 @@ void spawn_sprite(int player, int index){     // Test passed
                OFFSET_Y - 3 * 3 + 3 * index, true, player);
 }
 
+//Contributed by Dave
 void get_next_sprite(int player){       // Test passed
     // Update curr_sprite with next_sprite
     player_list[player].curr_sprite = player_list[player].next_sprite[0];
@@ -192,6 +198,7 @@ void get_next_sprite(int player){       // Test passed
                OFFSET_Y - 3 * 3, true, player);
 }
 
+//Contributed by Dave
 void score_calc(int player, int line){      // Test passed
     // Calculates/update game score based on number of lines cleared and difficulty level
     switch(line){
@@ -218,6 +225,7 @@ void score_calc(int player, int line){      // Test passed
     put_text(VGA, (char*) player_list[player].score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
 }
 
+//Contributed by Dave
 int line_clear(int player){   // Test passed
     // After collision detect == True
     // Check if any relevant layer is full.
@@ -268,6 +276,7 @@ int line_clear(int player){   // Test passed
     return layer_cleared;
 }
 
+//Contributed by Dave
 void rotate(int player){    // Test passed
     // rotate player's sprite clockwise
     char new_matrix[4][4];
@@ -305,6 +314,7 @@ void rotate(int player){    // Test passed
                OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player);
 }
 
+//Contributed by Dave
 void mov_down(int player){    // Test passed
     // y in curr_shape += 1
     // This is polled every game cycle
@@ -332,6 +342,7 @@ void mov_down(int player){    // Test passed
     }
 }
 
+//Contributed by Dave
 void hard_down(int player){     // Test passed
     // move sprite all the way down
     do{
@@ -343,6 +354,7 @@ void hard_down(int player){     // Test passed
     put_text(VGA, (char*) player_list[player].score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
 }
 
+//Contributed by Dave
 void mov_hor(int player, int direction){   // Test passed
     // x in curr_shape +- direction, where directions is a parameter
     player_list[player].curr_sprite.x += direction;
@@ -354,6 +366,7 @@ void mov_hor(int player, int direction){   // Test passed
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player);
 }
 
+//Contributed by Dave
 void hold_func(int player){     // Test passed
     if(player_list[player].hold_available){
         player_list[0].hold_available = false;
@@ -377,6 +390,7 @@ void hold_func(int player){     // Test passed
     }
 }
 
+//Contributed by Dave
 void increase_difficulty(int player){   
     // Increases the player's difficulty when called up to a maximum of 15
     if(player_list[player].difficulty < 15){
@@ -386,6 +400,7 @@ void increase_difficulty(int player){
     put_text(VGA, (char*) player_list[player].difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
 }
 
+//Contributed by Both
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
@@ -423,6 +438,7 @@ void handle_interrupt(unsigned int cause){
     }
 }
 
+//Contributed by Dave
 void player_init(bool multiplayer){
     for(int player = 0; player <= multiplayer; player++){
         player_list[player].score = 0;
@@ -457,6 +473,7 @@ void player_init(bool multiplayer){
     }
 }
 
+//Contributed by Both
 void loop(){    // game loop
     // poll inputs
     int rot1 = *gpio & 0x0001;

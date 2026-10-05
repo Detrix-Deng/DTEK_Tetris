@@ -10,63 +10,105 @@ int old_offset[2][2] = { //x,y
     {0,0}
 };
 
-void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int id){
+char old_sprite[2][4][4] = {
+    {{1,0,0,0}
+    ,{1,0,0,0}
+    ,{1,1,0,0}
+    ,{0,0,0,0}},
+
+    {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}}
+};
+
+//By Ye
+void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int scalar){
+    //Accepts VGA buffer, player grid, offset and scale to draw it on the VGA buffer
     int x = x_offset;
     int y = y_offset;
-    int player = id; //unused but kept for consistency with other functions
 
     //loop for terinions
     for(int row = 0; row < GRID_HEIGHT; row++){
         for(int col = 0; col < GRID_WIDTH; col++){
             if(grid[row][col]){
-                array[y + row][x + col] = '1';
+                for(int dy = 0; dy < scalar; dy++){
+                    for(int dx = 0; dx < scalar; dx++){ //1 if pixel is occupied
+                        array[y + row * scalar + dy][x + col * scalar + dx] = '1';
+                    }
+                }
             } else {
-                array[y + row][x + col] = '0';
+                for(int dy = 0; dy < scalar; dy++){
+                    for(int dx = 0; dx < scalar; dx++){ //0 otherwise
+                        array[y + row * scalar + dy][x + col * scalar + dx] = '0';
+                    }
+                }
             }
         }
     }
 
-    //loop for border
+    //loop for border around grid
     for(int vert = 0; vert < GRID_HEIGHT + 2; vert++){
-        array[y - 1 + vert][x - 1] = '1';
-        array[y - 1 + vert][x + GRID_WIDTH + 1] = '1';
+        for(int dy = 0; dy < scalar; dy++){
+            for(int dx = 0; dx < scalar; dx++){
+                array[y - 1 * scalar + vert * scalar + dy][x - 1 * scalar + dx] = '1';
+                array[y - 1 * scalar + vert * scalar + dy][x + GRID_WIDTH * scalar + dx] = '1';
+            }
+        }
     } 
     for(int hor = 0; hor < GRID_WIDTH + 2; hor++){
-        array[y - 1][x - 1 + hor] = '1';
-        array[y + GRID_HEIGHT + 1][x - 1 + hor] = '1';
+        for(int dy = 0; dy < scalar; dy++){
+            for(int dx = 0; dx < scalar; dx++){
+                array[y - 1 * scalar + dy][x - 1 * scalar + hor * scalar + dx] = '1';
+                array[y + GRID_HEIGHT * scalar + dy][x - 1 * scalar + hor * scalar + dx] = '1';
+            }
+        }
     }
 }
 
+//By Ye
 //Draw sprite onto VGA buffer
-void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int y_offset, bool is_curr, int id){
-    char (*matrix)[4] = sprite;
+void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int y_offset, bool is_curr, int id, int scalar){
     int x = x_offset;
-    int y = y_offset - 3; //offset for sprites
+    int y = y_offset; //offset for sprites
+    int player = id;
 
-    if(is_curr){    //if is a curr_sprite, remove last sprite pos and update last pos with new sprite.
-        int player = id;
+    if(is_curr){    //if is a curr_sprite, remove last sprite via using old_sprite variable
+        printf("old sprite\n");
         for(int row = 0; row < 4; row++){
             for(int col = 0; col < 4; col++){
-                if(matrix[row][col]){
-                    array[row + old_offset[player][1] - 3][col + old_offset[player][0]] = 0;
+                if(old_sprite[player][row][col] == 1){
+                    for(int dx = 0; dx < scalar; dx++){
+                        for(int dy = 0; dy < scalar; dy++){
+                            array[old_offset[player][1] + row * scalar + dy][old_offset[player][0] + col * scalar + dx] = '0';
+                        }
+                    }
                 }
             }
         }
         old_offset[player][0] = x;
-        old_offset[player][1] = y + 3;
+        old_offset[player][1] = y;
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 4; col++){
+                old_sprite[player][row][col] = sprite[row][col];
+            }
+        }
     }
 
+    //Place new sprite into VGA
     for(int row = 0; row < 4; row++){
         for(int col = 0; col < 4; col++){
-            if(matrix[row][col]){
-                array[row + y][col + x] = '1';
-            } else {
-                array[row + y][col + x] = '0';
+            for(int dy = 0; dy < scalar; dy++){
+                for(int dx = 0; dx < scalar; dx++){
+                    if(sprite[row][col]){
+                        array[row * scalar + y + dy][col * scalar + x + dx] = '1';
+                    } else {
+                        array[row * scalar + y + dy][col * scalar + x + dx] = '0';
+                    }
+                }
             }
         }
     }
 }
 
+//By Ye
 //Feed in matrix, text, offset positions
 void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset, int scalar){
     int x = x_offset;
@@ -75,14 +117,14 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
       //calculate buffer array to copy font table into
     while(text[i] != '\0'){             //gets the text from char array
         char c = text[i];
-        int font_int = 0; //font_int is the index for the alphanum array
+        int font_int = 0;               //font_int is the index for the alphanum array
         if (c <= 57 && c >= 48){        //if numbers
             font_int = c - 48;
         } else if (c <= 90 && c >= 65){ //if letters        
             font_int = c - 55;
-        } else if (c == 32){
+        } else if (c == 32){            //special case
             font_int = 36;
-        } else if (c == 58){
+        } else if (c == 58){            //special case
             font_int = 37;
         }
 
@@ -109,8 +151,19 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
     }
 }
 
+//By Ye
+void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
+    //creates a line
+    for (int vert = 0; vert < width; vert++){
+        for (int hori = 0; hori < length; hori++){
+            array[vert][hori] = '1';
+        }
+    }
+}
 
+//By Ye
 void render(char array[HEIGHT][WIDTH]){
+    //copies VGA buffer content into the VGA pointer
     volatile char *VGA_addr = (volatile char *)0x08000000;
     for (int y = 0; y < WIDTH; y++){
         for (int x = 0; x < HEIGHT; x++){
@@ -124,7 +177,9 @@ void render(char array[HEIGHT][WIDTH]){
 
 }
 
+//By Ye
 void clear_display(char array[HEIGHT][WIDTH]){
+    //Clears display
     for(int row = 0; row < HEIGHT; row++){
         for(int col = 0; col < WIDTH; col++){
             array[row][col] = '0';
