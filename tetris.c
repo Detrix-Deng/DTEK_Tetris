@@ -184,7 +184,8 @@ void get_next_sprite(int player){       // Test passed
     spawn_sprite(player, 2);
 }
 
-void score_calc(int player, int line){  // Calculates/update game score based on number of lines cleared and difficulty level
+void score_calc(int player, int line){      // Test passed
+    // Calculates/update game score based on number of lines cleared and difficulty level
     switch(line){
         case 1:
             player_list[player].score += 100 * player_list[player].difficulty;
@@ -291,7 +292,8 @@ void rotate(int player){    // Test passed
     border_detect(player);
 }
 
-void mov_down(int player){    // y in curr_shape += 1
+void mov_down(int player){    // Test passed
+    // y in curr_shape += 1
     // This is polled every game cycle
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
@@ -310,7 +312,7 @@ void mov_down(int player){    // y in curr_shape += 1
     }
 }
 
-void hard_down(int player){
+void hard_down(int player){     // Test passed
     // move sprite all the way down
     do{
         mov_down(player);  // Risk for double terimino hard down if interrupt exactly when
@@ -360,17 +362,12 @@ void handle_interrupt(unsigned int cause){
         }
     }
 
-    if(multiplayer){
-        player_list[1].to_count++;
-        if(player_list[1].to_count >= 45 - player_list[1].difficulty){
-            player_list[1].to_count = 0;
-            mov_down(1);
+    for(int player = 0; player <= multiplayer; player++){
+        player_list[player].to_count++;
+        if(player_list[player].to_count >= 45 - 3 * (player_list[player].difficulty - 1)){
+            player_list[player].to_count = 0;
+            mov_down(player);
         }
-    }
-    player_list[0].to_count++;
-    if(player_list[0].to_count >= 45 - player_list[0].difficulty){
-        player_list[0].to_count = 0;
-        mov_down(0);
     }
 }
 
@@ -379,7 +376,7 @@ void player_init(bool multiplayer){
         player_list[i].score = 0;
         player_list[i].lines = 0;
         player_list[i].to_count = 0;
-        player_list[i].difficulty = 0;
+        player_list[i].difficulty = 1;
         player_list[i].mytime = 0x0000;
         time2string(player_list[i].textstring, player_list[i].mytime);
 
