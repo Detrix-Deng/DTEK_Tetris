@@ -146,8 +146,13 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
     }
 }
 
-
-
+void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
+    for (int vert = 0; vert < width; vert++){
+        for (int hori = 0; hori < length; hori++){
+            array[vert][hori] = '1';
+        }
+    }
+}
 
 void render(char array[HEIGHT][WIDTH]){
     volatile char *VGA_addr = (volatile char *)0x08000000;
