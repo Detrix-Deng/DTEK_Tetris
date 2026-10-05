@@ -386,8 +386,8 @@ void hold_func(int player){     // Test passed
                    OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, true, player, 3);
         }
         // Update player's hold sprite in buffer
-        put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 3 * 4,
-                   OFFSET_Y, false, player, 3);
+        put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 1 - 4 * 2,
+                   OFFSET_Y, false, player, 2);
     }
 }
 
