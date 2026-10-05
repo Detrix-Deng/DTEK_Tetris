@@ -34,7 +34,7 @@ void mmanu(){
     volatile int *direction = (volatile int *) 0x040000e4;
     volatile int *gpio = (volatile int *) 0x040000e0;
     // Change direction to 0 = input so the gpio can be read
-    *direction = 0x00;
+    *direction = 0x03FF;
     if (*gpio == 1){
         print("1 is pressed");
         multiplayer = false;
@@ -46,7 +46,7 @@ void mmanu(){
     } else
         print("Not pressed");
     // Change direction to 1 = output so the gpio can be written to
-    *direction = 0x03FF;
+    *direction = 0x00;
     render(VGA);
 }
 
