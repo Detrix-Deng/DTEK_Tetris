@@ -347,6 +347,13 @@ void hold_func(int player){     // Test passed
     }
 }
 
+void increase_difficulty(int player){   
+    // Increases the player's difficulty when called up to a maximum of 15
+    if(player_list[player].difficulty < 15){
+        player_list[player].difficulty++;
+    }
+}
+
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
@@ -354,9 +361,17 @@ void handle_interrupt(unsigned int cause){
     
     global_to_count++;
     if(global_to_count >= 30){
+        global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
+                // Increase the player's time by 1 if not lost
                 tick(&player_list[player].mytime);
+            }
+        }
+        for(int player = 0; player <= multiplayer; player++){
+            if(((player_list[player].mytime >> 4) * 10 + player_list[player].mytime) % 20 == 0 && !player_list[player].lost){
+                // increase difficulty for every 20 sec
+                increase_difficulty(player);
             }
         }
     }
@@ -364,6 +379,9 @@ void handle_interrupt(unsigned int cause){
     for(int player = 0; player <= multiplayer; player++){
         player_list[player].to_count++;
         if(player_list[player].to_count >= 45 - 3 * (player_list[player].difficulty - 1)){
+            // 45 = 1.5 seconds
+            // -3*difficulty = 0.1 seconds faster for every difficulty level
+            // max difficulty 15 = mov_down once every 0.1 seconds
             player_list[player].to_count = 0;
             mov_down(player);
         }
