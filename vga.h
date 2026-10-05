@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "config.h"
 
-extern void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int id, int scalar);
+extern void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int scalar);
 //Draw sprite onto VGA buffer
 extern void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int y_offset, bool is_curr, int id, int scalar);
 //Feed in matrix, text, offset positions
