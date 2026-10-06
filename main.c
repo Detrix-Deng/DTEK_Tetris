@@ -33,22 +33,20 @@ void labinit() // Clock times out (TO) every 10/3 ms
 //By Ye
 //Create a menu for multiplayer or single player selection
 void mmanu(){
-    char *text = "TETRIS";
     //TODO: Implement call to draw text on screen
-    put_text(VGA, text, 50, 20, 5);
+    put_text(VGA, "TETRIS", 85, 20, 5);
+    put_text(VGA, "SINGLEPLAYER", 20, 100, 2);
+    put_text(VGA, "MULTIPLAYER", 240, 100, 2);
 
     int value = read_gpio();
     
     if (value == 1){
-        print("1 is pressed");
         multiplayer = false;
         start = true;
     } else if (value == 2){
-        print("2 is pressed");
         multiplayer = true;
         start = true;
     } else
-        print("Not pressed");
 
     render(VGA);
 }
