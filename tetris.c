@@ -67,6 +67,13 @@ struct sprite_shape sprite_shapes[] = {
             {0,0,0,0},
             {0,0,0,0}
         }
+    },
+    {6, {//J
+            {0,1,0,0},
+            {0,1,0,0},
+            {1,1,0,0},
+            {0,0,0,0}
+        }
     }
 };
 
@@ -194,7 +201,7 @@ void border_detect(int player){     // Test passed
 //Contributed by Dave
 void spawn_sprite(int player, int index){     // Test passed
     // Update curr_sprite with next_sprite
-    int rand_int = get_rand() % 6;
+    unsigned int rand_int = get_rand() % 7;
     player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
     player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;
     player_list[player].next_sprite[index].y = 4 - 1;
