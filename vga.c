@@ -156,7 +156,7 @@ void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
     //creates a line
     for (int vert = 0; vert < width; vert++){
         for (int hori = 0; hori < length; hori++){
-            array[vert][hori] = '1';
+            array[vert + y][hori + x] = '1';
         }
     }
 }
