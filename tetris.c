@@ -8,7 +8,7 @@
 #include "vga.h"
 
 //add GPIO pointer, timer pointer, VGA pointer
-volatile int *gpio = (volatile int *) 0x040000e0;
+// volatile int *gpio = (volatile int *) 0x040000e0;
 // volatile int *direction = (volatile int *) 0x040000e4;
 
 int OFFSET_X[2]; //Offset for player 1
