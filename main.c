@@ -12,8 +12,8 @@
 extern void enable_interrupt();
 extern void delay(int ms);
 
-volatile int *gpio = (volatile int *) 0x040000e0;
-volatile int *direction = (volatile int *) 0x040000e4;
+volatile unsigned int *gpio = (volatile int *) 0x040000e0;
+volatile unsigned int *direction = (volatile int *) 0x040000e4;
 
 
 bool start = false;
