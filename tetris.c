@@ -348,7 +348,9 @@ void mov_down(int player){    // Test passed
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
-        print("Moved down!");
+        print("Moved down for player: ");
+        print_dec(player);
+        print("!\n");
     }
 }
 
