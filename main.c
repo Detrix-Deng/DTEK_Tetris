@@ -60,6 +60,7 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
+    *gpio = 0x00;
     while(1){
         unsigned int value = *gpio;
         *direction = (volatile int) 0x00;
