@@ -16,6 +16,7 @@ int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
 char VGA[WIDTH][HEIGHT];  //vga buffer
 
+// functions from timetemplate from lab 3
 extern void time2string(char*,int);
 extern void tick(int*);
 
@@ -111,10 +112,16 @@ void set_offset(bool multiplayer){ //Contributed by both
         OFFSET_X[1] = 0; //zero offset so it isnt junk value
     }
 }
+// Contributed by Dave
 int read_gpio(){
+    // Function used to reset and read gpio
+    // Change direction to be able to write to gpio
     *direction = 0xFFFFFFFF;
+    // Reset gpio due to it always sets itself to 0xFFFFFFFF
     *outclear = 0xFFFFFFFF;
+    // Change direction to be able to write to gpio externally
     *direction = 0x00;
+    // asm nop because otherwise reading too fast
     asm volatile ("nop");
     return *gpio;
 }
