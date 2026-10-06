@@ -62,7 +62,6 @@ void main(){
     //setup before starting the game, options, etc
     while(1){
         *direction = 0xFFFFFFFF;
-        volatile int *outclear = gpio + 5;
         *outclear = 0xFFFFFFFF;
         *direction = 0x00;
         asm volatile ("nop");
