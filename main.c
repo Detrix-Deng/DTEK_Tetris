@@ -75,7 +75,7 @@ void main(){
     }
     } else {
         int i = 0;
-        put_grid(VGA, player_list[0].grid, 1, 1, 1);
+        put_line(VGA, 0, 0, 100, 100);
         while(1){
             put_sprite(VGA, sprite_shapes[0].matrix, 1, i, true, 0, 1);
             render(VGA);

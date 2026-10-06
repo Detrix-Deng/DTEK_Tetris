@@ -80,6 +80,12 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
                             array[old_offset[player][1] + row * scalar + dy][old_offset[player][0] + col * scalar + dx] = '0';
                         }
                     }
+                } else {
+                    for(int dx = 0; dx < scalar; dx++){
+                        for(int dy = 0; dy < scalar; dy++){
+                            array[old_offset[player][1] + row * scalar + dy][old_offset[player][0] + col * scalar + dx] = array[y + dy][x + dx];
+                        }
+                    }
                 }
             }
         }
