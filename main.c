@@ -12,8 +12,8 @@
 extern void enable_interrupt();
 extern void delay(int ms);
 
-volatile unsigned int *gpio = (volatile int *) 0x040000e0;
-volatile unsigned int *direction = (volatile int *) 0x040000e4;
+volatile int *gpio = (volatile int *) 0x040000e0;
+volatile int *direction = (volatile int *) 0x040000e4;
 
 
 bool start = false;
@@ -61,18 +61,19 @@ void mmanu(){
 void main(){
     //setup before starting the game, options, etc
     while(1){
+        unsigned int value = *gpio;
         *direction = (volatile int) 0x00;
         print("Direction value: ");
         print_hex32(*direction);
         print("\n");
         print("GPIO value: ");
-        print_hex32(*gpio);
+        print_hex32(value);
         print("\n");
-        if(*gpio == 1)
+        if(value == 1)
             print("1 IS PRESSED\n");
-        else if(*gpio == 2)
+        else if(value == 2)
             print("2 IS PRESSED\n");
-        else if(*gpio > 0)
+        else if(value > 0)
             print("SOME INPUT\n");
         else
             print("no input\n");
