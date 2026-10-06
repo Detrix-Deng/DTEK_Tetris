@@ -35,8 +35,8 @@ void labinit() // Clock times out (TO) every 10/3 ms
 void mmanu(){
     //TODO: Implement call to draw text on screen
     put_text(VGA, "TETRIS", 85, 20, 5);
-    put_text(VGA, "SINGLEPLAYER", 20, 100, 2);
-    put_text(VGA, "MULTIPLAYER", 240, 100, 2);
+    put_text(VGA, "SINGLEPLAYER", 20, 100, 1);
+    put_text(VGA, "MULTIPLAYER", 240, 100, 1);
 
     int value = read_gpio();
     
