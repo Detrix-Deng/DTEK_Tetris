@@ -421,10 +421,11 @@ void increase_difficulty(int player){
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
-    render(VGA);
+    // render(VGA);
     
     global_to_count++;
     if(global_to_count >= 30){
+        render(VGA);
         global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
