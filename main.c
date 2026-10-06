@@ -97,9 +97,9 @@ void main(){
     } else {
 
     //setup board things, enable interrupt, etc
-    put_text(VGA, "TETRIS", 0, 0, 10);
-    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
-    put_grid(VGA, player_list[0].grid, 100, 100, 1);
+    put_text(VGA, "TETRIS", 0, 0, 8);
+    //put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
+    //put_grid(VGA, player_list[0].grid, 100, 100, 1);
     render(VGA);
     }
 
