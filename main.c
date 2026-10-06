@@ -60,18 +60,20 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    *direction = (volatile int) 0x00;
+    while(1){
+        *direction = (volatile int) 0x00;
     
-    if(*gpio == 1)
-        print("1 is pressed");
-    else if(*gpio == 2)
-        print("2 is pressed");
-    else if(*gpio > 0)
-        print("Some input");
-    else
-        print("no input");
+        if(*gpio == 1)
+            print("1 is pressed");
+        else if(*gpio == 2)
+            print("2 is pressed");
+        else if(*gpio > 0)
+            print("Some input");
+        else
+            print("no input");
 
-    delay(1000);
+        delay(1000);
+    }
 
 
     // if(!test){
