@@ -74,30 +74,12 @@ void main(){
         loop();
     }
     } else {
-
-    put_text(VGA, "SCORE: 00000", 0,0,1);
-    put_text(VGA, "HIJKLMNOP",0,20,1);
-    put_text(VGA, "QRSTUVWXYZ",0,40,1);
-    put_text(VGA,"0123456789",0,60,1);
-    put_text(VGA, ": space space", 0, 80, 1);
-    render(VGA);
-    //setup board things, enable interrupt, etc
-    /* player_init(false);
-    int player = 0;
-    set_offset(false);
-    put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
-
-    // Draw Hold and Next Grid manually
-    // Hold grid
-    put_line(VGA, OFFSET_X[player] - 3 - (2 * 4) - 2, OFFSET_Y - 3, (2 * 4) + 2, 2);
-    put_line(VGA, OFFSET_X[player] - 3 - (2 * 4) - (2 * 2), OFFSET_Y - 3, 2, (2 * 4) + (2 * 2) + 2);
-    put_line(VGA, OFFSET_X[player] - 3 - (2 * 4) - 2, OFFSET_Y + (2 * 4) + 1, (2 * 4) + 2, 2);
-
-    // Next grid
-    put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3, OFFSET_Y - 3, (2 * 4) + 2, 2);
-    put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3 + (2 * 4) + 2, OFFSET_Y - 3, 2, (3 * 2 * 4) + (4 * 1) + (2 * 2));
-    put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3, OFFSET_Y + (3 * 2 * 4) + (3 * 1), (2 * 4) + 2, 2);
-    render(VGA);*/
+        int i = 0;
+        while(1){
+            put_sprite(VGA, sprite_shapes[2].matrix, 100, i, true, 1, 5);
+            render(VGA);
+            i++;
+        }
     }
 
 }
