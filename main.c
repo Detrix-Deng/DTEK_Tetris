@@ -89,6 +89,8 @@ void main(){
 
     player_init(multiplayer);
 
+    clear_display(VGA);
+
     labinit();
     // Call main game loop in tetris.c
     while(1){

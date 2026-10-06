@@ -193,7 +193,6 @@ void clear_display(char array[HEIGHT][WIDTH]){
     for(int row = 0; row < HEIGHT; row++){
         for(int col = 0; col < WIDTH; col++){
             array[row][col] = '0';
-            render(array);
         }
     }
 }
