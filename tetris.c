@@ -9,7 +9,7 @@
 
 //add GPIO pointer, timer pointer, VGA pointer
 volatile int *gpio = (volatile int *) 0x040000e0;
-volatile int *direction = (volatile int *) 0x040000e4;
+// volatile int *direction = (volatile int *) 0x040000e4;
 
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
@@ -488,7 +488,8 @@ void player_init(bool multiplayer){
 //Contributed by Both
 void loop(){    // game loop
     // Change direction to 1 = output so the gpio can be written to
-    *direction = 0x03FF;
+    // *direction = 0x03FF;
+
     // poll inputs
     int rot1 = *gpio & 0x0001;
     int mv_r1 = *gpio & 0x0002;
@@ -504,7 +505,8 @@ void loop(){    // game loop
     // Player 1
     if(!player_list[0].lost){
         // Change direction to 0 = input so the gpio can be read
-        *direction = 0x00;
+        // *direction = 0x00;
+
         if (rot1){
             rotate(0);
         }
@@ -520,8 +522,9 @@ void loop(){    // game loop
         if(hold1 && player_list[0].hold_available){
             hold_func(0);
         }
+
         // Reset direction to 1 = output so the gpio can be written to
-        *direction = 0x03FF;
+        // *direction = 0x03FF;
     }
 
     // Player 2
@@ -529,7 +532,8 @@ void loop(){    // game loop
     {
         if(!player_list[1].lost){
             // Change direction to 0 = input so the gpio can be read
-            *direction = 0x00;
+            // *direction = 0x00;
+
             if (rot2){
                 rotate(1);
             }
@@ -546,8 +550,9 @@ void loop(){    // game loop
                 player_list[1].hold_available = false;
                 hold_func(1);
             }
+
             // Reset direction to 1 = output so the gpio can be written to
-            *direction = 0x03FF;
+            // *direction = 0x03FF;
         }
     }
 }

@@ -31,10 +31,11 @@ void mmanu(){
     char *text = "TETRIS";
     //TODO: Implement call to draw text on screen
     put_text(VGA, text, 50, 20, 5);
-    volatile int *direction = (volatile int *) 0x040000e4;
     volatile int *gpio = (volatile int *) 0x040000e0;
+
     // Change direction to 0 = input so the gpio can be read
-    *direction = 0x00;
+    //*direction = 0x00;
+    
     if (*gpio == 1){
         print("1 is pressed");
         multiplayer = false;
@@ -45,14 +46,18 @@ void mmanu(){
         start = true;
     } else
         print("Not pressed");
+
     // Change direction to 1 = output so the gpio can be written to
-    *direction = 0x03FF;
+    // *direction = 0x03FF;
     render(VGA);
 }
 
 //By Both
 void main(){
     //setup before starting the game, options, etc
+    volatile int *direction = (volatile int *) 0x040000e4;
+    *direction = 0x00;
+
     if(!test){
     while(!start){
         mmanu();
