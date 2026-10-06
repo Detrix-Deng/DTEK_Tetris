@@ -10,6 +10,11 @@
 
 
 extern void enable_interrupt();
+extern void delay(int ms);
+
+volatile int *gpio = (volatile int *) 0x040000e0;
+volatile int *direction = (volatile int *) 0x040000e4;
+*direction = 0x00;
 
 bool start = false;
 bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
@@ -55,31 +60,41 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    volatile int *direction = (volatile int *) 0x040000e4;
-    *direction = 0x00;
+    
+    if(*gpio == 1)
+        print("1 is pressed");
+    else if(*gpio == 2)
+        print("2 is pressed");
+    else if(*gpio > 0)
+        print("Some input");
+    else
+        print("no input");
 
-    if(!test){
-    while(!start){
-        mmanu();
-    }
-    //clear_display(VGA);
+    delay(1000);
 
-    set_offset(multiplayer);
 
-    player_init(multiplayer);
+    // if(!test){
+    // while(!start){
+    //     mmanu();
+    // }
+    // //clear_display(VGA);
 
-    labinit();
-    // Call main game loop in tetris.c
-    while(1){
-        loop();
-    }
-    } else {
+    // set_offset(multiplayer);
 
-    //setup board things, enable interrupt, etc
-    put_text(VGA, "TETRIS", 0, 0, 5);
-    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
-    put_grid(VGA, player_list[0].grid, 100, 100, 1);
-    render(VGA);
-    }
+    // player_init(multiplayer);
+
+    // labinit();
+    // // Call main game loop in tetris.c
+    // while(1){
+    //     loop();
+    // }
+    // } else {
+
+    // //setup board things, enable interrupt, etc
+    // put_text(VGA, "TETRIS", 0, 0, 5);
+    // put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
+    // put_grid(VGA, player_list[0].grid, 100, 100, 1);
+    // render(VGA);
+    // }
 
 }
