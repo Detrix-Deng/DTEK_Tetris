@@ -14,7 +14,7 @@ extern void delay(int ms);
 
 volatile int *gpio = (volatile int *) 0x040000e0;
 volatile int *direction = (volatile int *) 0x040000e4;
-*direction = 0x00;
+*direction = (int) 0x00;
 
 bool start = false;
 bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
