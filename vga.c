@@ -174,17 +174,16 @@ void render(char array[HEIGHT][WIDTH]){
         }
         print("\n");
     }
-    /* volatile char *VGA_addr = (volatile char *)0x08000000;
-    for (int y = 0; y < WIDTH; y++){
-        for (int x = 0; x < HEIGHT; x++){
+    volatile char *VGA_addr = (volatile char *)0x08000000;
+    for (int y = 0; y < HEIGHT; y++){
+        for (int x = 0; x < WIDTH; x++){
             if(array[y][x] == '1')
                 VGA_addr[y * 320 + x] = 255;
             else{
                 VGA_addr[y * 320 + x] = 0;
             }
         }
-    } */
-
+    } 
 }
 
 //By Ye
