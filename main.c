@@ -7,13 +7,13 @@
 #include "tetris.h"
 #include "vga.h"
 #include "shapes.h"
+#include "config.h"
 
 
 extern void enable_interrupt();
 extern void delay(int ms);
 
-volatile int *gpio = (volatile int *) 0x040000e0;
-volatile int *direction = (volatile int *) 0x040000e4;
+
 
 
 bool start = false;
