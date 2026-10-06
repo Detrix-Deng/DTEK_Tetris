@@ -164,7 +164,17 @@ void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
 //By Ye
 void render(char array[HEIGHT][WIDTH]){
     //copies VGA buffer content into the VGA pointer
-    volatile char *VGA_addr = (volatile char *)0x08000000;
+    for (int y = 0; y < WIDTH; y++){
+        for (int x = 0; x < HEIGHT; x++){
+            if(array[y][x] == '1')
+                print("1");
+            else{
+                print("O");
+            }
+        }
+        print("\n");
+    }
+    /* volatile char *VGA_addr = (volatile char *)0x08000000;
     for (int y = 0; y < WIDTH; y++){
         for (int x = 0; x < HEIGHT; x++){
             if(array[y][x] == '1')
@@ -173,7 +183,7 @@ void render(char array[HEIGHT][WIDTH]){
                 VGA_addr[y * 320 + x] = 0;
             }
         }
-    }
+    } */
 
 }
 
