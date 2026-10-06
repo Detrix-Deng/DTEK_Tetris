@@ -71,19 +71,12 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
     int player = id;
 
     if(is_curr){    //if is a curr_sprite, remove last sprite via using old_sprite variable
-
         for(int row = 0; row < 4; row++){
             for(int col = 0; col < 4; col++){
                 if(old_sprite[player][row][col] == 1){
                     for(int dx = 0; dx < scalar; dx++){
                         for(int dy = 0; dy < scalar; dy++){
                             array[old_offset[player][1] + row * scalar + dy][old_offset[player][0] + col * scalar + dx] = '0';
-                        }
-                    }
-                } else {
-                    for(int dx = 0; dx < scalar; dx++){
-                        for(int dy = 0; dy < scalar; dy++){
-                            array[y + dy][x + dx] = array[y + dy][x + dx];
                         }
                     }
                 }
@@ -96,17 +89,30 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
                 old_sprite[player][row][col] = sprite[row][col];
             }
         }
-    }
+        //Place new sprite into VGA without overwrite
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 4; col++){
+                for(int dy = 0; dy < scalar; dy++){
+                    for(int dx = 0; dx < scalar; dx++){
+                        if(sprite[row][col]){
+                            array[row * scalar + y + dy][col * scalar + x + dx] = '1';
+                        }
+                    }
+                }
+            }
+        }
+    } else {
 
-    //Place new sprite into VGA
-    for(int row = 0; row < 4; row++){
-        for(int col = 0; col < 4; col++){
-            for(int dy = 0; dy < scalar; dy++){
-                for(int dx = 0; dx < scalar; dx++){
-                    if(sprite[row][col]){
-                        array[row * scalar + y + dy][col * scalar + x + dx] = '1';
-                    } else {
-                        array[row * scalar + y + dy][col * scalar + x + dx] = '0';
+        //Place new sprite into VGA with overwrite
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 4; col++){
+                for(int dy = 0; dy < scalar; dy++){
+                    for(int dx = 0; dx < scalar; dx++){
+                        if(sprite[row][col]){
+                            array[row * scalar + y + dy][col * scalar + x + dx] = '1';
+                        } else {
+                            array[row * scalar + y + dy][col * scalar + x + dx] = '0';
+                        }
                     }
                 }
             }

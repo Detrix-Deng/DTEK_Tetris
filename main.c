@@ -17,7 +17,7 @@ extern void delay(int ms);
 
 
 bool start = false;
-bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
+bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
 
 //By Both
 // labinit from lab 3 with different period values
@@ -34,9 +34,11 @@ void labinit() // Clock times out (TO) every 10/3 ms
 //Create a menu for multiplayer or single player selection
 void mmanu(){
     //TODO: Implement call to draw text on screen
-    put_text(VGA, "TETRIS", 85, 20, 5);
-    put_text(VGA, "SINGLEPLAYER", 20, 100, 1);
-    put_text(VGA, "MULTIPLAYER", 240, 100, 1);
+    put_text(VGA, "TETRIS", 75, 20, 5);
+    put_text(VGA, "PRESS A", 35, 100, 1);
+    put_text(VGA, "PRESS D", 230, 100, 1);
+    put_text(VGA, "SINGLEPLAYER", 20, 140, 1);
+    put_text(VGA, "MULTIPLAYER", 220, 140, 1);
 
     int value = read_gpio();
     
