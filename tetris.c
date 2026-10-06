@@ -480,13 +480,14 @@ void player_init(bool multiplayer){
         player_list[player].lost = false;
 
         // Text on display
-        put_text(VGA, "Score:", OFFSET_X[player], OFFSET_Y - 35, 1);
-        put_text(VGA, "Lines:", OFFSET_X[player], OFFSET_Y - 27, 1);
-        put_text(VGA, "Level:", OFFSET_X[player], OFFSET_Y - 19, 1);
+        put_text(VGA, "SCORE:", OFFSET_X[player], OFFSET_Y - 35, 1);
+        put_text(VGA, "LINES:", OFFSET_X[player], OFFSET_Y - 27, 1);
+        put_text(VGA, "LEVEL:", OFFSET_X[player], OFFSET_Y - 19, 1);
         put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
         put_text(VGA, (char*) player_list[player].score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
         put_text(VGA, (char*) player_list[player].lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
         put_text(VGA, (char*) player_list[player].difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+        put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
 
         // Draw Hold and Next Grid manually
         // Hold grid
