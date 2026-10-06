@@ -75,7 +75,7 @@ void main(){
     }
     } else {
 
-    put_text(VGA, "ABCDEFG", 0,0,1);
+    put_text(VGA, "SCORE: 00000", 0,0,1);
     put_text(VGA, "HIJKLMNOP",0,20,1);
     put_text(VGA, "QRSTUVWXYZ",0,40,1);
     put_text(VGA,"0123456789",0,60,1);
