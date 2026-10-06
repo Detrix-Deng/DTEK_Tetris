@@ -40,13 +40,16 @@ void mmanu(){
 
     int value = read_gpio();
     
-    if (value == 1){
+    if (value == 0x02){
+        // print("1 is pressed");
         multiplayer = false;
         start = true;
-    } else if (value == 2){
+    } else if (value == 0x08){
+        // print("2 is pressed");
         multiplayer = true;
         start = true;
     } else
+        // print("Not pressed");
 
     render(VGA);
 }
