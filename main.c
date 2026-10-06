@@ -36,7 +36,7 @@ void mmanu(){
     char *text = "TETRIS";
     //TODO: Implement call to draw text on screen
     put_text(VGA, text, 50, 20, 5);
-    volatile int *gpio = (volatile int *) 0x040000e0;
+    // volatile int *gpio = (volatile int *) 0x040000e0;
 
     // Change direction to 0 = input so the gpio can be read
     //*direction = 0x00;
