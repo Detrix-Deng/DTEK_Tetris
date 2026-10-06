@@ -17,7 +17,7 @@ extern void delay(int ms);
 
 
 bool start = false;
-bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
+bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
 
 //By Both
 // labinit from lab 3 with different period values
@@ -103,6 +103,8 @@ void main(){
     //put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
     //put_grid(VGA, player_list[0].grid, 100, 100, 1);
     render(VGA);
+    clear_display(VGA);
+    put_line(VGA, 100, 150, 10, 50);
     }
 
 }
