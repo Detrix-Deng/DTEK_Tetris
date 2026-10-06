@@ -36,77 +36,70 @@ void mmanu(){
     char *text = "TETRIS";
     //TODO: Implement call to draw text on screen
     put_text(VGA, text, 50, 20, 5);
-    // volatile int *gpio = (volatile int *) 0x040000e0;
 
-    // Change direction to 0 = input so the gpio can be read
-    //*direction = 0x00;
+    int value = read_gpio();
     
-    if (*gpio == 1){
+    if (value == 1){
         print("1 is pressed");
         multiplayer = false;
         start = true;
-    } else if (*gpio == 2){
+    } else if (value == 2){
         print("2 is pressed");
         multiplayer = true;
         start = true;
     } else
         print("Not pressed");
 
-    // Change direction to 1 = output so the gpio can be written to
-    // *direction = 0x03FF;
     render(VGA);
 }
 
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    while(1){
-        *direction = 0xFFFFFFFF;
-        *outclear = 0xFFFFFFFF;
-        *direction = 0x00;
-        asm volatile ("nop");
-        unsigned int value = *gpio;
-        print("Direction value: ");
-        print_hex32(*direction);
-        print("\n");
-        print("GPIO value: ");
-        print_hex32(value);
-        print("\n");
-        if(value == 1)
-            print("1 IS PRESSED\n");
-        else if(value == 2)
-            print("2 IS PRESSED\n");
-        else if(value > 0)
-            print("SOME INPUT\n");
-        else
-            print("no input\n");
-
-        delay(1000);
-    }
-
-
-    // if(!test){
-    // while(!start){
-    //     mmanu();
-    // }
-    // //clear_display(VGA);
-
-    // set_offset(multiplayer);
-
-    // player_init(multiplayer);
-
-    // labinit();
-    // // Call main game loop in tetris.c
     // while(1){
-    //     loop();
-    // }
-    // } else {
+        
+    //     unsigned int value = *gpio;
+    //     print("Direction value: ");
+    //     print_hex32(*direction);
+    //     print("\n");
+    //     print("GPIO value: ");
+    //     print_hex32(value);
+    //     print("\n");
+    //     if(value == 1)
+    //         print("1 IS PRESSED\n");
+    //     else if(value == 2)
+    //         print("2 IS PRESSED\n");
+    //     else if(value > 0)
+    //         print("SOME INPUT\n");
+    //     else
+    //         print("no input\n");
 
-    // //setup board things, enable interrupt, etc
-    // put_text(VGA, "TETRIS", 0, 0, 5);
-    // put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
-    // put_grid(VGA, player_list[0].grid, 100, 100, 1);
-    // render(VGA);
+    //     delay(1000);
     // }
+
+
+    if(!test){
+    while(!start){
+        mmanu();
+    }
+    //clear_display(VGA);
+
+    set_offset(multiplayer);
+
+    player_init(multiplayer);
+
+    labinit();
+    // Call main game loop in tetris.c
+    while(1){
+        loop();
+    }
+    } else {
+
+    //setup board things, enable interrupt, etc
+    put_text(VGA, "TETRIS", 0, 0, 5);
+    put_sprite(VGA, sprite_shapes[0].matrix, 50, 50, false, 0, 1);
+    put_grid(VGA, player_list[0].grid, 100, 100, 1);
+    render(VGA);
+    }
 
 }

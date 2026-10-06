@@ -6,6 +6,7 @@
 #include "tetris.h"
 #include "shapes.h"
 #include "vga.h"
+#include "config.h"
 
 //add GPIO pointer, timer pointer, VGA pointer
 // volatile int *gpio = (volatile int *) 0x040000e0;
@@ -109,6 +110,13 @@ void set_offset(bool multiplayer){ //Contributed by both
         OFFSET_X[0] = 144;
         OFFSET_X[1] = 0; //zero offset so it isnt junk value
     }
+}
+int read_gpio(){
+    *direction = 0xFFFFFFFF;
+    *outclear = 0xFFFFFFFF;
+    *direction = 0x00;
+    asm volatile ("nop");
+    return *gpio;
 }
 
 //Contributed by Dave
@@ -491,16 +499,17 @@ void loop(){    // game loop
     // *direction = 0x03FF;
 
     // poll inputs
-    int rot1 = *gpio & 0x0001;
-    int mv_r1 = *gpio & 0x0002;
-    int mv_l1 = *gpio & 0x0004;
-    int down1 = *gpio & 0x0008;
-    int hold1 = *gpio & 0x0010;
-    int rot2 = *gpio & 0x0020;
-    int mv_r2 = *gpio & 0x0040;
-    int mv_l2 = *gpio & 0x0080;
-    int down2 = *gpio & 0x0100;
-    int hold2 = *gpio & 0x0200;
+    int value = read_gpio();
+    int rot1 = value & 0x0001;
+    int mv_r1 = value & 0x0002;
+    int mv_l1 = value & 0x0004;
+    int down1 = value & 0x0008;
+    int hold1 = value & 0x0010;
+    int rot2 = value & 0x0020;
+    int mv_r2 = value & 0x0040;
+    int mv_l2 = value & 0x0080;
+    int down2 = value & 0x0100;
+    int hold2 = value & 0x0200;
 
     // Player 1
     if(!player_list[0].lost){
