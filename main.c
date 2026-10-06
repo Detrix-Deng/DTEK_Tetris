@@ -65,6 +65,7 @@ void main(){
         volatile int *outclear = gpio + 5;
         *outclear = 0xFFFFFFFF;
         *direction = 0x00;
+        delay(100);
         unsigned int value = *gpio;
         print("Direction value: ");
         print_hex32(*direction);
