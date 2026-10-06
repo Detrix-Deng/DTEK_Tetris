@@ -205,8 +205,8 @@ void spawn_sprite(int player, int index){     // Test passed
     player_list[player].next_sprite[index].sprite_shape = sprite_shapes[rand_int];
     player_list[player].next_sprite[index].x = (GRID_WIDTH / 2) - 1;
     player_list[player].next_sprite[index].y = 4 - 1;
-    // Update player's next sprite in buffer
-    put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * GRID_WIDTH + 3 + 1,
+    // Update player's next_sprite[index] in buffer, most often index = 2
+    put_sprite(VGA, player_list[player].next_sprite[index].sprite_shape.matrix, OFFSET_X[player] + 3 * GRID_WIDTH + 3 + 1,
                OFFSET_Y + (2 * 4 + 1) * index, false, player, 2);
 }
 
@@ -215,7 +215,13 @@ void get_next_sprite(int player){       // Test passed
     // Update curr_sprite with next_sprite
     player_list[player].curr_sprite = player_list[player].next_sprite[0];
     player_list[player].next_sprite[0] = player_list[player].next_sprite[1];
+    // Update next_sprite[0] in buffer
+    put_sprite(VGA, player_list[player].next_sprite[0].sprite_shape.matrix, OFFSET_X[player] + 3 * GRID_WIDTH + 3 + 1,
+               OFFSET_Y + (2 * 4 + 1) * 0, false, player, 2);
     player_list[player].next_sprite[1] = player_list[player].next_sprite[2];
+    // Update next_sprite[1] in buffer
+    put_sprite(VGA, player_list[player].next_sprite[1].sprite_shape.matrix, OFFSET_X[player] + 3 * GRID_WIDTH + 3 + 1,
+               OFFSET_Y + (2 * 4 + 1) * 1, false, player, 2);
     spawn_sprite(player, 2);
     // Update player's curr sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
