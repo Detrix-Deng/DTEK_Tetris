@@ -79,7 +79,7 @@ void main(){
     put_text(VGA, "HIJKLMNOP",0,20,1);
     put_text(VGA, "QRSTUVWXYZ",0,40,1);
     put_text(VGA,"0123456789",0,60,1);
-    put_text(VGA, ": space space");
+    put_text(VGA, ": space space", 0, 80, 1);
     render(VGA);
     //setup board things, enable interrupt, etc
     /* player_init(false);
