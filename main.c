@@ -60,11 +60,11 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    *direction = 0xFFFFFFFF;
-    volatile int *outclear = gpio + 5;
-    *outclear = 0xFFFFFFFF;
-    *direction = 0x00;
     while(1){
+        *direction = 0xFFFFFFFF;
+        volatile int *outclear = gpio + 5;
+        *outclear = 0xFFFFFFFF;
+        *direction = 0x00;
         unsigned int value = *gpio;
         print("Direction value: ");
         print_hex32(*direction);
