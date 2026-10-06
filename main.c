@@ -14,7 +14,7 @@ extern void delay(int ms);
 
 volatile int *gpio = (volatile int *) 0x040000e0;
 volatile int *direction = (volatile int *) 0x040000e4;
-*direction = (volatile int) 0x00;
+
 
 bool start = false;
 bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
@@ -60,6 +60,7 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
+    *direction = (volatile int) 0x00;
     
     if(*gpio == 1)
         print("1 is pressed");
