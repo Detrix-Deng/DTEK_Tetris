@@ -17,7 +17,7 @@ extern void delay(int ms);
 
 
 bool start = false;
-bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
+bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
 
 //By Both
 // labinit from lab 3 with different period values
@@ -57,39 +57,16 @@ void mmanu(){
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    // while(1){
-        
-    //     unsigned int value = *gpio;
-    //     print("Direction value: ");
-    //     print_hex32(*direction);
-    //     print("\n");
-    //     print("GPIO value: ");
-    //     print_hex32(value);
-    //     print("\n");
-    //     if(value == 1)
-    //         print("1 IS PRESSED\n");
-    //     else if(value == 2)
-    //         print("2 IS PRESSED\n");
-    //     else if(value > 0)
-    //         print("SOME INPUT\n");
-    //     else
-    //         print("no input\n");
-
-    //     delay(1000);
-    // }
-
 
     if(!test){
     while(!start){
         mmanu();
     }
-    //clear_display(VGA);
+    clear_display(VGA);
 
     set_offset(multiplayer);
 
     player_init(multiplayer);
-
-    clear_display(VGA);
 
     labinit();
     // Call main game loop in tetris.c
