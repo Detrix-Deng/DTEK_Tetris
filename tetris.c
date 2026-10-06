@@ -75,6 +75,34 @@ struct sprite_shape sprite_shapes[] = {
 struct player_info player_list[2];
 unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
+// Contributed by Dave
+void int_stringbuilder(int integer, char* string){
+    // Takes an integer value and convert to an array of char
+    int temp = integer;
+    int length = 0;
+    while(temp > 0){
+        // Integer division. Discard rest.
+        temp = temp / 10;
+        length++;
+    }
+    int dec = 0;
+    temp = integer;
+    // If integer was 0, return "0"
+    if(length == 0){
+        string[0] = '0';
+        string[1] = '\0';
+    }
+    else{
+        for(int i = length; i > 0; i--){
+            // Gets a decimal value 0-9
+            dec = temp % 10;
+            temp = temp / 10;
+            string[i - 1] = dec + '0';
+        }
+        // End the string with \0 (NULL)
+        string[length] = '\0';
+    }
+}
 
 void set_offset(bool multiplayer){ //Contributed by both
     // Sets pixel offset of the playing field depending on multiplayer

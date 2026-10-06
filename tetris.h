@@ -53,6 +53,8 @@ extern bool multiplayer;
 extern char VGA[HEIGHT][WIDTH];
 
 // Functions
+extern void int_stringbuilder(int integer, char* string);
+
 extern int read_gpio();
 
 void set_offset(bool multiplayer);
