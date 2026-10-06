@@ -105,6 +105,7 @@ void main(){
     render(VGA);
     clear_display(VGA);
     put_line(VGA, 100, 150, 10, 50);
+    render(VGA);
     }
 
 }
