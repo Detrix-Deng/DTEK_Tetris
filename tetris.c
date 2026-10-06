@@ -20,11 +20,6 @@ char VGA[HEIGHT][WIDTH];  //vga buffer
 extern void time2string(char*,int);
 extern void tick(int*);
 
-struct sprite_shape {
-    char sprite_id;
-    char matrix[4][4];
-};
-
 struct sprite_shape sprite_shapes[] = { 
     {0, {//L
             {1,0,0,0},
@@ -75,33 +70,6 @@ struct sprite_shape sprite_shapes[] = {
             {0,0,0,0}
         }
     }
-};
-
-struct sprite{
-    struct sprite_shape sprite_shape;
-    int x;
-    int y;
-};
-
-struct player_info{
-    // UI element
-    int score;                              // Score
-    int lines;                              // Lines cleared
-    int to_count;                           // TO passed since last game cycle
-    int difficulty;                         // How fast a game cycle is (Level)
-    int mytime;                             // Total time passed
-    char textstring[6];                     // Time as a string, ex. 00:16
-
-    // Sprite and grid info
-    struct sprite curr_sprite;              // Info of current sprite
-    struct sprite next_sprite[3];           // Info of next sprite
-    char grid[GRID_HEIGHT][GRID_WIDTH];     // Info of player's grid
-
-    // Hold info
-    int hold;                              // Info of hold slot
-    bool hold_available;                    // Bool whether hold action is available
-
-    bool lost;                              // Bool for if player has lost
 };
 
 struct player_info player_list[2];
