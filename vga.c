@@ -20,7 +20,7 @@ char old_sprite[2][4][4] = {
 };
 
 //By Ye
-void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int scalar){
+void put_grid(char array[WIDTH][HEIGHT], char grid[GRID_HEIGHT][GRID_WIDTH], int x_offset, int y_offset, int scalar){
     //Accepts VGA buffer, player grid, offset and scale to draw it on the VGA buffer
     int x = x_offset;
     int y = y_offset;
@@ -65,7 +65,7 @@ void put_grid(char array[HEIGHT][WIDTH], char grid[GRID_HEIGHT][GRID_WIDTH], int
 
 //By Ye
 //Draw sprite onto VGA buffer
-void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int y_offset, bool is_curr, int id, int scalar){
+void put_sprite(char array[WIDTH][HEIGHT], char sprite[4][4], int x_offset, int y_offset, bool is_curr, int id, int scalar){
     int x = x_offset;
     int y = y_offset; //offset for sprites
     int player = id;
@@ -110,7 +110,7 @@ void put_sprite(char array[HEIGHT][WIDTH], char sprite[4][4], int x_offset, int 
 
 //By Ye
 //Feed in matrix, text, offset positions
-void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset, int scalar){
+void put_text(char array[WIDTH][HEIGHT], char *text, int x_offset, int y_offset, int scalar){
     int x = x_offset;
     int y = y_offset;
     int i = 0;
@@ -152,7 +152,7 @@ void put_text(char array[HEIGHT][WIDTH], char *text, int x_offset, int y_offset,
 }
 
 //By Ye
-void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
+void put_line(char array[WIDTH][HEIGHT], int x, int y, int length, int width){
     //creates a line
     for (int vert = 0; vert < width; vert++){
         for (int hori = 0; hori < length; hori++){
@@ -162,7 +162,7 @@ void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
 }
 
 //By Ye
-void render(char array[HEIGHT][WIDTH]){
+void render(char array[WIDTH][HEIGHT]){
     //copies VGA buffer content into the VGA pointer
     for (int y = 0; y < WIDTH; y++){
         for (int x = 0; x < HEIGHT; x++){
@@ -188,7 +188,7 @@ void render(char array[HEIGHT][WIDTH]){
 }
 
 //By Ye
-void clear_display(char array[HEIGHT][WIDTH]){
+void clear_display(char array[WIDTH][HEIGHT]){
     //Clears display
     for(int row = 0; row < HEIGHT; row++){
         for(int col = 0; col < WIDTH; col++){
