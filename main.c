@@ -17,7 +17,7 @@ extern void delay(int ms);
 
 
 bool start = false;
-bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
+bool test = true; //for testing purposes, set to true to skip menu and go straight to test screen
 
 //By Both
 // labinit from lab 3 with different period values
@@ -75,8 +75,13 @@ void main(){
     }
     } else {
 
+    put_text(VGA, "ABCDEFG", 0,0,1);
+    put_text(VGA, "HIJKLMNOP",0,20,1);
+    put_text(VGA, "QRSTUVWXYZ",0,40,1);
+    put_text(VGA,"0123456789",0,60,1);
+    render(VGA);
     //setup board things, enable interrupt, etc
-    player_init(false);
+    /* player_init(false);
     int player = 0;
     set_offset(false);
     put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
@@ -92,6 +97,6 @@ void main(){
     put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3 + (2 * 4) + 2, OFFSET_Y - 3, 2, (3 * 2 * 4) + (4 * 1) + (2 * 2));
     put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3, OFFSET_Y + (3 * 2 * 4) + (3 * 1), (2 * 4) + 2, 2);
     render(VGA);
-    }
+    } */
 
 }
