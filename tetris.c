@@ -211,7 +211,7 @@ void get_next_sprite(int player){       // Test passed
     spawn_sprite(player, 2);
     // Update player's curr sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
-               OFFSET_Y - 3 * 3, true, player, 3);
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 //Contributed by Dave
@@ -327,7 +327,7 @@ void rotate(int player){    // Test passed
     border_detect(player);
     // Update player's curr sprite in buffer
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 //Contributed by Dave
@@ -354,7 +354,7 @@ void mov_down(int player){    // Test passed
         player_list[player].curr_sprite.y++;
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
         print("Moved down!");
     }
 }
@@ -399,7 +399,7 @@ void hold_func(int player){     // Test passed
             player_list[player].curr_sprite.x = (GRID_WIDTH / 2) - 1;
             // Update player's curr sprite in buffer
             put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x,
-                   OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, true, player, 3);
+                   OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
         }
         // Update player's hold sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 1 - 4 * 2,
