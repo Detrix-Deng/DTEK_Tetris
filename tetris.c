@@ -348,7 +348,9 @@ void mov_down(int player){    // Test passed
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
-        print("Moved down!");
+        print("Moved down for player: ");
+        print_dec(player);
+        print("!\n");
     }
 }
 
@@ -473,9 +475,9 @@ void player_init(bool multiplayer){
         player_list[player].lost = false;
 
         // Text on display
-        put_text(VGA, "Score:", OFFSET_X[player], OFFSET_Y - 35, 1);
-        put_text(VGA, "Lines:", OFFSET_X[player], OFFSET_Y - 27, 1);
-        put_text(VGA, "Level:", OFFSET_X[player], OFFSET_Y - 19, 1);
+        put_text(VGA, "SCORE:", OFFSET_X[player], OFFSET_Y - 35, 1);
+        put_text(VGA, "LINES:", OFFSET_X[player], OFFSET_Y - 27, 1);
+        put_text(VGA, "LEVEL:", OFFSET_X[player], OFFSET_Y - 19, 1);
         put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
         put_text(VGA, (char*) player_list[player].score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
         put_text(VGA, (char*) player_list[player].lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
