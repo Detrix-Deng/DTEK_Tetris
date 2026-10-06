@@ -98,7 +98,7 @@ struct player_info{
     char grid[GRID_HEIGHT][GRID_WIDTH];     // Info of player's grid
 
     // Hold info
-    char hold;                              // Info of hold slot
+    int hold;                              // Info of hold slot
     bool hold_available;                    // Bool whether hold action is available
 
     bool lost;                              // Bool for if player has lost
