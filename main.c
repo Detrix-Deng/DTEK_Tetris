@@ -36,7 +36,7 @@ void mmanu(){
     //TODO: Implement call to draw text on screen
     put_text(VGA, "TETRIS", 85, 20, 5);
     put_text(VGA, "SINGLEPLAYER", 20, 100, 1);
-    put_text(VGA, "MULTIPLAYER", 240, 100, 1);
+    put_text(VGA, "MULTIPLAYER", 220, 100, 1);
 
     int value = read_gpio();
     
