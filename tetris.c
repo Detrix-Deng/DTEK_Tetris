@@ -14,7 +14,7 @@
 
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
-char VGA[WIDTH][HEIGHT];  //vga buffer
+char VGA[HEIGHT][WIDTH];  //vga buffer
 
 extern void time2string(char*,int);
 extern void tick(int*);
