@@ -62,15 +62,20 @@ void main(){
     //setup before starting the game, options, etc
     while(1){
         *direction = (volatile int) 0x00;
-    
+        print("Direction value: ");
+        print_hex32(*direction);
+        print("\n");
+        print("GPIO value: ");
+        print_hex32(*gpio);
+        print("\n");
         if(*gpio == 1)
-            print("1 is pressed");
+            print("1 IS PRESSED\n");
         else if(*gpio == 2)
-            print("2 is pressed");
+            print("2 IS PRESSED\n");
         else if(*gpio > 0)
-            print("Some input");
+            print("SOME INPUT\n");
         else
-            print("no input");
+            print("no input\n");
 
         delay(1000);
     }
