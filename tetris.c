@@ -248,9 +248,9 @@ void score_calc(int player, int line){      // Test passed
             break;
     }
     // Update player's score in buffer
-    char text[12];
-    time2string(text, player_list[player].score);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    char score[8];
+    int_stringbuilder(player_list[player].score, score);
+    put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
@@ -349,21 +349,22 @@ void mov_down(int player){    // Test passed
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
     if(collision_detect(player)){
-        char text[12];
         place_sprite(player);
         player_list[player].score += 1;
         int lines = line_clear(player);
         if(lines){
             // Update player's lines in buffer
-            time2string(text, player_list[player].lines);
-            put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
+            char lines[8];
+            int_stringbuilder(player_list[player].lines, lines);
+            put_text(VGA, lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
             score_calc(player, lines);
         }
         get_next_sprite(player);
         spawn_sprite(player, 2);
         // Update player's score in buffer
-        time2string(text, player_list[player].score);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+        char score[8];
+        int_stringbuilder(player_list[player].score, score);
+        put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
     }
     else{
         player_list[player].curr_sprite.y++;
@@ -383,9 +384,9 @@ void hard_down(int player){     // Test passed
     } while(player_list[player].curr_sprite.y > 3);
     player_list[player].score += 1;
     // Update player's score in buffer
-    char text[12];
-    time2string(text, player_list[player].score);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    char score[8];
+    int_stringbuilder(player_list[player].score, score);
+    put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
@@ -431,9 +432,9 @@ void increase_difficulty(int player){
         player_list[player].difficulty++;
     }
     // Update player's level value in buffer
-    char text[12];
-    time2string(text, player_list[player].difficulty);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+    char difficulty[8];
+    int_stringbuilder(player_list[player].difficulty, difficulty);
+    put_text(VGA, difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
 }
 
 //Contributed by Both
@@ -504,18 +505,20 @@ void player_init(bool multiplayer){
 
         player_list[player].lost = false;
 
-        char text[12];
         // Text on display
         put_text(VGA, "SCORE:", OFFSET_X[player], OFFSET_Y - 35, 1);
         put_text(VGA, "LINES:", OFFSET_X[player], OFFSET_Y - 27, 1);
         put_text(VGA, "LEVEL:", OFFSET_X[player], OFFSET_Y - 19, 1);
         put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
-        time2string(text, player_list[player].score);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
-        time2string(text, player_list[player].lines);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
-        time2string(text, player_list[player].difficulty);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+        char score[8];
+        int_stringbuilder(player_list[player].score, score);
+        put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+        char lines[8];
+        int_stringbuilder(player_list[player].lines, lines);
+        put_text(VGA, lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
+        char difficulty[8];
+        int_stringbuilder(player_list[player].difficulty, difficulty);
+        put_text(VGA, difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
         put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
 
         // Draw Hold and Next Grid manually
