@@ -164,9 +164,9 @@ void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
 //By Ye
 void render(char array[HEIGHT][WIDTH]){
     //copies VGA buffer content into the VGA pointer
-        for (int x = 0; x < WIDTH; x++){
-        for (int y = 0; y < HEIGHT; y++){
-            if(array[y][x] == '1')
+        for (int y = 0; y < WIDTH; y++){
+        for (int x = 0; x < HEIGHT; x++){
+            if(array[x][y] == '1')
                 print("1");
             else{
                 print("O");
