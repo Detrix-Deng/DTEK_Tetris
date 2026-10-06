@@ -140,8 +140,8 @@ void place_sprite(int player){      // Test passed
     }
     player_list[player].hold_available = true;
     // Update player's grid in buffer
-    put_grid(VGA, player_list[player].grid, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-             OFFSET_Y - 3 + 3 * player_list[player].curr_sprite.y, 3);
+    put_grid(VGA, player_list[player].grid, OFFSET_X[player], 
+             OFFSET_Y, 3);
 }
 
 //Contributed by Dave
@@ -510,7 +510,7 @@ void loop(){    // game loop
 
     // poll inputs
     int value = read_gpio();
-    print("Value in game loop: ");
+    // print("Value in game loop: ");
     print_hex32(value);
     print("\n");
     int rot1 = value & 0x0001;
