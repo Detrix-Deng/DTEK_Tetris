@@ -348,6 +348,7 @@ void mov_down(int player){    // Test passed
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y - 3 + 3 * (player_list[player].curr_sprite.y), true, player, 3);
+        print("Moved down!");
     }
 }
 
@@ -500,6 +501,9 @@ void loop(){    // game loop
 
     // poll inputs
     int value = read_gpio();
+    print("Value in game loop: ");
+    print_hex32(value);
+    print("\n");
     int rot1 = value & 0x0001;
     int mv_r1 = value & 0x0002;
     int mv_l1 = value & 0x0004;
