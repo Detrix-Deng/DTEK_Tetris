@@ -427,6 +427,9 @@ void handle_interrupt(unsigned int cause){
     global_to_count++;
     if(global_to_count >= 30){
         render(VGA);
+        print("Player's score: ");
+        print_dec(player_list[0].score);
+        print("\n");
         global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
