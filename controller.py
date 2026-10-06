@@ -15,17 +15,17 @@ import os
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
 KEY_TO_GPIO = {
-    ecodes.KEY_W: 3,    #Hold
-    ecodes.KEY_A: 5,    #MV
-    ecodes.KEY_S: 7,    #MV
-    ecodes.KEY_D: 8,    #Down
-    ecodes.KEY_R: 10,   #Rotate
+    ecodes.KEY_W: 2,    #Hold
+    ecodes.KEY_A: 3,    #MV
+    ecodes.KEY_S: 4,    #MV
+    ecodes.KEY_D: 14,    #Down
+    ecodes.KEY_R: 15,   #Rotate
 
-    ecodes.KEY_I: 11,
-    ecodes.KEY_J: 13,
-    ecodes.KEY_K: 15,
-    ecodes.KEY_L: 16,
-    ecodes.KEY_P: 18,
+    ecodes.KEY_I: 17,
+    ecodes.KEY_J: 27,
+    ecodes.KEY_K: 22,
+    ecodes.KEY_L: 23,
+    ecodes.KEY_P: 24,
 }
 
 # --- SETUP GPIO ---
