@@ -96,7 +96,7 @@ void main(){
     put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3, OFFSET_Y - 3, (2 * 4) + 2, 2);
     put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3 + (2 * 4) + 2, OFFSET_Y - 3, 2, (3 * 2 * 4) + (4 * 1) + (2 * 2));
     put_line(VGA, OFFSET_X[player] + (3 * GRID_WIDTH) + 3, OFFSET_Y + (3 * 2 * 4) + (3 * 1), (2 * 4) + 2, 2);
-    render(VGA);
-    } */
+    render(VGA);*/
+    }
 
 }
