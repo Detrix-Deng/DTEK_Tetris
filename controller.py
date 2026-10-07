@@ -11,6 +11,7 @@ import RPi.GPIO as GPIO
 from evdev import InputDevice, categorize, ecodes
 import sys
 import os
+import time
 
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
@@ -69,8 +70,11 @@ try:
                 pin = KEY_TO_GPIO[event.code]
 
                 if event.value == 1:  # key pressed
-                    GPIO.output(pin, GPIO.LOW)
                     print(f"Key {event.code} pressed -> GPIO{pin} LOW")
+                    while(event.value == 1):
+                        GPIO.output(pin, GPIO.LOW)
+                        time.sleep(0.1)
+                        GPIO.output(pin, GPIO.HIGH)
 
                 elif event.value == 0:  # key released
                     GPIO.output(pin, GPIO.HIGH)
