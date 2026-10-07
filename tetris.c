@@ -179,11 +179,6 @@ bool collision_detect(int player){    // Test passed
             collision = true;
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
-                put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) - 7, 1);
-                // put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 1);
-                put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 2);
-                // put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1 + 7 + 1, 2);
-                // put_text(VGA, "GAME OVER", OFFSET_X[player] - 15, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
             }
         }
     }
@@ -197,7 +192,7 @@ void collision_handler(int player, int direction){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
-                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] == 
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] && 
                     player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
                     player_list[player].curr_sprite.x += direction;
                 }
@@ -399,6 +394,13 @@ void mov_down(int player){    // Test passed
     put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
+        if(player_list[player].lost){
+            put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) - 7, 1);
+            // put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 1);
+            put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 1);
+            // put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1 + 7 + 1, 2);
+            // put_text(VGA, "GAME OVER", OFFSET_X[player] - 15, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
+        }
 }
 
 //Contributed by Dave
@@ -447,7 +449,7 @@ void hold_func(int player){     // Test passed
                    OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
         }
         // Update player's hold sprite in buffer
-        put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] - 3 - 1 - 4 * 2,
+        put_sprite(VGA, sprite_shapes[player_list[player].hold].matrix, OFFSET_X[player] - 3 - 1 - 4 * 2,
                    OFFSET_Y, false, player, 2);
     }
 }
@@ -581,10 +583,10 @@ void loop(){    // game loop
         if (!rot1 && !(rot1 == old_input[0])){
             rotate(0);
         }
-        if(!mv_r1 && !(rot1 == old_input[1])){
+        if(!mv_r1 && !(mv_r1 == old_input[1])){
             mov_hor(0, 1);
         }
-        if(!mv_l1 && !(rot1 == old_input[2])){
+        if(!mv_l1 && !(mv_l1 == old_input[2])){
             mov_hor(0, -1);
         }
         if(!down1 && !(down1 == old_input[3])){
@@ -599,13 +601,13 @@ void loop(){    // game loop
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            if (!rot2 && !(rot1 == old_input[5])){
+            if (!rot2 && !(rot2 == old_input[5])){
                 rotate(1);
             }
-            if(!mv_r2 && !(rot1 == old_input[6])){
+            if(!mv_r2 && !(mv_r2 == old_input[6])){
                 mov_hor(1, 1);
             }
-            if(!mv_l2 && !(rot1 == old_input[7])){
+            if(!mv_l2 && !(mv_l2 == old_input[7])){
                 mov_hor(1, -1);
             }
             if(!down2 && !(down2 == old_input[8])){
