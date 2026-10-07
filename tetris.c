@@ -15,6 +15,7 @@
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
 char VGA[HEIGHT][WIDTH];  //vga buffer
+int old_dwn[2] = {0};
 
 // functions from timetemplate from lab 3
 extern void time2string(char*,int);
@@ -543,6 +544,17 @@ void player_init(bool multiplayer){
 void loop(){    // game loop
 
     // poll inputs
+    for(int i = 0; i < multiplayer; i++){
+        switch(i){
+            case 0:
+                old_dwn[i] = *gpio & 0x0008;
+                break;
+
+            case 1:
+                old_dwn[i] = *gpio & 0x0100;
+                break;
+        }
+    }
     int value = *gpio;
     int rot1 = value & 0x0001;
     int mv_r1 = value & 0x0002;
@@ -566,7 +578,7 @@ void loop(){    // game loop
         if(!mv_l1){
             mov_hor(0, -1);
         }
-        if(!down1){
+        if(!down1 && !(down1 == old_dwn[0])){
             hard_down(0);
         }
         if(!hold1 && player_list[0].hold_available){
@@ -587,7 +599,7 @@ void loop(){    // game loop
             if(!mv_l2){
                 mov_hor(1, -1);
             }
-            if(!down2){
+            if(!down2 && !(down2 == old_dwn[1])){
                 hard_down(1);
             }
             if(!hold2 && player_list[1].hold_available){
