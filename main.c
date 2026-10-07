@@ -38,11 +38,11 @@ void mmanu(){
 
     int value = *gpio;
     
-    if (!(value & 0x02)){
+    if (!(value & 0x04)){
         // print("1 is pressed");
         multiplayer = false;
         start = true;
-    } else if (!(value & 0x08)){
+    } else if (!(value & 0x02)){
         // print("2 is pressed");
         multiplayer = true;
         start = true;
