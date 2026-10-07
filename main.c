@@ -36,13 +36,13 @@ void mmanu(){
     put_text(VGA, "SINGLEPLAYER", 20, 140, 1);
     put_text(VGA, "MULTIPLAYER", 220, 140, 1);
 
-    int value = read_gpio();
+    int value = *gpio;
     
-    if (value == 0x02){
+    if (!(value & 0x02)){
         // print("1 is pressed");
         multiplayer = false;
         start = true;
-    } else if (value == 0x08){
+    } else if (!(value & 0x08)){
         // print("2 is pressed");
         multiplayer = true;
         start = true;

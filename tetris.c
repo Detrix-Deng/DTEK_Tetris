@@ -543,7 +543,7 @@ void player_init(bool multiplayer){
 void loop(){    // game loop
 
     // poll inputs
-    int value = read_gpio();
+    int value = *gpio;
     int rot1 = value & 0x0001;
     int mv_r1 = value & 0x0002;
     int mv_l1 = value & 0x0004;
@@ -557,19 +557,19 @@ void loop(){    // game loop
 
     // Player 1
     if(!player_list[0].lost){
-        if (rot1){
+        if (!rot1){
             rotate(0);
         }
-        if(mv_r1){
+        if(!mv_r1){
             mov_hor(0, 1);
         }
-        if(mv_l1){
+        if(!mv_l1){
             mov_hor(0, -1);
         }
-        if(down1){
+        if(!down1){
             hard_down(0);
         }
-        if(hold1 && player_list[0].hold_available){
+        if(!hold1 && player_list[0].hold_available){
             hold_func(0);
         }
     }
@@ -578,20 +578,19 @@ void loop(){    // game loop
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            if (rot2){
+            if (!rot2){
                 rotate(1);
             }
-            if(mv_r2){
+            if(!mv_r2){
                 mov_hor(1, 1);
             }
-            if(mv_l2){
+            if(!mv_l2){
                 mov_hor(1, -1);
             }
-            if(down2){
+            if(!down2){
                 hard_down(1);
             }
-            if(hold2 && player_list[1].hold_available){
-                player_list[1].hold_available = false;
+            if(!hold2 && player_list[1].hold_available){
                 hold_func(1);
             }
         }
