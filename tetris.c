@@ -197,7 +197,7 @@ void collision_handler(int player, int direction){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
-                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] == 
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] && 
                     player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
                     player_list[player].curr_sprite.x += direction;
                 }
