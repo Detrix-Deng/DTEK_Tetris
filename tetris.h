@@ -86,7 +86,7 @@ void mov_hor(int player, int direction);
 
 void hold_func(int player);
 
-void interrupt_handler(unsigned int cause);
+void handle_interrupt(unsigned int cause);
 
 void player_init(bool multiplayer);
 
