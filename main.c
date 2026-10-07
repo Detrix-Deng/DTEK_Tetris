@@ -56,45 +56,29 @@ void mmanu(){
 void main(){
     //setup before starting the game, options, etc
 
-    while(1){
-        int value = *gpio;
-        print("GPIO value: ");
-        print_hex32(value);
-        print("\n");
-        if(!(value & 0x01))
-            print("1!!!\n");
-        else if(!(value & 0x02))
-            print("2!!!\n");
-        else if(value < 0xFFFFFFFF)
-            print("SOME INPUT!\n");
-        else
-            print("No input\n");
-        delay(1000);
+    if(!test){
+    while(!start){
+        mmanu();
     }
+    clear_display(VGA);
 
-    // if(!test){
-    // while(!start){
-    //     mmanu();
-    // }
-    // clear_display(VGA);
+    set_offset(multiplayer);
 
-    // set_offset(multiplayer);
+    player_init(multiplayer);
 
-    // player_init(multiplayer);
-
-    // labinit();
-    // // Call main game loop in tetris.c
-    // while(1){
-    //     loop();
-    // }
-    // } else {
-    //     int i = 0;
-    //     put_line(VGA, 0, 0, 100, 100);
-    //     while(1){
-    //         put_sprite(VGA, sprite_shapes[0].matrix, 1, i, true, 0, 1);
-    //         render(VGA);
-    //         i++;
-    //     }
-    // }
+    labinit();
+    // Call main game loop in tetris.c
+    while(1){
+        loop();
+    }
+    } else {
+        int i = 0;
+        put_line(VGA, 0, 0, 100, 100);
+        while(1){
+            put_sprite(VGA, sprite_shapes[0].matrix, 1, i, true, 0, 1);
+            render(VGA);
+            i++;
+        }
+    }
 
 }
