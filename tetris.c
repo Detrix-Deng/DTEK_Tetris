@@ -178,7 +178,7 @@ bool collision_detect(int player){    // Test passed
                 // put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 1);
                 put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 2);
                 // put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1 + 7 + 1, 2);
-                // put_text(VGA, "GAME OVER", OFFSET_X[player] - 3 - 2 * 4 - 2 - 2, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
+                // put_text(VGA, "GAME OVER", OFFSET_X[player] - 15, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
             }
         }
     }
@@ -255,7 +255,7 @@ void score_calc(int player, int line){      // Test passed
     // Update player's score in buffer
     char score[8];
     int_stringbuilder(player_list[player].score, score);
-    put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
@@ -361,7 +361,7 @@ void mov_down(int player){    // Test passed
             // Update player's lines in buffer
             char lines[8];
             int_stringbuilder(player_list[player].lines, lines);
-            put_text(VGA, lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
+            put_text(VGA, lines, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
             score_calc(player, lines);
         }
         get_next_sprite(player);
@@ -369,7 +369,7 @@ void mov_down(int player){    // Test passed
         // Update player's score in buffer
         char score[8];
         int_stringbuilder(player_list[player].score, score);
-        put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+        put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
     }
     else{
         player_list[player].curr_sprite.y++;
@@ -391,7 +391,7 @@ void hard_down(int player){     // Test passed
     // Update player's score in buffer
     char score[8];
     int_stringbuilder(player_list[player].score, score);
-    put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
@@ -439,7 +439,7 @@ void increase_difficulty(int player){
     // Update player's level value in buffer
     char difficulty[8];
     int_stringbuilder(player_list[player].difficulty, difficulty);
-    put_text(VGA, difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+    put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
 }
 
 //Contributed by Both
@@ -461,7 +461,7 @@ void handle_interrupt(unsigned int cause){
                 tick(&player_list[player].mytime);
                 time2string(player_list[player].textstring, player_list[player].mytime);
                 // Update player's time in buffer
-                put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
+                put_text(VGA, player_list[player].textstring, OFFSET_X[player] - 15, OFFSET_Y - 11, 1);
             }
         }
         for(int player = 0; player <= multiplayer; player++){
@@ -511,19 +511,19 @@ void player_init(bool multiplayer){
         player_list[player].lost = false;
 
         // Text on display
-        put_text(VGA, "SCORE:", OFFSET_X[player], OFFSET_Y - 35, 1);
-        put_text(VGA, "LINES:", OFFSET_X[player], OFFSET_Y - 27, 1);
-        put_text(VGA, "LEVEL:", OFFSET_X[player], OFFSET_Y - 19, 1);
-        put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
+        put_text(VGA, "SCORE:", OFFSET_X[player] - 15, OFFSET_Y - 35, 1);
+        put_text(VGA, "LINES:", OFFSET_X[player] - 15, OFFSET_Y - 27, 1);
+        put_text(VGA, "LEVEL:", OFFSET_X[player] - 15, OFFSET_Y - 19, 1);
+        put_text(VGA, player_list[player].textstring, OFFSET_X[player] - 15, OFFSET_Y - 11, 1);
         char score[8];
         int_stringbuilder(player_list[player].score, score);
-        put_text(VGA, score, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+        put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
         char lines[8];
         int_stringbuilder(player_list[player].lines, lines);
-        put_text(VGA, lines, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
+        put_text(VGA, lines, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
         char difficulty[8];
         int_stringbuilder(player_list[player].difficulty, difficulty);
-        put_text(VGA, difficulty, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+        put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
         put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
 
         // Draw Hold and Next Grid manually
