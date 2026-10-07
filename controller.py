@@ -75,6 +75,9 @@ try:
                         GPIO.output(pin, GPIO.LOW)
                         time.sleep(0.1)
                         GPIO.output(pin, GPIO.HIGH)
+                        if (event.value == 0):
+                            print(f"Key {event.code} released -> GPIO{pin} HIGH")
+                            break
 
                 elif event.value == 0:  # key released
                     GPIO.output(pin, GPIO.HIGH)
