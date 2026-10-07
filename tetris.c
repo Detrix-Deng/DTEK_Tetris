@@ -382,6 +382,7 @@ void mov_down(int player){    // Test passed
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
     }
+    put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
 }
 
 //Contributed by Dave
@@ -450,11 +451,10 @@ void increase_difficulty(int player){
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
-    // render(VGA);
+    render(VGA);
     
     global_to_count++;
     if(global_to_count >= 30){
-        render(VGA);
         global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
