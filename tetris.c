@@ -15,11 +15,13 @@
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
 char VGA[HEIGHT][WIDTH];  //vga buffer
+int old_input[10] = {0};
 
 // functions from timetemplate from lab 3
 extern void time2string(char*,int);
 extern void tick(int*);
 
+// Contributed by both
 struct sprite_shape sprite_shapes[] = { 
     {0, {//L
             {1,0,0,0},
@@ -76,7 +78,37 @@ struct player_info player_list[2];
 unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
 
-void set_offset(bool multiplayer){ //Contributed by both
+// Contributed by Dave
+void int_stringbuilder(int integer, char* string){      // Test passed
+    // Takes an integer value and convert to an array of char
+    int temp = integer;
+    int length = 0;
+    while(temp > 0){
+        // Integer division. Discard rest.
+        temp = temp / 10;
+        length++;
+    }
+    int dec = 0;
+    temp = integer;
+    // If integer was 0, return "0"
+    if(length == 0){
+        string[0] = '0';
+        string[1] = '\0';
+    }
+    else{
+        for(int i = length; i > 0; i--){
+            // Gets a decimal value 0-9
+            dec = temp % 10;
+            temp = temp / 10;
+            string[i - 1] = dec + '0';
+        }
+        // End the string with \0 (NULL)
+        string[length] = '\0';
+    }
+}
+
+//Contributed by both
+void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
     if(multiplayer){
         OFFSET_X[0] = 64;
@@ -87,6 +119,7 @@ void set_offset(bool multiplayer){ //Contributed by both
         OFFSET_X[1] = 0; //zero offset so it isnt junk value
     }
 }
+
 // Contributed by Dave
 int read_gpio(){
     // Function used to reset and read gpio
@@ -146,10 +179,32 @@ bool collision_detect(int player){    // Test passed
             collision = true;
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
+                put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) - 7, 1);
+                // put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 1);
+                put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 2);
+                // put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1 + 7 + 1, 2);
+                // put_text(VGA, "GAME OVER", OFFSET_X[player] - 15, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
             }
         }
     }
     return collision;
+}
+
+// Contributed by Dave
+void collision_handler(int player, int direction){
+    // Check if left or right movement will collide with existing pieces in the grid
+    // Left = -1, Right = 1
+    int oob = 0;    //oob = out_of_bounds
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] == 
+                    player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
+                    player_list[player].curr_sprite.x += direction;
+                }
+            }
+        }
+    }
 }
 
 //Contributed by Dave
@@ -220,9 +275,9 @@ void score_calc(int player, int line){      // Test passed
             break;
     }
     // Update player's score in buffer
-    char text[12];
-    time2string(text, player_list[player].score);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    char score[8];
+    int_stringbuilder(player_list[player].score, score);
+    put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
@@ -321,29 +376,30 @@ void mov_down(int player){    // Test passed
     // Call line_clear if collision_check
     // If line_clear > 0, call score_calc
     if(collision_detect(player)){
-        char text[12];
         place_sprite(player);
         player_list[player].score += 1;
         int lines = line_clear(player);
         if(lines){
             // Update player's lines in buffer
-            time2string(text, player_list[player].lines);
-            put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
+            char line[8];
+            int_stringbuilder(player_list[player].lines, line);
+            put_text(VGA, line, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
             score_calc(player, lines);
         }
         get_next_sprite(player);
         spawn_sprite(player, 2);
         // Update player's score in buffer
-        time2string(text, player_list[player].score);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+        char score[8];
+        int_stringbuilder(player_list[player].score, score);
+        put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
     }
     else{
         player_list[player].curr_sprite.y++;
         // Update player's curr sprite in buffer
-        put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
-        // print("Moved down!");
     }
+    put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
+    put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 //Contributed by Dave
@@ -355,15 +411,16 @@ void hard_down(int player){     // Test passed
     } while(player_list[player].curr_sprite.y > 3);
     player_list[player].score += 1;
     // Update player's score in buffer
-    char text[12];
-    time2string(text, player_list[player].score);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
+    char score[8];
+    int_stringbuilder(player_list[player].score, score);
+    put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
 }
 
 //Contributed by Dave
 void mov_hor(int player, int direction){   // Test passed
     // x in curr_shape +- direction, where directions is a parameter
     player_list[player].curr_sprite.x += direction;
+    collision_handler(player, direction);
     if(player_list[player].curr_sprite.x < 0)
         player_list[player].curr_sprite.x = 0;
     else if((player_list[player].curr_sprite.x) >= (GRID_WIDTH - 4))
@@ -403,23 +460,19 @@ void increase_difficulty(int player){
         player_list[player].difficulty++;
     }
     // Update player's level value in buffer
-    char text[12];
-    time2string(text, player_list[player].difficulty);
-    put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+    char difficulty[8];
+    int_stringbuilder(player_list[player].difficulty, difficulty);
+    put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
 }
 
 //Contributed by Both
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
     *time_addr = 2; // Clear TO flag
-    // render(VGA);
+    render(VGA);
     
     global_to_count++;
     if(global_to_count >= 30){
-        render(VGA);
-        print("Player's score: ");
-        print_dec(player_list[0].score);
-        print("\n");
         global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
@@ -427,7 +480,7 @@ void handle_interrupt(unsigned int cause){
                 tick(&player_list[player].mytime);
                 time2string(player_list[player].textstring, player_list[player].mytime);
                 // Update player's time in buffer
-                put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
+                put_text(VGA, player_list[player].textstring, OFFSET_X[player] - 15, OFFSET_Y - 11, 1);
             }
         }
         for(int player = 0; player <= multiplayer; player++){
@@ -476,18 +529,20 @@ void player_init(bool multiplayer){
 
         player_list[player].lost = false;
 
-        char text[12];
         // Text on display
-        put_text(VGA, "SCORE:", OFFSET_X[player], OFFSET_Y - 35, 1);
-        put_text(VGA, "LINES:", OFFSET_X[player], OFFSET_Y - 27, 1);
-        put_text(VGA, "LEVEL:", OFFSET_X[player], OFFSET_Y - 19, 1);
-        put_text(VGA, player_list[player].textstring, OFFSET_X[player], OFFSET_Y - 11, 1);
-        time2string(text, player_list[player].score);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 35, 1);
-        time2string(text, player_list[player].lines);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 27, 1);
-        time2string(text, player_list[player].difficulty);
-        put_text(VGA, text, OFFSET_X[player] + 36, OFFSET_Y - 19, 1);
+        put_text(VGA, "SCORE:", OFFSET_X[player] - 15, OFFSET_Y - 35, 1);
+        put_text(VGA, "LINES:", OFFSET_X[player] - 15, OFFSET_Y - 27, 1);
+        put_text(VGA, "LEVEL:", OFFSET_X[player] - 15, OFFSET_Y - 19, 1);
+        put_text(VGA, player_list[player].textstring, OFFSET_X[player] - 15, OFFSET_Y - 11, 1);
+        char score[8];
+        int_stringbuilder(player_list[player].score, score);
+        put_text(VGA, score, OFFSET_X[player] + 21, OFFSET_Y - 35, 1);
+        char lines[8];
+        int_stringbuilder(player_list[player].lines, lines);
+        put_text(VGA, lines, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
+        char difficulty[8];
+        int_stringbuilder(player_list[player].difficulty, difficulty);
+        put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
         put_grid(VGA, player_list[player].grid, OFFSET_X[player], OFFSET_Y, 3);
 
         // Draw Hold and Next Grid manually
@@ -505,14 +560,12 @@ void player_init(bool multiplayer){
 
 //Contributed by Both
 void loop(){    // game loop
-    // Change direction to 1 = output so the gpio can be written to
-    // *direction = 0x03FF;
 
     // poll inputs
-    int value = read_gpio();
-    // print("Value in game loop: ");
-    // print_hex32(value);
-    // print("\n");
+    for(int i = 0; i < 10 - 5 * (multiplayer); i++){
+        old_input[i] = *gpio & (0x01 << i);
+    }
+    int value = *gpio;
     int rot1 = value & 0x0001;
     int mv_r1 = value & 0x0002;
     int mv_l1 = value & 0x0004;
@@ -526,55 +579,42 @@ void loop(){    // game loop
 
     // Player 1
     if(!player_list[0].lost){
-        // Change direction to 0 = input so the gpio can be read
-        // *direction = 0x00;
-
-        if (rot1){
+        if (!rot1 && !(rot1 == old_input[0])){
             rotate(0);
         }
-        if(mv_r1){
+        if(!mv_r1 && !(rot1 == old_input[1])){
             mov_hor(0, 1);
         }
-        if(mv_l1){
+        if(!mv_l1 && !(rot1 == old_input[2])){
             mov_hor(0, -1);
         }
-        if(down1){
+        if(!down1 && !(down1 == old_input[3])){
             hard_down(0);
         }
-        if(hold1 && player_list[0].hold_available){
+        if(!hold1 && player_list[0].hold_available){
             hold_func(0);
         }
-
-        // Reset direction to 1 = output so the gpio can be written to
-        // *direction = 0x03FF;
     }
 
     // Player 2
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            // Change direction to 0 = input so the gpio can be read
-            // *direction = 0x00;
-
-            if (rot2){
+            if (!rot2 && !(rot1 == old_input[5])){
                 rotate(1);
             }
-            if(mv_r2){
+            if(!mv_r2 && !(rot1 == old_input[6])){
                 mov_hor(1, 1);
             }
-            if(mv_l2){
+            if(!mv_l2 && !(rot1 == old_input[7])){
                 mov_hor(1, -1);
             }
-            if(down2){
+            if(!down2 && !(down2 == old_input[8])){
                 hard_down(1);
             }
-            if(hold2 && player_list[1].hold_available){
-                player_list[1].hold_available = false;
+            if(!hold2 && player_list[1].hold_available){
                 hold_func(1);
             }
-
-            // Reset direction to 1 = output so the gpio can be written to
-            // *direction = 0x03FF;
         }
     }
 }

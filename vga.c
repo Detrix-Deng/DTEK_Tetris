@@ -5,11 +5,13 @@
 #include "vga.h"
 #include "shapes.h"
 
+// By Ye
 int old_offset[2][2] = { //x,y
     {0,0},
     {0,0}
 };
 
+// By Ye
 char old_sprite[2][4][4] = {
     {{1,0,0,0}
     ,{1,0,0,0}
@@ -176,16 +178,16 @@ void put_line(char array[HEIGHT][WIDTH], int x, int y, int length, int width){
 //By Ye
 void render(char array[HEIGHT][WIDTH]){
     //copies VGA buffer content into the VGA pointer
-        for (int y = 0; y < HEIGHT; y++){
-        for (int x = 0; x < WIDTH; x++){
-            if(array[y][x] == '1')
-                print("1");
-            else{
-                print("O");
-            }
-        }
-        print("\n");
-    }
+    //     for (int y = 0; y < HEIGHT; y++){
+    //     for (int x = 0; x < WIDTH; x++){
+    //         if(array[y][x] == '1')
+    //             print("1");
+    //         else{
+    //             print("O");
+    //         }
+    //     }
+    //     print("\n");
+    // }
     volatile char *VGA_addr = (volatile char *)0x08000000;
     for (int y = 0; y < HEIGHT; y++){
         for (int x = 0; x < WIDTH; x++){

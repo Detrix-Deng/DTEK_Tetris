@@ -1,4 +1,5 @@
-//By Dave
+//Header contributed by Dave
+// Content contributed by both
 
 #ifndef CONFIG_H
 #define CONFIG_H

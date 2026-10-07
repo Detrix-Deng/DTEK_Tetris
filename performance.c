@@ -1,3 +1,4 @@
+// Contributed by Dave
 #include "performance.h"
 
 void start_performance(){

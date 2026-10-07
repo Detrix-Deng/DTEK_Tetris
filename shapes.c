@@ -1,5 +1,3 @@
-//Contains only shapes
-
 #include "shapes.h"
 
 //painfully made by Ye

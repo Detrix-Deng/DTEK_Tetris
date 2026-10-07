@@ -9,23 +9,19 @@
 #include "shapes.h"
 #include "config.h"
 
-
 extern void enable_interrupt();
 extern void delay(int ms);
-
-
-
 
 bool start = false;
 bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
 
-//By Both
+// Contributed by Both
 // labinit from lab 3 with different period values
 void labinit() // Clock times out (TO) every 10/3 ms
 {
     volatile int *time_addr = (volatile int *)0x04000020;
-    *(time_addr + 2) = (100000 - 1) & 0x0000FFFF; // Set lower half
-    *(time_addr + 3) = (100000 - 1) >> 16;        // Set upper half
+    *(time_addr + 2) = (1000000 - 1) & 0x0000FFFF; // Set lower half
+    *(time_addr + 3) = (1000000 - 1) >> 16;        // Set upper half
     *(time_addr + 1) = 7;
     enable_interrupt();
 }
@@ -40,13 +36,13 @@ void mmanu(){
     put_text(VGA, "SINGLEPLAYER", 20, 140, 1);
     put_text(VGA, "MULTIPLAYER", 220, 140, 1);
 
-    int value = read_gpio();
+    int value = *gpio;
     
-    if (value == 0x02){
+    if (!(value & 0x02)){
         // print("1 is pressed");
         multiplayer = false;
         start = true;
-    } else if (value == 0x08){
+    } else if (!(value & 0x08)){
         // print("2 is pressed");
         multiplayer = true;
         start = true;
