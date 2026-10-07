@@ -363,6 +363,24 @@ void rotate(int player){    // Test passed
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
+// Contributed by Dave
+void rotate_func(int player){
+    // Check if rotate will clip into existing blocks in grid
+    struct sprite temp_sprite = player_list[player].curr_sprite;
+    rotate(player);
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] && 
+                    player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
+                    player_list[player].curr_sprite = temp_sprite;
+                    return;
+                }
+            }
+        }
+    }
+}
+
 //Contributed by Dave
 void mov_down(int player){    // Test passed
     // y in curr_shape += 1
@@ -581,7 +599,7 @@ void loop(){    // game loop
     // Player 1
     if(!player_list[0].lost){
         if (!rot1 && !(rot1 == old_input[0])){
-            rotate(0);
+            rotate_func(0);
         }
         if(!mv_r1 && !(mv_r1 == old_input[1])){
             mov_hor(0, 1);
@@ -602,7 +620,7 @@ void loop(){    // game loop
     {
         if(!player_list[1].lost){
             if (!rot2 && !(rot2 == old_input[5])){
-                rotate(1);
+                rotate_func(1);
             }
             if(!mv_r2 && !(mv_r2 == old_input[6])){
                 mov_hor(1, 1);
