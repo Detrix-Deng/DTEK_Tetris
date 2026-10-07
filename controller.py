@@ -11,6 +11,7 @@ import RPi.GPIO as GPIO
 from evdev import InputDevice, categorize, ecodes
 import sys
 import os
+import time
 
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
@@ -32,7 +33,7 @@ KEY_TO_GPIO = {
 GPIO.setmode(GPIO.BCM)
 for pin in KEY_TO_GPIO.values():
     GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
+    GPIO.output(pin, GPIO.HIGH)
     
 def find_keyboard():
     for filename in os.listdir('/dev/input'):
@@ -69,12 +70,15 @@ try:
                 pin = KEY_TO_GPIO[event.code]
 
                 if event.value == 1:  # key pressed
-                    GPIO.output(pin, GPIO.HIGH)
-                    print(f"Key {event.code} pressed -> GPIO{pin} HIGH")
+                    print(f"Key {event.code} pressed -> GPIO{pin} LOW")
+                    while(event.value == 1):
+                        GPIO.output(pin, GPIO.LOW)
+                        time.sleep(0.1)
+                        GPIO.output(pin, GPIO.HIGH)
 
                 elif event.value == 0:  # key released
-                    GPIO.output(pin, GPIO.LOW)
-                    print(f"Key {event.code} released -> GPIO{pin} LOW")
+                    GPIO.output(pin, GPIO.HIGH)
+                    print(f"Key {event.code} released -> GPIO{pin} HIGH")
 
 except KeyboardInterrupt:
     print("\nExiting...")
