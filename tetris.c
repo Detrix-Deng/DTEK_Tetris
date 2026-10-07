@@ -175,7 +175,10 @@ bool collision_detect(int player){    // Test passed
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
                 put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) - 7, 1);
+                // put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 1);
                 put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 2);
+                // put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1 + 7 + 1, 2);
+                // put_text(VGA, "GAME OVER", OFFSET_X[player] - 3 - 2 * 4 - 2 - 2, OFFSET_Y + 3 * GRID_HEIGHT + 3 + 1, 2);
             }
         }
     }
