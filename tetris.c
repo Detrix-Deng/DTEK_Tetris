@@ -380,7 +380,6 @@ void mov_down(int player){    // Test passed
         // Update player's curr sprite in buffer
         put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
-        // print("Moved down!");
     }
 }
 
@@ -455,9 +454,6 @@ void handle_interrupt(unsigned int cause){
     global_to_count++;
     if(global_to_count >= 30){
         render(VGA);
-        print("Player's score: ");
-        print_dec(player_list[0].score);
-        print("\n");
         global_to_count = 0;
         for(int player = 0; player <= multiplayer; player++){
             if(!player_list[player].lost){
@@ -545,14 +541,9 @@ void player_init(bool multiplayer){
 
 //Contributed by Both
 void loop(){    // game loop
-    // Change direction to 1 = output so the gpio can be written to
-    // *direction = 0x03FF;
 
     // poll inputs
     int value = read_gpio();
-    // print("Value in game loop: ");
-    // print_hex32(value);
-    // print("\n");
     int rot1 = value & 0x0001;
     int mv_r1 = value & 0x0002;
     int mv_l1 = value & 0x0004;
@@ -566,9 +557,6 @@ void loop(){    // game loop
 
     // Player 1
     if(!player_list[0].lost){
-        // Change direction to 0 = input so the gpio can be read
-        // *direction = 0x00;
-
         if (rot1){
             rotate(0);
         }
@@ -584,18 +572,12 @@ void loop(){    // game loop
         if(hold1 && player_list[0].hold_available){
             hold_func(0);
         }
-
-        // Reset direction to 1 = output so the gpio can be written to
-        // *direction = 0x03FF;
     }
 
     // Player 2
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            // Change direction to 0 = input so the gpio can be read
-            // *direction = 0x00;
-
             if (rot2){
                 rotate(1);
             }
@@ -612,9 +594,6 @@ void loop(){    // game loop
                 player_list[1].hold_available = false;
                 hold_func(1);
             }
-
-            // Reset direction to 1 = output so the gpio can be written to
-            // *direction = 0x03FF;
         }
     }
 }
