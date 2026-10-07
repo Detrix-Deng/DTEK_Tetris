@@ -190,6 +190,23 @@ bool collision_detect(int player){    // Test passed
     return collision;
 }
 
+// Contributed by Dave
+void collision_handler(int player, int direction){
+    // Check if left or right movement will collide with existing pieces in the grid
+    // Left = -1, Right = 1
+    int oob = 0;    //oob = out_of_bounds
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] == 
+                    player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
+                    player_list[player].curr_sprite.x += direction;
+                }
+            }
+        }
+    }
+}
+
 //Contributed by Dave
 void border_detect(int player){     // Test passed
     int oob = 0;    //oob = out_of_bounds
@@ -403,6 +420,7 @@ void hard_down(int player){     // Test passed
 void mov_hor(int player, int direction){   // Test passed
     // x in curr_shape +- direction, where directions is a parameter
     player_list[player].curr_sprite.x += direction;
+    collision_handler(player, direction);
     if(player_list[player].curr_sprite.x < 0)
         player_list[player].curr_sprite.x = 0;
     else if((player_list[player].curr_sprite.x) >= (GRID_WIDTH - 4))
