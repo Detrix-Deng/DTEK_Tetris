@@ -493,7 +493,7 @@ void handle_interrupt(unsigned int cause){
     for(int player = 0; player <= multiplayer; player++){
         if(!player_list[player].lost){
             player_list[player].to_count++;
-            if(player_list[player].to_count >= 45 - 3 * (player_list[player].difficulty - 1)){
+            if(player_list[player].to_count >= (45 - 3 * (player_list[player].difficulty - 1))){
                 // 45 = 1.5 seconds
                 // -3*difficulty = 0.1 seconds faster for every difficulty level
                 // max difficulty 15 = mov_down once every 0.1 seconds
