@@ -58,6 +58,9 @@ void main(){
 
     while(1){
         int value = *gpio;
+        print("GPIO value: ");
+        print_hex32(value);
+        print("\n");
         if(!(value & 0x01))
             print("1!!!\n");
         else if(!(value & 0x02))
@@ -66,6 +69,7 @@ void main(){
             print("SOME INPUT!\n");
         else
             print("No input\n");
+        delay(1000);
     }
 
     // if(!test){
