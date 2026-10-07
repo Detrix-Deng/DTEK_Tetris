@@ -12,6 +12,10 @@ from evdev import InputDevice, categorize, ecodes
 import sys
 import os
 import time
+import threading
+
+# Track which keys are currently held 
+held_keys = set()
 
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
@@ -34,6 +38,18 @@ GPIO.setmode(GPIO.BCM)
 for pin in KEY_TO_GPIO.values():
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
+
+def pulse_pin(pin, keycode): 
+    """Pulse a GPIO pin while the corresponding key is held.""" 
+    while keycode in held_keys: 
+        GPIO.output(pin, GPIO.LOW) 
+        time.sleep(0.05) 
+        # Check again in case key was released 
+        if keycode not in held_keys: 
+            break 
+        GPIO.output(pin, GPIO.HIGH) 
+        time.sleep(0.05) # Leave the pin HIGH after release 
+        GPIO.output(pin, GPIO.HIGH)
     
 def find_keyboard():
     for filename in os.listdir('/dev/input'):
@@ -62,28 +78,30 @@ def find_keyboard():
     return None
 
 keyboard = find_keyboard()
-try:
-    for event in keyboard.read_loop():
-        if event.type == ecodes.EV_KEY:
-
-            if event.code in KEY_TO_GPIO:
-                pin = KEY_TO_GPIO[event.code]
-
-                if event.value == 1:  # key pressed
-                    print(f"Key {event.code} pressed -> GPIO{pin} LOW")
-                    while(event.value == 1):
-                        GPIO.output(pin, GPIO.LOW)
-                        time.sleep(0.1)
-                        GPIO.output(pin, GPIO.HIGH)
-                        if (event.value == 0):
-                            print(f"Key {event.code} released -> GPIO{pin} HIGH")
-                            break
-
-                elif event.value == 0:  # key released
-                    GPIO.output(pin, GPIO.HIGH)
-                    print(f"Key {event.code} released -> GPIO{pin} HIGH")
+try: 
+    for event in keyboard.read_loop(): 
+        if event.type == ecodes.EV_KEY: 
+            if event.code in KEY_TO_GPIO: 
+                pin = KEY_TO_GPIO[event.code] 
+                if event.value == 1: 
+                    # Key pressed 
+                    # Ignore repeated key events 
+                    if event.code not in held_keys: 
+                        held_keys.add(event.code) 
+                        print(f"Key {event.code} pressed -> GPIO{pin} pulsing") 
+                        thread = threading.Thread( 
+                            target=pulse_pin, 
+                            args=(pin, event.code), 
+                            daemon=True ) 
+                        thread.start() 
+                    elif event.value == 0: 
+                        # Key released 
+                        held_keys.discard(event.code) 
+                        GPIO.output(pin, GPIO.HIGH) 
+                        print(f"Key {event.code} released -> GPIO{pin} HIGH")
 
 except KeyboardInterrupt:
     print("\nExiting...")
 finally:
+    held_keys.clear()
     GPIO.cleanup()
