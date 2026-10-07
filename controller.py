@@ -20,11 +20,11 @@ held_keys = set()
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
 KEY_TO_GPIO = {
-    ecodes.KEY_W: 2,    #Hold
+    ecodes.KEY_W: 2,    #Rot
     ecodes.KEY_A: 3,    #MV
-    ecodes.KEY_S: 4,    #MV
-    ecodes.KEY_D: 14,    #Down
-    ecodes.KEY_R: 15,   #Rotate
+    ecodes.KEY_S: 4,    #Down
+    ecodes.KEY_D: 14,   #MV
+    ecodes.KEY_R: 15,   #Hold
 
     ecodes.KEY_I: 17,
     ecodes.KEY_J: 27,
@@ -79,7 +79,7 @@ def pulse_pin(pin, keycode):
             break
 
         GPIO.output(pin, GPIO.HIGH)
-        time.sleep(0.05)
+        time.sleep(0.01)
 
     # Leave the pin HIGH after release
     GPIO.output(pin, GPIO.HIGH)
