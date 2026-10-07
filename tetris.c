@@ -76,7 +76,7 @@ struct player_info player_list[2];
 unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
 // Contributed by Dave
-void int_stringbuilder(int integer, char* string){
+void int_stringbuilder(int integer, char* string){      // Test passed
     // Takes an integer value and convert to an array of char
     int temp = integer;
     int length = 0;
@@ -174,6 +174,8 @@ bool collision_detect(int player){    // Test passed
             collision = true;
             if(player_list[player].curr_sprite.y == 3){
                 player_list[player].lost = true;
+                put_text(VGA, "GAME", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) - 7, 1);
+                put_text(VGA, "OVER", OFFSET_X[player] + 4, OFFSET_Y + 3 * (GRID_HEIGHT / 2) + 1, 2);
             }
         }
     }
