@@ -194,7 +194,6 @@ bool collision_detect(int player){    // Test passed
 void collision_handler(int player, int direction){
     // Check if left or right movement will collide with existing pieces in the grid
     // Left = -1, Right = 1
-    int oob = 0;    //oob = out_of_bounds
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
