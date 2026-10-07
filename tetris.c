@@ -15,7 +15,7 @@
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
 char VGA[HEIGHT][WIDTH];  //vga buffer
-int old_dwn[2] = {0};
+int old_input[10] = {0};
 
 // functions from timetemplate from lab 3
 extern void time2string(char*,int);
@@ -544,16 +544,8 @@ void player_init(bool multiplayer){
 void loop(){    // game loop
 
     // poll inputs
-    for(int i = 0; i < multiplayer; i++){
-        switch(i){
-            case 0:
-                old_dwn[i] = *gpio & 0x0008;
-                break;
-
-            case 1:
-                old_dwn[i] = *gpio & 0x0100;
-                break;
-        }
+    for(int i = 0; i < 10 - 5 * (multiplayer); i++){
+        old_input[i] = *gpio & (0x01 << i);
     }
     int value = *gpio;
     int rot1 = value & 0x0001;
@@ -569,16 +561,16 @@ void loop(){    // game loop
 
     // Player 1
     if(!player_list[0].lost){
-        if (!rot1){
+        if (!rot1 && !(rot1 == old_input[0])){
             rotate(0);
         }
-        if(!mv_r1){
+        if(!mv_r1 && !(rot1 == old_input[1])){
             mov_hor(0, 1);
         }
-        if(!mv_l1){
+        if(!mv_l1 && !(rot1 == old_input[2])){
             mov_hor(0, -1);
         }
-        if(!down1 && !(down1 == old_dwn[0])){
+        if(!down1 && !(down1 == old_input[3])){
             hard_down(0);
         }
         if(!hold1 && player_list[0].hold_available){
@@ -590,16 +582,16 @@ void loop(){    // game loop
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            if (!rot2){
+            if (!rot2 && !(rot1 == old_input[5])){
                 rotate(1);
             }
-            if(!mv_r2){
+            if(!mv_r2 && !(rot1 == old_input[6])){
                 mov_hor(1, 1);
             }
-            if(!mv_l2){
+            if(!mv_l2 && !(rot1 == old_input[7])){
                 mov_hor(1, -1);
             }
-            if(!down2 && !(down2 == old_dwn[1])){
+            if(!down2 && !(down2 == old_input[8])){
                 hard_down(1);
             }
             if(!hold2 && player_list[1].hold_available){
