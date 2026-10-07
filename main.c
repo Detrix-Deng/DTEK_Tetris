@@ -20,8 +20,8 @@ bool test = false; //for testing purposes, set to true to skip menu and go strai
 void labinit() // Clock times out (TO) every 10/3 ms
 {
     volatile int *time_addr = (volatile int *)0x04000020;
-    *(time_addr + 2) = (100000 - 1) & 0x0000FFFF; // Set lower half
-    *(time_addr + 3) = (100000 - 1) >> 16;        // Set upper half
+    *(time_addr + 2) = (1000000 - 1) & 0x0000FFFF; // Set lower half
+    *(time_addr + 3) = (1000000 - 1) >> 16;        // Set upper half
     *(time_addr + 1) = 7;
     enable_interrupt();
 }
