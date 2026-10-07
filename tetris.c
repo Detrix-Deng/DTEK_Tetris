@@ -363,9 +363,9 @@ void mov_down(int player){    // Test passed
         int lines = line_clear(player);
         if(lines){
             // Update player's lines in buffer
-            char lines[8];
-            int_stringbuilder(player_list[player].lines, lines);
-            put_text(VGA, lines, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
+            char line[8];
+            int_stringbuilder(player_list[player].lines, line);
+            put_text(VGA, line, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
             score_calc(player, lines);
         }
         get_next_sprite(player);
