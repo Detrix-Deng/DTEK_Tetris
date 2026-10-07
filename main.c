@@ -9,17 +9,13 @@
 #include "shapes.h"
 #include "config.h"
 
-
 extern void enable_interrupt();
 extern void delay(int ms);
-
-
-
 
 bool start = false;
 bool test = false; //for testing purposes, set to true to skip menu and go straight to test screen
 
-//By Both
+// Contributed by Both
 // labinit from lab 3 with different period values
 void labinit() // Clock times out (TO) every 10/3 ms
 {

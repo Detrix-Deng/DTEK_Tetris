@@ -20,6 +20,7 @@ char VGA[HEIGHT][WIDTH];  //vga buffer
 extern void time2string(char*,int);
 extern void tick(int*);
 
+// Contributed by both
 struct sprite_shape sprite_shapes[] = { 
     {0, {//L
             {1,0,0,0},
@@ -75,6 +76,7 @@ struct sprite_shape sprite_shapes[] = {
 struct player_info player_list[2];
 unsigned int global_to_count = 0; //to means timeout
 bool multiplayer = false;   // Bool for whether session is 1P or 2P
+
 // Contributed by Dave
 void int_stringbuilder(int integer, char* string){      // Test passed
     // Takes an integer value and convert to an array of char
@@ -104,7 +106,8 @@ void int_stringbuilder(int integer, char* string){      // Test passed
     }
 }
 
-void set_offset(bool multiplayer){ //Contributed by both
+//Contributed by both
+void set_offset(bool multiplayer){
     // Sets pixel offset of the playing field depending on multiplayer
     if(multiplayer){
         OFFSET_X[0] = 64;
@@ -115,6 +118,7 @@ void set_offset(bool multiplayer){ //Contributed by both
         OFFSET_X[1] = 0; //zero offset so it isnt junk value
     }
 }
+
 // Contributed by Dave
 int read_gpio(){
     // Function used to reset and read gpio

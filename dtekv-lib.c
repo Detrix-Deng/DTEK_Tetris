@@ -1,3 +1,4 @@
+// Mainly from lab 1
 #include "dtekv-lib.h"
 
 #define JTAG_UART ((volatile unsigned int*) 0x04000040)

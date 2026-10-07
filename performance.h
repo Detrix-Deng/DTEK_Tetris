@@ -1,3 +1,4 @@
+// Contributed by Dave
 #ifndef PERFORMANCE_H
 #define PERFORMANCE_H
 

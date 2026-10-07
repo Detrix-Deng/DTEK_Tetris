@@ -1,11 +1,9 @@
+// Header contributed by Dave
 #ifndef TETRIS_H
 #define TETRIS_H
 
 #include <stdbool.h>
 #include "config.h"
-
-// Hardware
-extern volatile int *gpio;
 
 // Offset
 extern int OFFSET_X[2];
@@ -13,17 +11,20 @@ extern int OFFSET_Y;
 
 // Struct
 
+// Contributed by Ye
 struct sprite_shape {
     char sprite_id;
     char matrix[4][4];
 };
 
+// Contributed by Dave
 struct sprite{
     struct sprite_shape sprite_shape;
     int x;
     int y;
 };
 
+// Contributed by Dave
 struct player_info{
     // UI element
     int score;                              // Score

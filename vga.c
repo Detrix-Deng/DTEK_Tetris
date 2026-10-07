@@ -5,11 +5,13 @@
 #include "vga.h"
 #include "shapes.h"
 
+// By Ye
 int old_offset[2][2] = { //x,y
     {0,0},
     {0,0}
 };
 
+// By Ye
 char old_sprite[2][4][4] = {
     {{1,0,0,0}
     ,{1,0,0,0}
