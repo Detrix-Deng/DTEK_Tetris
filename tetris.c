@@ -282,17 +282,29 @@ int line_clear(int player){   // Test passed
     // move everything in grid above the lowest cleared
     // layer by layer_cleared amount
     int layer_cleared = 0;
-    char level_empty[GRID_HEIGHT] = {0};
+    int level_empty[GRID_HEIGHT] = {0};
     // Check relevant layer
     for(int i = player_list[player].curr_sprite.y; i > (player_list[player].curr_sprite.y - 4); i--){
         int j = 0;
-        while((player_list[player].grid[i][j]) && j < GRID_WIDTH)
+        //j = 10
+        while((j < GRID_WIDTH) && (player_list[player].grid[i][j])){
             j++;
+        }
+        print("J is: ");
+        print_dec(j);
+        print("\n");
         if(j == GRID_WIDTH){
             layer_cleared++;
             level_empty[i] = 1;
         }
     }
+    print("layer_cleared: ");
+    print_dec(layer_cleared);
+    print("\n");
+    for(int index = 0; index < GRID_HEIGHT; index++){
+        print_dec(level_empty[index]);
+    }
+    print("\n");
     // Clear and move layer down
     int temp_y = GRID_HEIGHT - 1;
     if(layer_cleared){
@@ -302,10 +314,10 @@ int line_clear(int player){   // Test passed
                 continue;
             }
             else{
-                while((temp_y < GRID_HEIGHT - 1) && level_empty[temp_y]){
+                while((temp_y < GRID_HEIGHT) && level_empty[temp_y]){
                     temp_y++;
                 }
-                if(!level_empty[temp_y])
+                if(!level_empty[temp_y] || temp_y == GRID_HEIGHT)
                     temp_y--;
                 for(int j = 0; j < GRID_WIDTH; j++){
                     player_list[player].grid[temp_y][j] = player_list[player].grid[i][j];
@@ -359,8 +371,6 @@ void rotate(int player){    // Test passed
     }
     border_detect(player);
     // Update player's curr sprite in buffer
-    put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
-               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 // Contributed by Dave
@@ -379,6 +389,8 @@ void rotate_func(int player){
             }
         }
     }
+    put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
+               OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
 
 //Contributed by Dave

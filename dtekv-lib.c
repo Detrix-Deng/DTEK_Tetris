@@ -4,7 +4,7 @@
 #define JTAG_UART ((volatile unsigned int*) 0x04000040)
 #define JTAG_CTRL ((volatile unsigned int*) 0x04000044)
 
-//Memcpy added by Ye
+//Memcpy added by Chat GPT
 void *memcpy(void *dest, const void *src, unsigned int n)
 {
     char *d = dest;
@@ -14,6 +14,18 @@ void *memcpy(void *dest, const void *src, unsigned int n)
         *d++ = *s++;
 
     return dest;
+}
+
+// Provided by Chat GPT
+void *memset(void *ptr, int value, unsigned int num)
+{
+    unsigned char *p = ptr;
+
+    for (unsigned int i = 0; i < num; i++) {
+        p[i] = (unsigned char)value;
+    }
+
+    return ptr;
 }
 
 void printc(char s)
