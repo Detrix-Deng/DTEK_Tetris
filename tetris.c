@@ -515,8 +515,8 @@ void handle_interrupt(unsigned int cause){
             }
         }
         for(int player = 0; player <= multiplayer; player++){
-            if((((player_list[player].mytime >> 4) * 10 + player_list[player].mytime)) % 20 == 0 && !player_list[player].lost){
-                // increase difficulty for every 20 sec
+            if((player_list[player].mytime % 100) % 30 == 0 && !player_list[player].lost){
+                // increase difficulty for every 30 sec
                 increase_difficulty(player);
             }
         }
