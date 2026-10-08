@@ -290,21 +290,21 @@ int line_clear(int player){   // Test passed
         while((j < GRID_WIDTH) && (player_list[player].grid[i][j])){
             j++;
         }
-        print("J is: ");
-        print_dec(j);
-        print("\n");
+        // print("J is: ");
+        // print_dec(j);
+        // print("\n");
         if(j == GRID_WIDTH){
             layer_cleared++;
             level_empty[i] = 1;
         }
     }
-    print("layer_cleared: ");
-    print_dec(layer_cleared);
-    print("\n");
-    for(int index = 0; index < GRID_HEIGHT; index++){
-        print_dec(level_empty[index]);
-    }
-    print("\n");
+    // print("layer_cleared: ");
+    // print_dec(layer_cleared);
+    // print("\n");
+    // for(int index = 0; index < GRID_HEIGHT; index++){
+    //     print_dec(level_empty[index]);
+    // }
+    // print("\n");
     // Clear and move layer down
     int temp_y = GRID_HEIGHT - 1;
     if(layer_cleared){
@@ -633,23 +633,23 @@ void loop(){    // game loop
         if(!player_list[1].lost){
             // print("POLL P2...\n");
             if(rot2){
-                print("ROTATE P2\n");
+                // print("ROTATE P2\n");
                 rotate_func(1);
             }
             if(mv_r2){
-                print("MOVE P2\n");
+                // print("MOVE P2\n");
                 mov_hor(1, 1);
             }
             if(mv_l2){
-                print("MOVE P2\n");
+                // print("MOVE P2\n");
                 mov_hor(1, -1);
             }
             if(down2){
-                print("DROP P2\n");
+                // print("DROP P2\n");
                 hard_down(1);
             }
             if(hold2 && player_list[1].hold_available){
-                print("HOLD P2\n");
+                // print("HOLD P2\n");
                 hold_func(1);
             }
         }
