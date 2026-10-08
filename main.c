@@ -125,30 +125,30 @@ void performance_test(int n){
 //By Both
 void main(){
     //setup before starting the game, options, etc
-    performance_test(30);
-    // if(!test){
-    // while(!start){
-    //     mmanu();
-    // }
-    // clear_display(VGA);
+    //performance_test(30);
+    if(!test){
+    while(!start){
+        mmanu();
+    }
+    clear_display(VGA);
 
-    // set_offset(multiplayer);
+    set_offset(multiplayer);
 
-    // player_init(multiplayer);
+    player_init(multiplayer);
 
-    // labinit();
-    // // Call main game loop in tetris.c
-    // while(1){
-    //     loop();
-    // }
-    // } else {
-    //     int i = 0;
-    //     put_line(VGA, 0, 0, 100, 100);
-    //     while(1){
-    //         put_sprite(VGA, sprite_shapes[0].matrix, 1, i, true, 0, 1);
-    //         render(VGA);
-    //         i++;
-    //     }
-    // }
+    labinit();
+    // Call main game loop in tetris.c
+    while(1){
+        loop();
+    }
+    } else {
+        int i = 0;
+        put_line(VGA, 0, 0, 100, 100);
+        while(1){
+            put_sprite(VGA, sprite_shapes[0].matrix, 1, i, true, 0, 1);
+            render(VGA);
+            i++;
+        }
+    }
 
 }

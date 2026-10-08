@@ -74,6 +74,7 @@ def pulse_pin(pin, keycode):
     """Pulse a GPIO pin while the corresponding key is held."""
     while keycode in held_keys:
         GPIO.output(pin, GPIO.LOW)
+        time.sleep(0.05)
         GPIO.output(pin, GPIO.HIGH)
 
         # Check again in case key was released
