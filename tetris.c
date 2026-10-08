@@ -282,17 +282,29 @@ int line_clear(int player){   // Test passed
     // move everything in grid above the lowest cleared
     // layer by layer_cleared amount
     int layer_cleared = 0;
-    char level_empty[GRID_HEIGHT] = {0};
+    int level_empty[GRID_HEIGHT] = {0};
     // Check relevant layer
     for(int i = player_list[player].curr_sprite.y; i > (player_list[player].curr_sprite.y - 4); i--){
         int j = 0;
-        while((player_list[player].grid[i][j]) && j < GRID_WIDTH)
+        //j = 10
+        while((j < GRID_WIDTH) && (player_list[player].grid[i][j])){
             j++;
+        }
+        print("J is: ");
+        print_dec(j);
+        print("\n");
         if(j == GRID_WIDTH){
             layer_cleared++;
             level_empty[i] = 1;
         }
     }
+    print("layer_cleared: ");
+    print_dec(layer_cleared);
+    print("\n");
+    for(int index = 0; index < GRID_HEIGHT; index++){
+        print_dec(level_empty[index]);
+    }
+    print("\n");
     // Clear and move layer down
     int temp_y = GRID_HEIGHT - 1;
     if(layer_cleared){
@@ -302,10 +314,10 @@ int line_clear(int player){   // Test passed
                 continue;
             }
             else{
-                while((temp_y < GRID_HEIGHT - 1) && level_empty[temp_y]){
+                while((temp_y < GRID_HEIGHT) && level_empty[temp_y]){
                     temp_y++;
                 }
-                if(!level_empty[temp_y])
+                if(!level_empty[temp_y] || temp_y == GRID_HEIGHT)
                     temp_y--;
                 for(int j = 0; j < GRID_WIDTH; j++){
                     player_list[player].grid[temp_y][j] = player_list[player].grid[i][j];
@@ -359,6 +371,24 @@ void rotate(int player){    // Test passed
     }
     border_detect(player);
     // Update player's curr sprite in buffer
+}
+
+// Contributed by Dave
+void rotate_func(int player){
+    // Check if rotate will clip into existing blocks in grid
+    struct sprite temp_sprite = player_list[player].curr_sprite;
+    rotate(player);
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            if(player_list[player].curr_sprite.sprite_shape.matrix[i][j]){
+                if(player_list[player].curr_sprite.sprite_shape.matrix[i][j] && 
+                    player_list[player].grid[player_list[player].curr_sprite.y - 3 + i][player_list[player].curr_sprite.x + j]){
+                    player_list[player].curr_sprite = temp_sprite;
+                    return;
+                }
+            }
+        }
+    }
     put_sprite(VGA, player_list[player].curr_sprite.sprite_shape.matrix, OFFSET_X[player] + 3 * player_list[player].curr_sprite.x, 
                OFFSET_Y + 3 * (player_list[player].curr_sprite.y - 3), true, player, 3);
 }
@@ -485,8 +515,8 @@ void handle_interrupt(unsigned int cause){
             }
         }
         for(int player = 0; player <= multiplayer; player++){
-            if((((player_list[player].mytime >> 4) * 10 + player_list[player].mytime)) % 20 == 0 && !player_list[player].lost){
-                // increase difficulty for every 20 sec
+            if((player_list[player].mytime % 100) % 30 == 0 && !player_list[player].lost){
+                // increase difficulty for every 30 sec
                 increase_difficulty(player);
             }
         }
@@ -581,7 +611,7 @@ void loop(){    // game loop
     // Player 1
     if(!player_list[0].lost){
         if (!rot1 && !(rot1 == old_input[0])){
-            rotate(0);
+            rotate_func(0);
         }
         if(!mv_r1 && !(mv_r1 == old_input[1])){
             mov_hor(0, 1);
@@ -602,7 +632,7 @@ void loop(){    // game loop
     {
         if(!player_list[1].lost){
             if (!rot2 && !(rot2 == old_input[5])){
-                rotate(1);
+                rotate_func(1);
             }
             if(!mv_r2 && !(mv_r2 == old_input[6])){
                 mov_hor(1, 1);

@@ -23,24 +23,24 @@ void start_performance(){
     asm volatile("csrw mhpmcounter9h, x0");
 }
 
-void stop_performance(struct performance_value performance_value){
+void stop_performance(struct performance_value *performance_value){
     // Read values from all performance related registers
-    asm("csrr %0, mcycle" : "=r"(performance_value.mcycle));
-    asm("csrr %0, mcycleh" : "=r"(performance_value.mcycleh));
-    asm("csrr %0, minstret" : "=r"(performance_value.minstret));
-    asm("csrr %0, minstreth" : "=r"(performance_value.minstreth));
-    asm("csrr %0, mhpmcounter3" : "=r"(performance_value.mhpmcounter3));
-    asm("csrr %0, mhpmcounter3h" : "=r"(performance_value.mhpmcounter3h));
-    asm("csrr %0, mhpmcounter4" : "=r"(performance_value.mhpmcounter4));
-    asm("csrr %0, mhpmcounter4h" : "=r"(performance_value.mhpmcounter4h));
-    asm("csrr %0, mhpmcounter5" : "=r"(performance_value.mhpmcounter5));
-    asm("csrr %0, mhpmcounter5h" : "=r"(performance_value.mhpmcounter5h));
-    asm("csrr %0, mhpmcounter6" : "=r"(performance_value.mhpmcounter6));
-    asm("csrr %0, mhpmcounter6h" : "=r"(performance_value.mhpmcounter6h));
-    asm("csrr %0, mhpmcounter7" : "=r"(performance_value.mhpmcounter7));
-    asm("csrr %0, mhpmcounter7h" : "=r"(performance_value.mhpmcounter7h));
-    asm("csrr %0, mhpmcounter8" : "=r"(performance_value.mhpmcounter8));
-    asm("csrr %0, mhpmcounter8h" : "=r"(performance_value.mhpmcounter8h));
-    asm("csrr %0, mhpmcounter9" : "=r"(performance_value.mhpmcounter9));
-    asm("csrr %0, mhpmcounter9h" : "=r"(performance_value.mhpmcounter9h));
+    asm("csrr %0, mcycle" : "=r"(performance_value->mcycle));
+    asm("csrr %0, mcycleh" : "=r"(performance_value->mcycleh));
+    asm("csrr %0, minstret" : "=r"(performance_value->minstret));
+    asm("csrr %0, minstreth" : "=r"(performance_value->minstreth));
+    asm("csrr %0, mhpmcounter3" : "=r"(performance_value->mhpmcounter3));
+    asm("csrr %0, mhpmcounter3h" : "=r"(performance_value->mhpmcounter3h));
+    asm("csrr %0, mhpmcounter4" : "=r"(performance_value->mhpmcounter4));
+    asm("csrr %0, mhpmcounter4h" : "=r"(performance_value->mhpmcounter4h));
+    asm("csrr %0, mhpmcounter5" : "=r"(performance_value->mhpmcounter5));
+    asm("csrr %0, mhpmcounter5h" : "=r"(performance_value->mhpmcounter5h));
+    asm("csrr %0, mhpmcounter6" : "=r"(performance_value->mhpmcounter6));
+    asm("csrr %0, mhpmcounter6h" : "=r"(performance_value->mhpmcounter6h));
+    asm("csrr %0, mhpmcounter7" : "=r"(performance_value->mhpmcounter7));
+    asm("csrr %0, mhpmcounter7h" : "=r"(performance_value->mhpmcounter7h));
+    asm("csrr %0, mhpmcounter8" : "=r"(performance_value->mhpmcounter8));
+    asm("csrr %0, mhpmcounter8h" : "=r"(performance_value->mhpmcounter8h));
+    asm("csrr %0, mhpmcounter9" : "=r"(performance_value->mhpmcounter9));
+    asm("csrr %0, mhpmcounter9h" : "=r"(performance_value->mhpmcounter9h));
 }

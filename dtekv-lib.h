@@ -3,6 +3,7 @@
 #define DTEKV_LIB_H
 
 void *memcpy(void *dest, const void *src, unsigned int n);
+void *memset(void *ptr, int value, unsigned int num);
 void printc(char s);
 void print(char *s);
 void print_dec(unsigned int x);

@@ -38,6 +38,6 @@ struct performance_value{
 };
 
 extern void start_performance();
-extern void stop_performance(struct performance_value performance_value);
+extern void stop_performance(struct performance_value *performance_value);
 
 #endif
