@@ -15,7 +15,7 @@
 int OFFSET_X[2]; //Offset for player 1
 int OFFSET_Y = 89;
 char VGA[HEIGHT][WIDTH];  //vga buffer
-int old_input[10] = {0};
+int old_input = 0;
 
 // functions from timetemplate from lab 3
 extern void time2string(char*,int);
@@ -284,7 +284,7 @@ int line_clear(int player){   // Test passed
     int layer_cleared = 0;
     int level_empty[GRID_HEIGHT] = {0};
     // Check relevant layer
-    for(int i = player_list[player].curr_sprite.y; i > (player_list[player].curr_sprite.y - 4); i--){
+    for(int i = player_list[player].curr_sprite.y - 3; (i > (player_list[player].curr_sprite.y - 4)) && i < GRID_HEIGHT; i++){
         int j = 0;
         //j = 10
         while((j < GRID_WIDTH) && (player_list[player].grid[i][j])){
@@ -394,6 +394,16 @@ void rotate_func(int player){
 }
 
 //Contributed by Dave
+void increase_difficulty(int player){   
+    // Increases the player's difficulty when called up to a maximum of 15
+    player_list[player].difficulty++;
+    // Update player's level value in buffer
+    char difficulty[8];
+    int_stringbuilder(player_list[player].difficulty, difficulty);
+    put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
+}
+
+//Contributed by Dave
 void mov_down(int player){    // Test passed
     // y in curr_shape += 1
     // This is polled every game cycle
@@ -409,6 +419,8 @@ void mov_down(int player){    // Test passed
             int_stringbuilder(player_list[player].lines, line);
             put_text(VGA, line, OFFSET_X[player] + 21, OFFSET_Y - 27, 1);
             score_calc(player, lines);
+            if((player_list[player].lines >= (5 * player_list[player].difficulty)) && (player_list[player].difficulty <= 15))
+                increase_difficulty(player);
         }
         get_next_sprite(player);
         spawn_sprite(player, 2);
@@ -463,7 +475,7 @@ void mov_hor(int player, int direction){   // Test passed
 //Contributed by Dave
 void hold_func(int player){     // Test passed
     if(player_list[player].hold_available){
-        player_list[0].hold_available = false;
+        player_list[player].hold_available = false;
         if(player_list[player].hold < 0){
             player_list[player].hold = player_list[player].curr_sprite.sprite_shape.sprite_id;
             get_next_sprite(player);
@@ -484,18 +496,6 @@ void hold_func(int player){     // Test passed
     }
 }
 
-//Contributed by Dave
-void increase_difficulty(int player){   
-    // Increases the player's difficulty when called up to a maximum of 15
-    if(player_list[player].difficulty < 15){
-        player_list[player].difficulty++;
-    }
-    // Update player's level value in buffer
-    char difficulty[8];
-    int_stringbuilder(player_list[player].difficulty, difficulty);
-    put_text(VGA, difficulty, OFFSET_X[player] + 21, OFFSET_Y - 19, 1);
-}
-
 //Contributed by Both
 void handle_interrupt(unsigned int cause){
     volatile int *time_addr = (volatile int *)0x04000020;
@@ -514,12 +514,12 @@ void handle_interrupt(unsigned int cause){
                 put_text(VGA, player_list[player].textstring, OFFSET_X[player] - 15, OFFSET_Y - 11, 1);
             }
         }
-        for(int player = 0; player <= multiplayer; player++){
-            if((player_list[player].mytime % 100) % 30 == 0 && !player_list[player].lost){
-                // increase difficulty for every 30 sec
-                increase_difficulty(player);
-            }
-        }
+        // for(int player = 0; player <= multiplayer; player++){
+        //     if((player_list[player].mytime % 100) % 30 == 0 && !player_list[player].lost){
+        //         // increase difficulty for every 30 sec
+        //         increase_difficulty(player);
+        //     }
+        // }
     }
 
     for(int player = 0; player <= multiplayer; player++){
@@ -593,36 +593,36 @@ void player_init(bool multiplayer){
 void loop(){    // game loop
 
     // poll inputs
-    for(int i = 0; i < 10 - 5 * (multiplayer); i++){
-        old_input[i] = *gpio & (0x01 << i);
-    }
-    int value = *gpio;
-    int rot1 = value & 0x0001;
-    int mv_r1 = value & 0x0002;
-    int mv_l1 = value & 0x0004;
-    int down1 = value & 0x0008;
+    unsigned int value = ~*gpio;
+    unsigned int press = value & (~old_input);
+    // print_dec(value);
+    // print("\n");
+    int rot1 = press & 0x0001;
+    int mv_r1 = press & 0x0002;
+    int mv_l1 = press & 0x0004;
+    int down1 = press & 0x0008;
     int hold1 = value & 0x0010;
-    int rot2 = value & 0x0020;
-    int mv_r2 = value & 0x0040;
-    int mv_l2 = value & 0x0080;
-    int down2 = value & 0x0100;
+    int rot2 = press & 0x0020;
+    int mv_r2 = press & 0x0040;
+    int mv_l2 = press & 0x0080;
+    int down2 = press & 0x0100;
     int hold2 = value & 0x0200;
 
     // Player 1
     if(!player_list[0].lost){
-        if (!rot1 && !(rot1 == old_input[0])){
+        if (rot1){
             rotate_func(0);
         }
-        if(!mv_r1 && !(mv_r1 == old_input[1])){
+        if(mv_r1){
             mov_hor(0, 1);
         }
-        if(!mv_l1 && !(mv_l1 == old_input[2])){
+        if(mv_l1){
             mov_hor(0, -1);
         }
-        if(!down1 && !(down1 == old_input[3])){
+        if(down1){
             hard_down(0);
         }
-        if(!hold1 && player_list[0].hold_available){
+        if(hold1 && player_list[0].hold_available){
             hold_func(0);
         }
     }
@@ -631,21 +631,28 @@ void loop(){    // game loop
     if(multiplayer)
     {
         if(!player_list[1].lost){
-            if (!rot2 && !(rot2 == old_input[5])){
+            // print("POLL P2...\n");
+            if(rot2){
+                print("ROTATE P2\n");
                 rotate_func(1);
             }
-            if(!mv_r2 && !(mv_r2 == old_input[6])){
+            if(mv_r2){
+                print("MOVE P2\n");
                 mov_hor(1, 1);
             }
-            if(!mv_l2 && !(mv_l2 == old_input[7])){
+            if(mv_l2){
+                print("MOVE P2\n");
                 mov_hor(1, -1);
             }
-            if(!down2 && !(down2 == old_input[8])){
+            if(down2){
+                print("DROP P2\n");
                 hard_down(1);
             }
-            if(!hold2 && player_list[1].hold_available){
+            if(hold2 && player_list[1].hold_available){
+                print("HOLD P2\n");
                 hold_func(1);
             }
         }
     }
+    old_input = value;
 }
