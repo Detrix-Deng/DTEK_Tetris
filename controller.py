@@ -19,6 +19,8 @@ held_keys = set()
 
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
+
+# Keymaping manually added by Ye
 KEY_TO_GPIO = {
     ecodes.KEY_W: 2,    #Rot
     ecodes.KEY_A: 3,    #MV
@@ -72,14 +74,12 @@ def pulse_pin(pin, keycode):
     """Pulse a GPIO pin while the corresponding key is held."""
     while keycode in held_keys:
         GPIO.output(pin, GPIO.LOW)
-        time.sleep(0.05)
+        GPIO.output(pin, GPIO.HIGH)
 
         # Check again in case key was released
         if keycode not in held_keys:
             break
-
-        GPIO.output(pin, GPIO.HIGH)
-        time.sleep(0.01)
+        time.sleep(0.1)
 
     # Leave the pin HIGH after release
     GPIO.output(pin, GPIO.HIGH)
