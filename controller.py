@@ -19,6 +19,8 @@ held_keys = set()
 
 # --- CONFIGURATION ---
 # Map keys to GPIO pins
+
+# Keymaping manually added by Ye
 KEY_TO_GPIO = {
     ecodes.KEY_W: 2,    #Rot
     ecodes.KEY_A: 3,    #MV
