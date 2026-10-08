@@ -79,7 +79,7 @@ def pulse_pin(pin, keycode):
         # Check again in case key was released
         if keycode not in held_keys:
             break
-        time.sleep(0.05)
+        time.sleep(0.1)
 
     # Leave the pin HIGH after release
     GPIO.output(pin, GPIO.HIGH)
